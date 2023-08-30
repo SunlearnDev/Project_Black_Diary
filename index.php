@@ -392,7 +392,7 @@
                         </div>
                        <div class="w-auto ml-2 text-white grid grid-rows-2">
                         <a href=""><?php echo $rowid['userName']; ?> </a>
-                        <p > <?php echo $row['createdAt']; ?></p>
+                        <span class="time" data-timeago="<?php echo $row['createdAt']; ?>"  > </span>
                        </div>
                     </div>
                 <?php } ?>
@@ -408,8 +408,8 @@
                             <p class="text-white">
                             <?php echo $row['content']; ?>
                            </p>
-                            <div class=" w-full al  mt-2">
-                                <img src="<?php echo $row['image']; ?>" class=" rounded-md " style="height: 716px; width:680px;"  alt="">
+                            <div class=" w-full  mt-2 flex justify-center">
+                                <img src="<?php echo $row['image']; ?>" class=" rounded-md  " style="height: 716px; width:680px;"  alt="">
                             </div>
                            
                     </div>
@@ -479,6 +479,30 @@ function sidebarHandler(flag) {
         openSidebar.classList.remove("hidden");
     }
 }
+
+// tính thời gian 
+function timeAgo(time){
+    const now= new Date();
+    const postTime = new Date(time);
+    const countTime = now - postTime;
+
+    const minutes = Math.floor(countTime / (1000 * 60));
+    const hours =Math.floor(countTime / (1000 * 60 *60));
+
+    if(minutes <60 ){
+        return `${minutes} minutes ago`; 
+    }else{
+        return `${hours} hours ago`;
+    }
+}
+const timeElemet =document.querySelectorAll('.time');
+timeElemet.forEach(element => {
+    const time =element.getAttribute('data-timeago');
+    const timeTxt =timeAgo(time);
+    element.textContent = timeTxt;
+})
+
+
 </script>
 </body>
 </html>
