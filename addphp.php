@@ -12,7 +12,7 @@ if(isset($_POST['id']) && isset($_FILES['image']) && $_FILES['image']['error'] =
     // Di chuyển tệp ảnh tải lên vào thư mục lưu trữ
     move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
     
-    $update = "UPDATE diary SET image = '$imagePath' WHERE id = $id";
+    $update = "UPDATE user SET avatar = '$imagePath' WHERE id = $id";
     
     if ($conn->query($update) === TRUE) {
         echo "Image uploaded and updated successfully.";

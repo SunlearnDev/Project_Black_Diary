@@ -100,14 +100,15 @@
 </header>
 <nav class="mt-20" >  
     <div class="flex flex-no-wrap ">  
-        <!-- left    -->
-        <div style="min-height: 716px" class="w-64 absolute sm:relative bg-black shadow md:h-full flex-col justify-between hidden sm:flex">
-            <div class="px-8  "> 
+        <!-- left    -->      
+        <div style="min-height: 716px" class=" w-64 md:w-1/5 w-1/12 sm:relative  shadow md:h-full flex-col justify-between hidden sm:flex">
+        <div class="fixed top-10 bg-black left-0 h-screen bottom-0 w-64  ">
+        <div class="px-8  "> 
                 <ul class="mt-12">
                     <li class="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">                 
                     <a href="">
                         <img class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="" alt="Bordered avatar">
-                     <?php 
+                     <!-- ?php 
                      $id =1;
                         $userName = "SELECT * FROM user WHERE id = $id";
                         $userResult = mysqli_query($conn, $userName);
@@ -115,7 +116,7 @@
                            $row =  mysqli_fetch_assoc($userResult);
                            echo $row['userName'];
                         }
-                     ?>
+                     ? -->
                     </a>
                     </li>
                     <li class="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
@@ -222,7 +223,7 @@
                         </a>
                     </li>
                 </ul>
-                <div class="flex justify-center mt-20 mb-4 w-full">
+                <div class="flex justify-center mt-2 mb-2 w-full">
                     <div class="relative">
                         <div class="text-gray-300 absolute ml-4 inset-0 m-auto w-4 h-4">
                           <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg2.svg" alt="Search">
@@ -241,9 +242,10 @@
                 <li class="list-disc w-auto ml-4  hover:underline hover:text-gray-300"><a href=""> B&D © 2023</a></li>
                </ul>
             </div>
+        </div>   
         </div>
         <!-- mobile-nav -->
-        <div class="w-64 z-40 absolute bg-gray-800 shadow md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out" id="mobile-nav">
+        <div class="w-64 z-40 md:w-1/5 w-1/12 absolute bg-gray-800 shadow md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out" id="mobile-nav">
             <button aria-label="toggle sidebar" id="openSideBar" class="h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded focus:ring-gray-800" onclick="sidebarHandler(true)">
                <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg7.svg" alt="toggler">
             </button>
@@ -371,22 +373,30 @@
           <!--  --------------------------------------------------------------------------------------------------------- -->
          <!--  -----------------------------------------------------Diary---------------------------------------------------- -->
           <!--  --------------------------------------------------------------------------------------------------------- -->
-        <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
-            <div class="w-full h-auto rounded border-solid border-2 border-gray-300 bg-black p-4">
-            <?php 
-                     $id =1;
-                        $userName = "SELECT * FROM diary WHERE id = $id";
+        <div class="container mx-auto py-10 h-64 md:w-3/5 w-10/12 px-6">        
+            <?php  
+                        $userName = "SELECT * FROM diary WHERE id ";
                         $userResult = mysqli_query($conn, $userName);
                         if($userResult){
                            while($row =  mysqli_fetch_assoc($userResult)){?>
-                    <!-- --------------------hiện tên và ảnh avatar và thời gian---------------------       -->
+                    <!-- --------------------hiện tên và ảnh avatar và thời gian---------------------   -->
+                    <div class="w-full h-auto rounded border-solid border-2 border-gray-300 bg-black p-4 mb-4">
                     <div class="flex justify-between mb-2">
-                        <div class="">
-                        <a href="" class="text-white flex">
-                        <img class="w-10 mr-4 h-10  w-full p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="" alt="Bordered avatar">
-                        </a>
-                        <p></p>
+                    <?php 
+                $checkid = "SELECT * FROM user WHERE id = " . $row['userID'];
+                $userResultid = mysqli_query($conn, $checkid);
+                while ($rowid =  mysqli_fetch_assoc($userResultid)) { ?>
+                    <div class="mb-4 gird grid-cols-2 flex gap-2">
+                        <div class="w-10 h-10">
+                        <img class="w-full mr-4 h-10 w-full p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="<?php echo $rowid['avatar']; ?>" alt="Bordered avatar">
                         </div>
+                       <div class="w-auto ml-2 text-white grid grid-rows-2">
+                        <a href=""><?php echo $rowid['userName']; ?> </a>
+                        <p > <?php echo $row['createdAt']; ?></p>
+                       </div>
+                    </div>
+                <?php } ?>
+                       
                         <a href="">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18" class="text-white">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -399,11 +409,11 @@
                             <?php echo $row['content']; ?>
                            </p>
                             <div class=" w-full al  mt-2">
-                                <img src="<?php echo $row['image']; ?>" class=" rounded-md " width="680px"  alt="">
+                                <img src="<?php echo $row['image']; ?>" class=" rounded-md " style="height: 716px; width:680px;"  alt="">
                             </div>
                            
                     </div>
-                <?php } }?>
+                
                      <form>
                           <label for="chat" class="sr-only">Your comment...</label>
                           <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
@@ -431,25 +441,29 @@
                           </div>
                      </form>        
                          
-            </div>                           
+            </div>       
+            <?php } }
+             mysqli_close($conn);
+            ?>                    
         </div>
          <!--  --------------------------------------------------------------------------------------------------------- -->
          <!--  -----------------------------------------------------End Diary---------------------------------------------------- -->
           <!--  --------------------------------------------------------------------------------------------------------- -->
         <!-- right -->
-        <div style="min-height: 716px" class="w-64 absolute  sm:relative bg-black gshadow md:h-full flex-col justify-between hidden sm:flex">
-            <div class="px-8">
+        <div style="min-height: 716px" class="w-64 md:w-1/5 w-1/12 sm:relative gshadow md:h-full flex-col justify-between hidden sm:flex">
+        <div class="fixed top-10 bg-black right-0 h-screen bottom-0 w-64  "> 
+        <div class="px-8">
                 
                 
                 
             </div>
-            
+            </div>
         </div>
     </div>
 </nav>
 
 <script>
-    var sideBar = document.getElementById("mobile-nav");
+var sideBar = document.getElementById("mobile-nav");
 var openSidebar = document.getElementById("openSideBar");
 var closeSidebar = document.getElementById("closeSideBar");
 sideBar.style.transform = "translateX(-260px)";
