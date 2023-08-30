@@ -379,25 +379,29 @@
                         $userResult = mysqli_query($conn, $userName);
                         if($userResult){
                            while($row =  mysqli_fetch_assoc($userResult)){?>
-                    --------------------hiện tên và ảnh avatar và thời gian---------------------      
-                    <div class="flex justify-between mb-4">
+                    <!-- --------------------hiện tên và ảnh avatar và thời gian---------------------       -->
+                    <div class="flex justify-between mb-2">
+                        <div class="">
                         <a href="" class="text-white flex">
-                        <img class="w-10 mr-4 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="" alt="Bordered avatar">
+                        <img class="w-10 mr-4 h-10  w-full p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="" alt="Bordered avatar">
                         </a>
+                        <p></p>
+                        </div>
                         <a href="">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18" class="text-white">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
                         </a>          
                     </div>         
-                    --------------------hiện nội dung và hình ảnh bài viết---------------------   
-                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                            <div class=" w-full">
-                                <img src="" alt="">
-                            </div>
-                           <p>
+                    <!-- --------------------hiện nội dung và hình ảnh bài viết---------------------    -->
+                    <div class="w-full p-2 mb-2 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            <p class="text-white">
                             <?php echo $row['content']; ?>
                            </p>
+                            <div class=" w-full al  mt-2">
+                                <img src="<?php echo $row['image']; ?>" class=" rounded-md " width="680px"  alt="">
+                            </div>
+                           
                     </div>
                 <?php } }?>
                      <form>
