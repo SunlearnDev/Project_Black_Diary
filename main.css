@@ -1,0 +1,12 @@
+.papillae:before {
+    content: " ";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #394150;
+    top: 5px;
+    right: -5px;
+    transform: rotate(45deg);
+    border-radius: 0.375rem;
+
+}
