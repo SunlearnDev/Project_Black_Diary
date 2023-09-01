@@ -27,4 +27,8 @@ if(isset($_POST['id']) && isset($_FILES['image']) && $_FILES['image']['error'] =
 
 $conn->close();
 ?>
-
+<form action="addphp.php" method="POST" enctype="multipart/form-data">
+    <input type="text" name="id">
+    <input type="file" name="image">
+    <input type="submit" value="Upload">
+</form>
