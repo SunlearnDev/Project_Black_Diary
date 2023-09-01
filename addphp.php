@@ -12,7 +12,7 @@ if(isset($_POST['id']) && isset($_FILES['image']) && $_FILES['image']['error'] =
     // Di chuyển tệp ảnh tải lên vào thư mục lưu trữ
     move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
     
-    $update = "UPDATE user SET avatar = '$imagePath' WHERE id = $id";
+    $update = "UPDATE diary SET image = '$imagePath' WHERE id = $id";
     
     if ($conn->query($update) === TRUE) {
         echo "Image uploaded and updated successfully.";
@@ -23,11 +23,8 @@ if(isset($_POST['id']) && isset($_FILES['image']) && $_FILES['image']['error'] =
     echo "Error uploading image.";
 }
 
+
+
 $conn->close();
 ?>
 
-<form action="addphp.php" method="POST" enctype="multipart/form-data">
-    <input type="text" name="id">
-    <input type="file" name="image">
-    <input type="submit" value="Upload">
-</form>

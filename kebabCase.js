@@ -49,8 +49,18 @@ timeElemet.forEach(element => {
 
 // bật tắt thẻ nhỏ tác vụ trong  bài viết
 $(document).ready(function() {
-    $('#open-setting').click(function() {
-        $('.papillae').toggleClass('hidden scale-100 opacity-100 right-[35px] ');
-        $('#open-setting').toggleClass('rotate-90  ');
+    $('.open-setting').click(function() {
+        $(this).siblings('.papillae').toggleClass('hidden scale-100 opacity-100 right-[35px]');
+        $(this).toggleClass('rotate-90');
+    });
+
+    $('.js-setting').click(function() {
+        $('.js-edit-cmt').toggleClass('hidden');
+        
+    });
+
+    $('.js-close-set').click(function() {
+        $(this).closest('.js-edit-cmt').addClass('hidden');
     });
 });
+
