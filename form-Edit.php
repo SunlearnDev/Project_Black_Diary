@@ -17,7 +17,7 @@
                 </button>
             </div>
             <!-- Form chỉnh sửa -->
-            <form id="updateForm" class="flex flex-col h-5/6 px-4 gap-2" enctype="multipart/form-data" onsubmit="return checkForm(this)">
+            <form id="updateForm" class="flex flex-col h-5/6 px-4 gap-2" enctype="multipart/form-data">
                 <!-- Chế độ hiển thị -->
                 <select
                     class="rounded px-2 w-32 bg-gray-100 border border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
