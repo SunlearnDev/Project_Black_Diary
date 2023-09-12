@@ -1,8 +1,12 @@
 <?php
+// Bắt đầu phiên làm việc với session
 session_start();
+
+// Kết nối đến cơ sở dữ liệu, bạn cần đảm bảo rằng file connect.php đã được tạo và chứa thông tin kết nối
 include 'connect.php';
 
 if (isset($_POST['submit'])) {
+  // Lấy giá trị từ biểu mẫu
   $email = $_POST['email'];
   $pass = $_POST['pass'];
 
@@ -17,9 +21,11 @@ if (isset($_POST['submit'])) {
     if ($row) {
       // Kiểm tra mật khẩu
       if ($pass === $row['password']) {
-        $_SESSION['user'] = [];
-        $_SESSION['user']['id'] = $row['id'];
-        $_SESSION['user']['email'] = $row['email'];
+         // Gán thông tin người dùng vào biến session
+         $_SESSION['user'] = [
+                    'id' => $row['id'],
+                    'email' => $row['email'],
+                ];  
         header("Location: index.php");
         exit();
       } else {
