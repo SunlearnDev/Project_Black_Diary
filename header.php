@@ -1,4 +1,4 @@
-<header class=" fixed left-0 right-0 top-0 z-50">
+<header class=" fixed left-0 right-0 top-0 z-10 shadow">
     <nav class="bg-white border-gray-200 dark:bg-black  ">
         <div class="flex   justify-between items-center mx-auto max-w-screen w-full p-4 pr-16">
             <div class=" mr-2">
