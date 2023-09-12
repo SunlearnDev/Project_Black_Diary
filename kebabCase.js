@@ -88,7 +88,28 @@ $(document).ready(function () {
             vewImg2.innerHTML = `<img class="w-full" src="` + image + `" alt="Image">`;
         }
 
-        updateForm.action = `diary-update.php?diaryID=${diaryID}`;
+        updateForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (checkForm(this)) {
+                let data = new FormData(this);
+                fetch(`diary-update.php?diaryID=${diaryID}`, {
+                    method: 'POST',
+                    body: data,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error(data.error);
+                        } else {
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
+            }
+        })
     });
 
     // Đóng form update
