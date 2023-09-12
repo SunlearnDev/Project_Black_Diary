@@ -110,3 +110,75 @@ function checkForm(form) {
     })
     return check;
 }
+
+// Comment
+const cmtForms = document.querySelectorAll('.comment');
+cmtForms.forEach(cmtForm => {
+    cmtForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let parentContent = this.parentElement,
+            diaryID = parentContent.getAttribute("diary-id");
+
+        if (checkForm(this)) {
+            let data = new FormData(this);
+            this.reset();
+            fetch(`comment-add.php?diaryID=${diaryID}`, {
+                method: 'POST',
+                body: data,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                    } else {
+                        let time = timeAgo(data[1].createdAt);
+                        html = `<li comment-id="${data[1].id}" user-id="${data[1].userID}">
+                                    <div class="flex gap-2">
+                                        <div class="w-8 h-8">
+                                            <img class="bg-white w-full h-full p-1 rounded-full ring-2 ring-gray-400 dark:ring-gray-500 dark:bg-transparent"
+                                                src="${data[1].avatar}" alt="">
+                                        </div>
+                                        <div class="max-w-[calc(100%-2.5rem)]">
+                                            <div
+                                                class="px-2 py-1 rounded-lg border border-gray-300 bg-white dark:bg-gray-800 dark:border-none break-words">
+                                                <div class="font-bold text-sm dark:text-white">
+                                                ${data[1].userName}
+                                                </div>
+                                                <div>
+                                                ${data[1].content}
+                                                </div>
+                                            </div>
+                                            <div class="flex">
+                                                <div class="time text-xs text-gray-500 dark:text-white">${time}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>`
+                        let cmtlist = parentContent.querySelector('.comment-list'),
+                            firstChild = cmtlist.firstElementChild,
+                            cmtTotal = parentContent.querySelector('.cmtTotal');
+
+                        if (firstChild) {
+                            firstChild.insertAdjacentHTML('beforebegin', html);
+                        }
+                        else {
+                            cmtlist.innerHTML = html;
+                            cmtlist.closest('[hidden]').removeAttribute('hidden');
+                        }
+                        cmtTotal.innerText = data[0];
+                        cmtlist.classList.remove("hidden");
+                        // Dịch chuyển đến comment nếu bị khuất
+                        cmtlist.scrollTop = 0;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+        }
+    })
+})
+
+// Ẩn hiện comment
+function toggleCmtHidden(e) {
+    e.parentElement.nextElementSibling.querySelector(".comment-list").classList.toggle("hidden");
+}

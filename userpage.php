@@ -3,7 +3,7 @@ session_start();
 require_once 'connect.php';
 
 if (empty($_SESSION['user'])) {
-    header("location:login.php");
+    header("location:form-login.php");
     exit();
 }
 ?>

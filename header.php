@@ -20,8 +20,7 @@
                                   </svg>                          
                             </a> -->
                                 <!-- home 2 -->
-                                <a href="index.php"
-                                    class="  text-gray-900 flex justify-center dark:text-white hover:underline"
+                                <a href="index.php" class="text-gray-900 flex justify-center dark:text-white hover:underline"
                                     aria-current="page">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor"
@@ -103,7 +102,8 @@
                                         class="w-6 h-6 text-yellow-600 dark:text-yellow-500 ">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                    </svg></a>
+                                    </svg>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -111,15 +111,14 @@
             </nav>
             <div class="flex items-center w-auto ">
                 <?php
-                if (!empty($_SESSION['user']) && isset($_SESSION['user']['id'])) {
+                if (!empty($_SESSION['user'])) {
                     echo '
                     <a href="logout.php" class="text-xl w-[85px] font-bold text-yellow-600 dark:text-yellow-500 text-yellow-500 hover:underline">Log out</a>';
                 } else {
                     echo '
-                    <a href="login.php" class="text-xl w-[85px] font-bold text-yellow-600 dark:text-yellow-500 text-yellow-500 hover:underline">Log in</a>';
+                    <a href="form-login.php" class="  text-xl w-[85px] font-bold text-yellow-600 dark:text-yellow-500 text-yellow-500 hover:underline">Log in</a>';
                 }
                 ?>
-
             </div>
         </div>
     </nav>

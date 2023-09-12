@@ -134,9 +134,71 @@
                     <div class=" mt-2 flex justify-center" style="max-height: 788px; max-width: 940px;">
                         <img src="<?php echo $row['image']; ?>" class="diaryImage rounded-md w-full" alt="">
                     </div>
+
+                    <!-- Hiển thị Comment -->
+                    <?php
+                    $cmtquery = "SELECT comment.id, image, content, comment.createdAt, userID, avatar, userName 
+                                FROM comment JOIN user ON comment.userID = user.id WHERE diaryID = " . $row['id'] . " ORDER BY comment.id DESC";
+                    $cmtresult = mysqli_query($conn, $cmtquery);
+                    if ($cmtresult) {
+                        ?>
+                        <div class="w-full p-2" <?php if (!mysqli_num_rows($cmtresult))
+                            echo 'hidden'; ?>>
+                            <div class="flex w-full items-center justify-end dark:text-white py-2 border-b border-gray-300">
+                                <div class="flex items-center gap-1 hover:underline cursor-pointer" onclick="toggleCmtHidden(this)">
+                                    <span class="cmtTotal">
+                                        <?php echo mysqli_num_rows($cmtresult); ?>
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="w-full dark:text-white mt-4">
+                                <ul class="max-h-72 p-1 overscroll-none overflow-y-scroll flex flex-col gap-2 comment-list hidden">
+                                    <?php
+                                    while ($cmt = mysqli_fetch_assoc($cmtresult)) {
+                                        ?>
+                                        <li comment-id="<?php echo $cmt['id']; ?>" user-id="<?php echo $cmt['userID']; ?>">
+                                            <div class="flex gap-2">
+                                                <div class="w-8 h-8 shrink-0">
+                                                    <img class="bg-white w-full h-full p-1 rounded-full ring-2 ring-gray-400 dark:ring-gray-500 dark:bg-transparent"
+                                                        src="<?php echo $cmt['avatar']; ?>" alt="">
+                                                </div>
+                                                <div>
+                                                    <div
+                                                        class="inline-block px-2 py-1 rounded-lg border border-gray-300 bg-white dark:bg-gray-800 dark:border-none break-words">
+                                                        <div class="font-bold text-sm dark:text-white">
+                                                            <?php echo $cmt['userName'] ?>
+                                                        </div>
+                                                        <div style="word-break: break-word;">
+                                                            <?php echo $cmt['content']; ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <div class="time text-xs text-gray-500 dark:text-white"
+                                                            data-timeago="<?php echo $cmt['createdAt']; ?>"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
-                <form>
-                    <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+
+                <!-- Comment form -->
+                <form class="comment">
+                    <div
+                        class="flex items-center border border-gray-300 px-3 py-2 rounded-lg bg-gray-100 dark:border-gray-600 dark:bg-gray-700">
                         <button type="button"
                             class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -159,8 +221,8 @@
                             </svg>
                             <span class="sr-only">Add emoji</span>
                         </button>
-                        <textarea id="chat" rows="1"
-                            class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <textarea name="content" rows="1"
+                            class="inputField block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Your comment..."></textarea>
                         <button type="submit"
                             class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
@@ -169,7 +231,6 @@
                                 <path
                                     d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z" />
                             </svg>
-                            <span class="sr-only">Your comment...</span>
                         </button>
                     </div>
                 </form>
