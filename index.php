@@ -39,7 +39,7 @@ include 'connect.php';
             <!--  End Diary -->
             <!-- right -->
             <div style="min-height: 716px"
-                class="w-64 md:w-1/5 w-1/12 sm:relative gshadow md:h-full flex-col justify-between hidden sm:flex">
+                class="w-64 md:w-1/5 w-1/12 sm:relative shadow md:h-full flex-col justify-between hidden xl:block fixed top-0 right-0 h-screen bottom-0">
                 <div class="fixed top-10 bg-black right-0 h-screen bottom-0 w-64  ">
                     <div class="px-8">
                     </div>
