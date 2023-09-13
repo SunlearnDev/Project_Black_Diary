@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$namedata = 'online_diary';
+$namedata = 'black_diary';
  $conn = mysqli_connect($host, $user, $pass, $namedata);
  if (!$conn){
     die("Error connecting to " . mysqli_connect_error());
