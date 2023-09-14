@@ -20,13 +20,13 @@ if (empty($_SESSION['user'])) {
 
 <body class="bg-gray-100 dark:bg-neutral-900">
     <?php
-    $id = $_SESSION['user']['id'];
-    $query = "SELECT userName, avatar FROM user WHERE id = $id";
+    $id = $_SESSION['user']['user_id'];
+    $query = "SELECT userName, img FROM user WHERE user_id = $id";
     $result = mysqli_query($conn, $query);
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         $username = $row['userName'];
-        $avatar = $row['avatar'];
+        $avatar = $row['img'];
         ?>
 
         <?php include ("header.php")?>
@@ -300,8 +300,8 @@ if (empty($_SESSION['user'])) {
 
                                 <!-- Hiển thị Comment -->
                                 <?php
-                                $cmtquery = "SELECT comment.id, image, content, comment.createdAt, userID, avatar, userName 
-                                FROM comment JOIN user ON comment.userID = user.id WHERE diaryID = " . $row['id'] . " ORDER BY comment.id DESC";
+                                $cmtquery = "SELECT comment.id, image, content, comment.createdAt, userID, img, userName 
+                                FROM comment JOIN user ON comment.userID = user.user_id WHERE diaryID = " . $row['id'] . " ORDER BY comment.id DESC";
                                 $cmtresult = mysqli_query($conn, $cmtquery);
                                 if ($cmtresult) {
                                     ?>
@@ -330,7 +330,7 @@ if (empty($_SESSION['user'])) {
                                                         <div class="flex gap-2">
                                                             <div class="w-8 h-8 shrink-0">
                                                                 <img class="bg-white w-full h-full p-1 rounded-full ring-2 ring-gray-400 dark:ring-gray-500 dark:bg-transparent"
-                                                                    src="<?php echo $cmt['avatar']; ?>" alt="">
+                                                                    src="<?php echo $cmt['img']; ?>" alt="">
                                                             </div>
                                                             <div>
                                                                 <div

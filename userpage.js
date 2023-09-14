@@ -173,7 +173,7 @@ cmtForms.forEach(cmtForm => {
                                     <div class="flex gap-2">
                                         <div class="w-8 h-8">
                                             <img class="bg-white w-full h-full p-1 rounded-full ring-2 ring-gray-400 dark:ring-gray-500 dark:bg-transparent"
-                                                src="${data[1].avatar}" alt="">
+                                                src="${data[1].img}" alt="">
                                         </div>
                                         <div class="max-w-[calc(100%-2.5rem)]">
                                             <div
