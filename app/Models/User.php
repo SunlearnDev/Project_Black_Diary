@@ -54,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
- /**
+    /**
      * Get the roles that owns the UserModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -68,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(DistrictModel::class, 'district_id', 'district_id');
     }
 
-        public function followers()
+    public function followers()
     {
         return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
     }
@@ -79,7 +79,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function isFollowing(User $user)
-{
-    return $this->following()->where('following_id', $user->id)->exists();
-}
+    {
+        return $this->following()->where('following_id', $user->id)->exists();
+    }
+
+    public function diary()
+    {
+        return $this->hasMany(DiaryModel::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

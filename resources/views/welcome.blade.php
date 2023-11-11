@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <base href="{{ asset('') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,10 +25,10 @@
     @include('Fontend.layouts.header')
     <div class="flex flex-wrap mx-10">
         {{-- left --}}
-         @include('Fontend.layouts.left-nav')
+        @include('Fontend.layouts.left-nav')
         {{-- main --}}
-         @include('Fontend.layouts.diary-nav')
-        {{-- Right --}} 
+        @include('Fontend.layouts.diary-nav')
+        {{-- Right --}}
         @include('Fontend.layouts.right-nav')
     </div>
     @include('sweetalert::alert')
@@ -35,4 +36,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="{{ asset('js/districts.js') }}"></script>
 </body>
+
 </html>

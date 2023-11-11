@@ -20,20 +20,22 @@ use App\Http\Requests\User\Post\RequestsUpdatePost;
 class PostProfile extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $active = "active";
         view()->share('activeShip', $active);
     }
 
     //  Lấy dữ liệu từ DB
-    public function index(){
-        if(Auth::check()){
+    public function index()
+    {
+        if (Auth::check()) {
             $data = Auth::user();
             $dataCity = Citys::all();
             return view('Fontend.profile.profile', [
                 'data' => $data, 'dataCity' => $dataCity,
             ]);
-        }else{
+        } else {
             return view('auth.login');
         }
     }
@@ -45,28 +47,30 @@ class PostProfile extends Controller
         $dataCity = Citys::all();
 
         return view('Fontend.profile.edit', [
-            'data' => $data, 'dataCity' => $dataCity, 
-        ]); 
+            'data' => $data, 'dataCity' => $dataCity,
+        ]);
     }
-   
+
     // xử lý login
-    public function postLogin(LoginRequest $request){
+    public function postLogin(LoginRequest $request)
+    {
         $request->authenticate();
         $request->session()->regenerate();
 
         $email = $request->email;
         $password = $request->password;
-        
-        if(Auth::attempt(['email'=> $email,'password'=> $password])){
+
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
             return redirect('/index');
-        }else{
-            return view('auth.login')->with('msgError','Email hoặc mật khẩu không đúng');
+        } else {
+            return view('auth.login')->with('msgError', 'Email hoặc mật khẩu không đúng');
         }
     }
 
-  
+
     // View đăng ký
-    public function showRegister(){
+    public function showRegister()
+    {
         return view('auth.register');
     }
 
@@ -115,75 +119,78 @@ class PostProfile extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-      //chức năng đăng xuất
-      public function logout(){
+    //chức năng đăng xuất
+    public function logout()
+    {
         Auth::logout();
         return redirect('login')->with('msgSuccess', 'Đã đăng xuất thành công');
-    } 
-    
-    
+    }
+
+
     // Xử lý cập nhật User profile
     public function updateProfile(Request $request)
     {
-       
+
         $data = User::find(Auth::id());
 
         $imgUpload = new ImdUpload();
         $dataPathImage = $imgUpload->upLoadImg($request, 'avatar',  'profile');
-            if ($dataPathImage != null){
-                $imgPath = public_path().'/'.$data->avatar;
-                if(file_exists($imgPath)){
-                   
-                    unlink($imgPath);
-                }
-                $data->avatar = $dataPathImage;
+        if ($dataPathImage != null) {
+            $imgPath = public_path() . '/' . $data->avatar;
+            if (file_exists($imgPath)) {
+
+                unlink($imgPath);
             }
-            
+            $data->avatar = $dataPathImage;
+        }
+
         $data->name = $request->name;
         $data->about = $request->about;
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->city_id = $request->city_id;
-        $data->district_id= $request->district_id;
-        $data->birthdate= $request->birthdate;
-        if($data->save()){
+        $data->district_id = $request->district_id;
+        $data->birthdate = $request->birthdate;
+        if ($data->save()) {
             return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
-        }else{  
+        } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-     
     }
 
     // Handle password change
-   public function updatePassword(Request $request){
-    $data = User::find(Auth::id());
+    public function updatePassword(Request $request)
+    {
+        $data = User::find(Auth::id());
         $request->validate(
-        [
-            'password_old' => [
-                'required',
-                function ($attribute,$password_old, $fail) {
-                    if (!Hash::check($password_old, Auth::user()->password)) {
-                        $fail('Mật khẩu chưa đúng');
-                    }
-                },
+            [
+                'password_old' => [
+                    'required',
+                    function ($attribute, $password_old, $fail) {
+                        if (!Hash::check($password_old, Auth::user()->password)) {
+                            $fail('Mật khẩu chưa đúng');
+                        }
+                    },
+                ],
+                'password' => 'required|min:5|max:20',
+                'password_again' => 'required|same:password',
             ],
-            'password' => 'required|min:5|max:20',
-            'password_again' => 'required|same:password',
-        ],[
-            'password.required' => 'Mật khẩu không được để trống',
-            'password_again.required' => 'Mật khẩu xác nhận không được để trống',
-            'password.min' => 'Mật khẩu quá ngắn phải lớn hơn 5 kí tự',
-            'password.max' => 'Mật khẩu quá dài phải nhỏ hơn 20 kí tự',
-            'password_again.same' => 'Mật khẩu xác nhận không khớp',
-        ]);
-        $data->password =Hash::make($request->password);
-        if($data->save()){
+            [
+                'password.required' => 'Mật khẩu không được để trống',
+                'password_again.required' => 'Mật khẩu xác nhận không được để trống',
+                'password.min' => 'Mật khẩu quá ngắn phải lớn hơn 5 kí tự',
+                'password.max' => 'Mật khẩu quá dài phải nhỏ hơn 20 kí tự',
+                'password_again.same' => 'Mật khẩu xác nhận không khớp',
+            ]
+        );
+        $data->password = Hash::make($request->password);
+        if ($data->save()) {
             return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
-        }else{  
+        } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-   }
-   public function getDataSearch(Request $request){
-    
-   }
+    }
+    public function getDataSearch(Request $request)
+    {
+    }
 }
