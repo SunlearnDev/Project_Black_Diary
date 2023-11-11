@@ -27,17 +27,16 @@ class ProfileUpdateRequest extends FormRequest
             'birthdate' => ['date', 'before_or_equal:' . now()->subYears(16)->format('Y-m-d')],
         ];
     }
-    public function messages(){
+    public function messages()
+    {
         return [
-        'name.max' => 'Tên không được vượt quá 255 ký tự.',
-        'avatar.image' => 'File tải lên không  phải là hình ảnh.',
-        'avatar.max' => 'Dung lượng hình ảnh không được vượt quá 2MB.',
-        'status.max' => 'Trạng thái không được vượt quá 255 ký',
-        'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-        'birthdate.date' => 'Ngày sinh phải là một ngày hợp lệ.',
-        'birthdate.before_or_equal' => 'Bạn phải đủ 16 tuổi .',
-    ];
+            'name.max' => 'Tên không được vượt quá 255 ký tự.',
+            'avatar.image' => 'File tải lên không  phải là hình ảnh.',
+            'avatar.max' => 'Dung lượng hình ảnh không được vượt quá 2MB.',
+            'status.max' => 'Trạng thái không được vượt quá 255 ký',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
+            'birthdate.date' => 'Ngày sinh phải là một ngày hợp lệ.',
+            'birthdate.before_or_equal' => 'Bạn phải đủ 16 tuổi .',
+        ];
+    }
 }
-}
-
-
