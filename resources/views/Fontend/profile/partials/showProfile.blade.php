@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Black Diary</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    {{-- Tailwind --}}
-    <script src="https://cdn.tailwindcss.com"></script>
-    {{-- jQuery --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- Styles -->
-    @include('Fontend.layouts.style')
-</head>
-
-<body class="bg-gray-100">
-    {{-- header --}}
-    @include('Fontend.layouts.header')
-    <div class="flex flex-wrap mx-10 mt-10">
+@extends('profile')
+ @section('content')
         <main>
             <div class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen  transition-all duration-200">
-                <div class="w-full px-48 mx-auto ">
-                    <div class="relative flex items-center p-0 mt-6 overflow-hidden bg-center bg-cover w-full h-[300px] rounded-2xl" style="background-image: url('https://source.unsplash.com/collection/1346951/1000x500?sig=1'); background-position-y: 50%">
+                <div class="w-full px-52 mx-auto">
+                    <div class="relative flex items-center p-0 mt-6 overflow-hidden bg-center bg-cover w-full h-56 rounded-2xl" style="background-image: url('https://source.unsplash.com/collection/1346951/1000x500?sig=1'); background-position-y: 50%">
                       
                     </div>
                     <div
@@ -36,14 +13,14 @@
                                 <div
                                     class="text-base ease-soft-in-out h-18.5 w-18.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
                                     <img
-                                        src="{{ $data->avatar }}"
+                                        src="/public/img/logo/2.png"
                                         alt="profile_image"
                                         class="w-20 h-20 shadow-soft-sm rounded-xl"/>
                                 </div>
                             </div>
                             <div class="flex-none w-auto max-w-full px-3 my-auto">
                                 <div class="h-full">
-                                    <h5 class="mb-1">{{ $data->name}}</h5>
+                                    <h5 class="mb-1">Alec Thompson</h5>
                                     <p
                                         class="mb-0 font-semibold leading-normal text-sm">
                                         CEO / Co-Founder
@@ -56,27 +33,27 @@
                                     <span
                                       class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                                       >22</span
-                                    ><span class="text-sm text-blueGray-400">Follows</span>
+                                    ><span class="text-sm text-blueGray-400">Friends</span>
                                   </div>
                                   <div class="mr-4 p-3 text-center">
                                     <span
                                       class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                                       >10</span
-                                    ><span class="text-sm text-blueGray-400">Follower</span>
+                                    ><span class="text-sm text-blueGray-400">Photos</span>
                                   </div>
                                   <div class="lg:mr-4 p-3 text-center">
                                     <span
                                       class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                                       >89</span
-                                    ><span class="text-sm text-blueGray-400">Posts</span>
+                                    ><span class="text-sm text-blueGray-400">Comments</span>
                                   </div>
                                 </div>
                               </div>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-wrap mt-4 px-48">
-                    <div class="w-full max-w-full px-3 xl:w-4/12 mt-[15px]">
+                <div class="flex flex-wrap mt-4 px-52">
+                    <div class="w-full max-w-full px-3 xl:w-4/12">
                         <div class="relative flex flex-col h-full min-w-0 break-words bg-gray border-0 shadow-soft-xl rounded-2xl bg-clip-border">
                         <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
                         <div class="flex flex-wrap -mx-3">
@@ -94,7 +71,7 @@
                         </div>
                         </div>
                         </div>
-                        <div class="flex-auto p-4 bg-white rounded-b-2xl">
+                        <div class="flex-auto p-4">
                         <p class="leading-normal text-sm">Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).</p>
                         <hr class="h-px my-6 bg-transparent bg-gradient-to-r from-transparent via-white to-transparent" />
                         <ul class="flex flex-col pl-0 mb-0 rounded-lg">
@@ -121,14 +98,8 @@
         
                         </div>
                     </div>
-                   @include('Fontend.layouts.diary-nav')
                 </div>
             </div>
         </main>
-    </div>
-    @include('sweetalert::alert')
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
-    <script src="{{ asset('js/districts.js') }}"></script>
-</body>
-</html>
+       
+ @endsection
