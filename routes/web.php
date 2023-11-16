@@ -17,7 +17,6 @@
     // use App\Http\Controllers\Auth\VerifyEmailController;
     use App\Http\Controllers\Fontend\DiaryController;
     use App\Http\Controllers\Fontend\AddressController;
-
     Route::get('/', function () {
         return view('welcome');
     });
@@ -42,28 +41,25 @@
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
     
     // Chức năng User
-    // Xác thực email
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    })->middleware('auth')->name('verification.notice');
+            // Xác thực email
+     Route::get('/email/verify', function () {
+         return view('auth.verify-email');
+     })->middleware('auth')->name('verification.notice');
+            // GỞi thông báo email
+     Route::post('/email/verification-notification', function (Request $request) {
+         $request->user()->sendEmailVerificationNotification();
+         return back()->with('message', 'Verification link sent!');
+     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+            //link liên kết trong mail
+     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+         $request->fulfill();
+         return redirect('/home');
+     })->middleware(['auth', 'signed'])->name('verification.verify');
     
-    // GỞi thông báo email
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Verification link sent!');
-    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-    
-    //link liên kết trong mail
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect('/home');
-    })->middleware(['auth', 'signed'])->name('verification.verify');
-
-    // Trang chính sau khi xác thực email
-    Route::get('/index', function () {
-        return view('welcome');
-    })->middleware(['auth', 'verified'])->name('index');
-
+     // Trang chính sau khi xác thực email
+     Route::get('/index', function () {
+         return view('welcome');
+     })->middleware(['auth', 'verified'])->name('index');
     Route::prefix('/user')->middleware('auth')->group(function () {
         // Các tuyến đường liên quan đến quản lý profile
         Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');

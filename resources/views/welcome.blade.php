@@ -23,13 +23,19 @@
 <body class="">
     {{-- header --}}
     @include('Fontend.layouts.header')
-    <div class="flex flex-wrap mx-10">
+    <div class="flex flex-wrap mx-10 pt-[70px]">
         {{-- left --}}
         @include('Fontend.layouts.left-nav')
         {{-- main --}}
+<<<<<<< HEAD
         @include('Fontend.layouts.diary-nav')
         {{-- Right --}}
         @include('Fontend.layouts.right-nav')
+=======
+         @include('Fontend.layouts.diary-nav')
+        {{-- Right --}} 
+         @include('Fontend.layouts.right-nav')
+>>>>>>> taidev
     </div>
     @include('sweetalert::alert')
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>

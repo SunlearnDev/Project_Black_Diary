@@ -7,14 +7,26 @@
 
         <!-- Tên -->
         <div class="mb-4">
-            <label for="name" class="block text-gray-700 font-bold mb-2">Tên</label>
+            <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
             <input type="text" id="name" name="name" value="{{ $data->name }}" equired autofocus
                 class="w-full p-3 border border-gray-300 rounded">
-            @error('name')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
+                @error('name')
+                <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                    <span class="font-medium">{{ $message }}</span> 
+                  </div>
+                @enderror
         </div>
-
+  <!-- Tên -->
+  <div class="mb-4">
+    <label for="other_name" class="block text-gray-700 font-bold mb-2">Other name</label>
+    <input type="text" id="other_name" name="other_name" value="{{ $data->other_name }}" equired autofocus
+        class="w-full p-3 border border-gray-300 rounded">
+        @error('other_name')
+        <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+            <span class="font-medium">{{ $message }}</span> 
+          </div>
+        @enderror
+</div>
         <!-- Avatar -->
         <div class="mb-4 ">
             <label for="avatar" class="block text-gray-700 font-bold mb-2 mr-4">Avatar</label>
@@ -30,20 +42,27 @@
                     type="file" accept="image/*" id="avatarUpload" onchange="loadFile(this)">
 
             </div>
-            @error('name')
-                <span class="text-danger">{{ $message }}</span>
+            @error('avatar')
+            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                <span class="font-medium">{{ $message }}</span> 
+              </div>
             @enderror
         </div>
 
         <!-- Giới thiệu -->
         <div class="mb-4">
-            <label for="about" class="block text-gray-700 font-bold mb-2">Giới thiệu</label>
+            <label for="about" class="block text-gray-700 font-bold mb-2">Profile Information</label>
             <textarea id="about" name="about" class="w-full p-3 border border-gray-300 rounded">{{ $data->about }}</textarea>
+            @error('about')
+            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                <span class="font-medium">{{ $message }}</span> 
+              </div>
+            @enderror
         </div>
 
         <!-- Giới tính -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Giới tính</label>
+            <label class="block text-gray-700 font-bold mb-2">Gender</label>
             <div class="flex items-center">
                 <label class="mr-4 flex items-center">
                     <input type="radio" id="gender_male" name="gender" value="male"
@@ -64,18 +83,34 @@
             <input type="date" id="birthdate" name="birthdate" value="{{ $data->birthdate }}"
                 class="w-full p-3 border border-gray-300 rounded">
         </div>
-
+        @error('birthdate')
+            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                <span class="font-medium">{{ $message }}</span> 
+              </div>
+            @enderror
         <!-- Địa chỉ -->
        
         <div class="mb-4">
-            <label for="address" class="block text-gray-700 font-bold mb-2">Địa chỉ</label>
+            <label for="address" class="block text-gray-700 font-bold mb-2">Address</label>
             <input type="text" id="address" name="address" value="{{ $data->address }}"
                 class="w-full p-3 border border-gray-300 rounded">
+        </div>
+        
+        <!-- sdt -->
+       
+        <div class="mb-4">
+            <label for="phone" class="block text-gray-700 font-bold mb-2">Phone</label>
+            <input type="text" id="phone" name="phone" value="{{ $data->phone }}"
+                class="w-full p-3 border border-gray-300 rounded">
+            @error('phone')
+            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                <span class="font-medium">{{ $message }}</span> 
+              </div>
+            @enderror
         </div>
         {{-- city --}}
         
         <div class="mb-4 flex justify-between items-center">
-            
             <div class="w-1/2 h-10">
                 <select name="city_id" id="city_id" >
                     <option value="" disabled selected hidden>Thành phố</option>

@@ -1,4 +1,4 @@
-<aside class="w-full md:w-1/4 flex flex-col items-center  pt-[70px]">
+<aside class="w-full md:w-1/4 flex flex-col items-center ">
 
     <div class="w-full bg-white shadow flex flex-col my-4  rounded-md">
         <p class="text-xl font-bold pb-5 border-b px-6 py-2">#discuss</p>
