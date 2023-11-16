@@ -14,8 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\Citys;
-use App\Models\DistrictModel;
-use App\Http\Requests\User\Post\RequestsUpdatePost;
+use Carbon\Carbon;
 
 class PostProfile extends Controller
 {
@@ -30,7 +29,7 @@ class PostProfile extends Controller
         if(Auth::check()){
             $data = Auth::user();
             $dataCity = Citys::all();
-            return view('Fontend.profile.profile', [
+            return view('Fontend.profile.partials.showProfile', [
                 'data' => $data, 'dataCity' => $dataCity,
             ]);
         }else{
@@ -125,7 +124,16 @@ class PostProfile extends Controller
     // Xử lý cập nhật User profile
     public function updateProfile(Request $request)
     {
-       
+        $request->validate([
+            'name' => 'string|max:255',
+            'other_name' => 'string|max:255',
+            'about' => 'nullable|string|max:500',
+            'phone' => 'int|max:10',
+            'address' => 'string|max:255',
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'birthdate' => 'Before:' . Carbon::now()->subYears(16)->format('Ymd'), 
+        ],
+    );
         $data = User::find(Auth::id());
 
         $imgUpload = new ImdUpload();
@@ -138,20 +146,20 @@ class PostProfile extends Controller
                 }
                 $data->avatar = $dataPathImage;
             }
-            
         $data->name = $request->name;
         $data->about = $request->about;
+        $data->other_name = $request->other_name;
+        $data->phone = $request->phone;
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->city_id = $request->city_id;
         $data->district_id= $request->district_id;
         $data->birthdate= $request->birthdate;
         if($data->save()){
-            return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
+            return redirect('/user/setting')->with('msgSuccess', 'Cập Nhật thông tin thành công');
         }else{  
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-     
     }
 
     // Handle password change
@@ -182,8 +190,5 @@ class PostProfile extends Controller
         }else{  
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-   }
-   public function getDataSearch(Request $request){
-    
    }
 }

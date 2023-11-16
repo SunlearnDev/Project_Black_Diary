@@ -1,4 +1,4 @@
-<div class="px-6 py-2">
+<div class="px-6 py-2 mt-2">
     <div class="w-full mb-2 flex justify-start">
         <div class="">
             <a href="">

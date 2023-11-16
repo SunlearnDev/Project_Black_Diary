@@ -16,6 +16,7 @@
     use App\Http\Controllers\Auth\VerifyEmailController;
     use App\Http\Controllers\Fontend\PostDiary;
     use App\Http\Controllers\Fontend\AddressController;
+    use App\Http\Middleware\HandleLoginCustomer;
     Route::get('/', function () {
         return view('welcome');
     });
@@ -54,7 +55,7 @@
      Route::get('/index', function () {
          return view('welcome');
      })->middleware(['auth', 'verified'])->name('index');
-    Route::prefix('/user')->middleware('auth')->group(function () {
+    Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
         // Các tuyến đường liên quan đến quản lý profile
         Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');
         Route::get('/setting', [PostProfile::class, 'edit'])->name('profile.edit');
