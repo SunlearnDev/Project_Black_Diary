@@ -1,5 +1,5 @@
     <?php
-    use App\Http\Controllers\ProfileController;
+
     use App\Http\Controllers\Fontend\PostProfile;
     use Illuminate\Support\Facades\Route;
     use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -18,18 +18,24 @@
     use App\Http\Controllers\Fontend\AddressController;
     use App\Http\Controllers\Fontend\SearchController;
     use App\Http\Middleware\HandleLoginCustomer;
+    use App\Http\Controllers\Fontend\SocialController;
     Route::get('/', function () {
         return view('Fontend.postDiary.diaryPublic');
     });
     
-    Route::get('/get_district',[SearchController::class,'getDataSearch']);
-
+    // Route list Quận huyện
+    Route::post('/get_district',[AddressController::class,'getDistrictCheckout']);
     // Router User 
+    // Router link search
+    Route::get('/listsearch',[SearchController::class,'getDataSearch']);
     // Router show User search
     Route::get('/profile/{id}-{name}',[PostProfile::class,'showProfilesId'])->name('profile.search');
     // User Đăng nhập
-    Route::get('login', [PostProfile::class, 'index'])->name('login');
+    Route::get('login/', [PostProfile::class, 'index'])->name('login');
     Route::post('login', [PostProfile::class, 'postLogin']);
+    // Đăng nhập bằng gg
+    Route::get('/google',[SocialController::class,'redirect']);
+    Route::get('/google/callback',[SocialController::class,'callback']);
     // User Đăng Ký
     Route::get('register', [PostProfile::class, 'showRegister'])->name('register');
     Route::post('register', [PostProfile::class, 'postRegister']);
@@ -65,10 +71,10 @@
         Route::get('/setting', [PostProfile::class, 'edit'])->name('profile.edit');
         Route::patch('/setting/update', [PostProfile::class, 'updateProfile'])->name('profile.update');
         Route::patch('/setting/update_password', [PostProfile::class, 'updatePassword'])->name('profile.password');
-        Route::delete('/setting/del', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
         Route::get('/create', [PostDiary::class,'viewCreate'])->name('create');
         // Đăng xuất
-        Route::post('/logout', [ProfileController::class, 'logout'])->name('logout');
+        Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
         
         //Post diary
         Route::get('/create', [PostDiary::class, 'viewCreate'])->name('create');

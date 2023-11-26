@@ -34,7 +34,7 @@ class ImdUpload extends Controller
 
         $user->update([
 
-          'avatar' => 'storage/profile/' . $avatarName
+          'avatar' => '/storage/profile/' . $avatarName
 
         ]);
 

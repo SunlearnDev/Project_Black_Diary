@@ -1,4 +1,4 @@
-<form action="/get_district" method="get"  class="w-[350px]">            
+<form action="/listsearch" method="get"  class="w-[350px]">            
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only bg-white">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none">

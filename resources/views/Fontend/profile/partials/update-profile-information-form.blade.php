@@ -160,7 +160,7 @@
     console.log(city_id);
     if (city_id){
         $.ajax({
-            url:'/get_district',
+            url:'/get_distric',
             type: 'POST',
             data:{
                 _token:"{{csrf_token()}}",

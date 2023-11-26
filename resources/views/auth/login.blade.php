@@ -1,10 +1,14 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    
+    <a href="/google">
+    <button aria-label="Continue with google" role="button"
+    class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-2 border rounded-lg border-gray-700 flex items-center w-full mt-5">
+    <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in-svg2.svg" alt="google">
+    <p class="text-base font-medium ml-4 text-gray-700">Continue with Google</p>
+</button></a>
     <form method="POST" action="{{ route('login') }}">
         @csrf
-        
         <div class="h-full  flex flex-col items-center justify-center shadow-md">
             <div class="bg-white shadow rounded lg:w-full  mx-auto md:w-1/2  p-10 ">
                 <p tabindex="0" class="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800">Login to your
@@ -13,11 +17,6 @@
                     account? <a href="{{ route('register') }}"
                         class="hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-sm font-medium leading-none  text-gray-800 cursor-pointer">
                         Sign up here</a></p>
-                <button aria-label="Continue with google" role="button"
-                    class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-2 border rounded-lg border-gray-700 flex items-center w-full mt-5">
-                    <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in-svg2.svg" alt="google">
-                    <p class="text-base font-medium ml-4 text-gray-700">Continue with Google</p>
-                </button>
                 <div class="w-full flex items-center justify-between py-4">
                     <hr class="w-full bg-gray-400">
                     <p class="text-base font-medium leading-4 px-2.5 text-gray-400">OR</p>

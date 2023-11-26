@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable()->after('about')->length(10);
             $table->string('address')->nullable()->after('phone')->length(255);
             $table->string('gender')->nullable()->after('address');
+            $table->string('address')->nullable()->after('google_id');
             $table->date('birthdate')->nullable()->after('gender');
             $table->integer('city_id')->nullable()->after('birthdate');
             $table->integer('district_id')->nullable()->after('city_id');
