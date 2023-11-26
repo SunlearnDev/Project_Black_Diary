@@ -16,13 +16,17 @@
     use App\Http\Controllers\Auth\VerifyEmailController;
     use App\Http\Controllers\Fontend\PostDiary;
     use App\Http\Controllers\Fontend\AddressController;
+    use App\Http\Controllers\Fontend\SearchController;
     use App\Http\Middleware\HandleLoginCustomer;
     Route::get('/', function () {
-        return view('welcome');
+        return view('Fontend.postDiary.diaryPublic');
     });
+    
+    Route::get('/get_district',[SearchController::class,'getDataSearch']);
 
-    Route::post('/get_district',[AddressController::class,'getDistricCheckout']);
     // Router User 
+    // Router show User search
+    Route::get('/profile/{id}-{name}',[PostProfile::class,'showProfilesId'])->name('profile.search');
     // User Đăng nhập
     Route::get('login', [PostProfile::class, 'index'])->name('login');
     Route::post('login', [PostProfile::class, 'postLogin']);
@@ -52,17 +56,17 @@
      })->middleware(['auth', 'signed'])->name('verification.verify');
     
      // Trang chính sau khi xác thực email
-     Route::get('/index', function () {
-         return view('welcome');
+     Route::get('/', function () {
+         return view('Fontend.postDiary.diaryPublic');
      })->middleware(['auth', 'verified'])->name('index');
-    Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
+    Route::prefix('/user')->middleware('handleLoginCustomer')->group(function (){
         // Các tuyến đường liên quan đến quản lý profile
         Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');
         Route::get('/setting', [PostProfile::class, 'edit'])->name('profile.edit');
         Route::patch('/setting/update', [PostProfile::class, 'updateProfile'])->name('profile.update');
         Route::patch('/setting/update_password', [PostProfile::class, 'updatePassword'])->name('profile.password');
         Route::delete('/setting/del', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        
+        Route::get('/create', [PostDiary::class,'viewCreate'])->name('create');
         // Đăng xuất
         Route::post('/logout', [ProfileController::class, 'logout'])->name('logout');
         

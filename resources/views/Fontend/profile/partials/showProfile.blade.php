@@ -1,20 +1,20 @@
-@extends('Fontend.profile.profile')
-@section('content')
+
     <main>
         <div class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen  transition-all duration-200">
+            {{-- ảnh bìa --}}
             <div class="w-full px-48 mx-auto ">
                 <div class="relative flex items-center p-0 mt-6 overflow-hidden bg-center bg-cover w-full h-[300px] rounded-2xl"
                     style="background-image: url('https://source.unsplash.com/collection/1346951/1000x500?sig=1'); background-position-y: 50%">
-
                 </div>
+            {{-- show Name --}}
                 <div
-                    class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 -mt-16 overflow-hidden break-words border-0 shadow-blur rounded-2xl backdrop-saturate-200 bg-white/30 bg-clip-border backdrop-blur-2xl ">
+                    class="relative o flex flex-col flex-auto min-w-0 p-4 mx-6 -mt-16 overflow-hidden break-words border border-white shadow-blur rounded-2xl backdrop-saturate-200 bg-white/30 bg-clip-border backdrop-blur-2xl drop-shadow-md ">
                     <div class="flex flex-wrap -mx-3">
-                        <div class="flex-none w-auto max-w-full px-3">
+                        <div class="flex w-auto max-w-full px-3">
                             <div
                                 class="text-base ease-soft-in-out h-18.5 w-18.5 relative inline-flex items-center justify-center rounded-xl text-white transition-all duration-200">
                                 <img src="{{ $data->avatar }}" alt="profile_image"
-                                    class="w-20 h-20 shadow-soft-sm rounded-xl" />
+                                    class="w-20 h-20 shadow-soft-sm drop-shadow-md border rounded-xl" />
                             </div>
                         </div>
                         <div class="flex-none w-auto max-w-full px-3 my-auto">
@@ -25,30 +25,45 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
-                            <div class="flex justify-center py-4 lg:pt-4 pt-8">
-                                <div class="mr-4 p-3 text-center">
-                                    <span
-                                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">22</span><span
-                                        class="text-sm text-blueGray-400">Follows</span>
-                                </div>
-                                <div class="mr-4 p-3 text-center">
-                                    <span
-                                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">10</span><span
-                                        class="text-sm text-blueGray-400">Follower</span>
-                                </div>
-                                <div class="lg:mr-4 p-3 text-center">
-                                    <span
-                                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">89</span><span
-                                        class="text-sm text-blueGray-400">Posts</span>
+                        @if(!$data->id)
+                            <div class="w-full max-w-full flex justify-center py-4 px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
+                                <form action="">
+                                    @csrf
+                                    <div class="flex items-center mb-4">
+                                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-sky-300 border rounded-lg hover:bg-sky-400 hover:text-white   ">
+                                            Folowers
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
+                                <div class="flex justify-center py-4 lg:pt-4 pt-8">
+                                    <div class="mr-4 p-3 text-center">
+                                        <span
+                                            class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">22</span><span
+                                            class="text-sm text-blueGray-400">Follows</span>
+                                    </div>
+                                    <div class="mr-4 p-3 text-center">
+                                        <span
+                                            class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">10</span><span
+                                            class="text-sm text-blueGray-400">Follower</span>
+                                    </div>
+                                    <div class="lg:mr-4 p-3 text-center">
+                                        <span
+                                            class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">89</span><span
+                                            class="text-sm text-blueGray-400">Posts</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
-            <div class="flex flex-wrap mt-4 px-48">
-                <div class="w-full max-w-full px-3 xl:w-4/12 mt-[15px] h-full">
+
+            <div class="flex flex-wrap justify-between gap-2 mt-4 px-48">
+                {{-- left --}}
+                <div class="w-full max-w-full p-2 xl:w-4/12 mt-[15px] h-full drop-shadow-md">
                     <div
                         class="relative flex flex-col h-full min-w-0 break-words bg-gray border-0 shadow-soft-xl rounded-2xl bg-clip-border">
                         <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
@@ -96,10 +111,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="float-right w-[65%]">
+                {{-- showdiary --}}
+                <div class="float-right w-[65%] py-2">
                     @include('Fontend.layouts.diary-nav')
+                    
                 </div>
             </div>
         </div>
     </main>
-@endsection
+

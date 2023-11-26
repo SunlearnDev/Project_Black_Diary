@@ -28,11 +28,11 @@ class DiaryModel extends Model
         return $this->belongsTo(User::class, 'id', 'id');
     }
     public function hastag(){
-        return $this->belongsTo(Hastag::class, 'id_hastag', 'hastag_id');
+        return $this->belongsTo(Hashtag::class, 'id_hastag', 'hastag_id');
     }
     public function hashtags()
     {
-        return $this->belongsToMany(Hastag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
+        return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
     }
     
 }

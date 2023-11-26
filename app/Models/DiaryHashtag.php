@@ -22,7 +22,7 @@ class DiaryHashtag extends Model
 
   public function hashtag()
   {
-    return $this->belongsTo(Hastag::class);
+    return $this->belongsTo(Hashtag::class);
   }
 
 }

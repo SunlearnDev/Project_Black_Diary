@@ -24,7 +24,6 @@ class FollowController extends Controller
        }
     }
 
-    
 
     public function unFollow(int $id){
         $user = User::find($id);
@@ -34,7 +33,5 @@ class FollowController extends Controller
          $user->followers()->detach(auth()->user()->id);
          return redirect()->back()->with("msgSuccess","Bỏ theo dõi thành công");
     }
-
-   
 
 }

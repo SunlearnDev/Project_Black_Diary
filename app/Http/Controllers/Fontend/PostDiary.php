@@ -16,13 +16,10 @@ use App\Models\DiaryHashtag;
 class PostDiary extends Controller
 {
     
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+   
     
     public function viewCreate(){
-        return view('Fontend.postdiary.create_post');
+        return view('Fontend.postdiary.diaryCreate');
     }
     public function store(RequestsPost $request){
         try{
@@ -65,6 +62,7 @@ class PostDiary extends Controller
 
         }catch(\Exception $e){
             // RollBack transaction nếu có lỗi
+            dd('fail');
             DB::rollBack();
             return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thất bại');
         }

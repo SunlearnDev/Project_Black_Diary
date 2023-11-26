@@ -29,7 +29,7 @@ class PostProfile extends Controller
         if(Auth::check()){
             $data = Auth::user();
             $dataCity = Citys::all();
-            return view('Fontend.profile.partials.showProfile', [
+            return view('Fontend.profile.profile', [
                 'data' => $data, 'dataCity' => $dataCity,
             ]);
         }else{
@@ -56,8 +56,8 @@ class PostProfile extends Controller
         $email = $request->email;
         $password = $request->password;
         
-        if(Auth::attempt(['email'=> $email,'password'=> $password])){
-            return redirect('/index');
+        if(Auth::attempt(['email'=> $email,'password'=> $password],$request->has('remember'))){
+            return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
         }else{
             return view('auth.login')->with('msgError','Email hoặc mật khẩu không đúng');
         }
@@ -128,7 +128,7 @@ class PostProfile extends Controller
             'name' => 'string|max:255',
             'other_name' => 'string|max:255',
             'about' => 'nullable|string|max:500',
-            'phone' => 'int|max:10',
+            'phone' => 'string|min:10|max:10',
             'address' => 'string|max:255',
             'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'birthdate' => 'Before:' . Carbon::now()->subYears(16)->format('Ymd'), 
@@ -146,10 +146,17 @@ class PostProfile extends Controller
                 }
                 $data->avatar = $dataPathImage;
             }
+            // Sau khi validation
+        $phone = $request->phone;
+            if(!is_numeric($phone)){
+                
+            }
+        $data->phone = $request->phone;
+            
+
         $data->name = $request->name;
         $data->about = $request->about;
         $data->other_name = $request->other_name;
-        $data->phone = $request->phone;
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->city_id = $request->city_id;
@@ -191,4 +198,14 @@ class PostProfile extends Controller
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
    }
+   public function showProfilesId($id,$name){
+        $user = User::find($id);
+        $dataCity = Citys::all();
+        return  view ('Fontend.profile.profileUser',
+                    ['data'=>$user,'dataCity' => $dataCity,]);
+   }
 }
+
+
+
+

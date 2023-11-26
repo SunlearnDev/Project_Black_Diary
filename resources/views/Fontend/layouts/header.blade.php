@@ -1,11 +1,11 @@
 {{-- header  --}}
 <nav class="fixed dark:backdrop-blur-2xl  dark:bg-opacity-30 top-0 z-50 w-full h-[56px] dark:bg-gray-200 bg-white">
-    <div class="px-3  lg:px-5 lg:pl-3 h-full mx-10">
+    <div class="px-4  lg:px-5 lg:pl-4 h-full mx-20">
         <div class="flex items-center justify-between ">
             <!-- logo -->
             <div class="flex justify-center items-center">
                 <div class="flex items-center ">
-                    <a href="" class="flex ml-2 md:mr-24">
+                    <a href="{{route('index')}}" class="flex ml-2 md:mr-24">
                         <img src="{{ asset('img/logo/2.png') }}" class="w-8 scale-250 mr-3" alt="Black Diary logo" />
                         <div class="">
                             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">
@@ -14,18 +14,7 @@
                     </a>
                 </div>
                 <!-- search -->
-                <form class="w-[350px]">   
-                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only bg-white">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </div>
-                        <input type="search" id="default-search" class=" w-full p-2 ps-10 text-sm text-gray-900 border  rounded-lg bg-gray-50 " placeholder="Search ..." required>
-                        <button type="submit" class="text-white absolute end-[0.125rem] bottom-[1px] bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-4 py-2 ">Search</button>
-                    </div>
-                </form>
+                    @include('Fontend.layouts.search')
             </div>
             <!-- user -->
            <div class="flex justify-end items-center gap-2">
@@ -94,7 +83,7 @@
                                     Profile</a>
                             </li>
                             <li>
-                                <a href="{{route('profile.edit', ['id'=>Auth::id()])}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                <a href="{{route('profile.edit', ['id'=>Auth::id()],)}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     role="menuitem">
                                     Settings</a>
                             </li>

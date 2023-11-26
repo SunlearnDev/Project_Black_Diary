@@ -1,5 +1,6 @@
- <!--  Diary -->
-     <section class="w-full  max-w-[750px]  flex flex-col items-center px-3 ">
+
+<!--  Diary -->
+     <section class="w-full  max-w-[650px]  flex flex-col items-center  ">
          <article class="flex flex-col shadow my-4 rounded-lg">
              <!-- Article Image -->
              <!-- link bai viet -->
@@ -14,3 +15,4 @@
              @include('Fontend.layouts.viewCmt')            
          </article>
      </section>
+

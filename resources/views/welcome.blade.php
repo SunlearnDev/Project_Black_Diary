@@ -13,23 +13,19 @@
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     {{-- Tailwind --}}
     <script src="https://cdn.tailwindcss.com"></script>
+
     {{-- jQuery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Styles -->
     @include('Fontend.layouts.style')
 </head>
 
-<body class="">
+<body class="bg-white">
     {{-- header --}}
     @include('Fontend.layouts.header')
-    <div class="flex flex-wrap mx-10 pt-[70px]">
-        {{-- left --}}
-         @include('Fontend.layouts.left-nav')
         {{-- main --}}
-         @include('Fontend.layouts.diary-nav')
-        {{-- Right --}} 
-         @include('Fontend.layouts.right-nav')
-    </div>
+         @yield('content')
+ 
     @include('sweetalert::alert')
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>

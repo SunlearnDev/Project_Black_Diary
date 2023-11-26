@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('content')->nullable(); // content (cho phép giá trị null)
             $table->integer('order');
             $table->foreignId('id')->constrained('users', 'id')->onDelete('cascade');
-            $table->foreignId('id_hastag')->constrained('hastag', 'hastag_id')->onDelete('cascade');
             $table->timestamps();
         });
     }

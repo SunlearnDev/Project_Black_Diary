@@ -35,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'city_id',
         'district_id',
         'role',
+        'remember_token',
     ];
 
     /**
@@ -70,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(DistrictModel::class, 'district_id', 'district_id');
     }
 
-        public function followers()
+    public function followers()
     {
         return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
     }
@@ -80,8 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
     }
 
-    public function isFollowing(User $user)
-{
-    return $this->following()->where('following_id', $user->id)->exists();
 }
-}
+
+
+// latest()

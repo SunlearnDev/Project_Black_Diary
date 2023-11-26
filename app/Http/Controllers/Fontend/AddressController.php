@@ -8,11 +8,9 @@ use App\Models\DistrictModel;
 class AddressController extends Controller
 {
  
-   
-    public function getDistricCheckout(Request $request){
-
+    public function getDistrictCheckout(Request $request){
         $dataDistrict = DistrictModel::where('city_id',$request->city_id)->get();
-        return response()->json($dataDistrict);
+        return $dataDistrict;
     }
 
 }
