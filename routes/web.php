@@ -4,17 +4,17 @@
     use Illuminate\Support\Facades\Route;
     use Illuminate\Foundation\Auth\EmailVerificationRequest;
     use Illuminate\Http\Request;
-    use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
-    use App\Http\Controllers\Auth\AuthenticatedSessionController;
-    use App\Http\Controllers\Auth\ConfirmablePasswordController;
-    use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-    use App\Http\Controllers\Auth\EmailVerificationPromptController;
+    // use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+    // use App\Http\Controllers\Auth\AuthenticatedSessionController;
+    // use App\Http\Controllers\Auth\ConfirmablePasswordController;
+    // use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+    // use App\Http\Controllers\Auth\EmailVerificationPromptController;
     use App\Http\Controllers\Auth\NewPasswordController;
-    use App\Http\Controllers\Auth\PasswordController;
+    // use App\Http\Controllers\Auth\PasswordController;
     use App\Http\Controllers\Auth\PasswordResetLinkController;
-    use App\Http\Controllers\Auth\RegisteredUserController;
-    use App\Http\Controllers\Auth\VerifyEmailController;
-    use App\Http\Controllers\Fontend\PostDiary;
+    // use App\Http\Controllers\Auth\RegisteredUserController;
+    // use App\Http\Controllers\Auth\VerifyEmailController;
+    use App\Http\Controllers\Fontend\DiaryController;
     use App\Http\Controllers\Fontend\AddressController;
     use App\Http\Controllers\Fontend\SearchController;
     use App\Http\Middleware\HandleLoginCustomer;
@@ -39,12 +39,15 @@
     // User Đăng Ký
     Route::get('register', [PostProfile::class, 'showRegister'])->name('register');
     Route::post('register', [PostProfile::class, 'postRegister']);
+    
     //User Quên Pass
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    
     //User reset mk
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    
     // Chức năng User
             // Xác thực email
      Route::get('/email/verify', function () {
@@ -77,9 +80,11 @@
         Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
         
         //Post diary
-        Route::get('/create', [PostDiary::class, 'viewCreate'])->name('create');
-        Route::post('/create', [PostDiary::class, 'store']);
+        Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
+        Route::post('/create', [DiaryController::class, 'store']);
+
+        // View post
+        Route::get('posts', [DiaryController::class, 'viewPosts'])->name('posts');
     });
-    
-   
+
     require __DIR__ . '/auth.php';

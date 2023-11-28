@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diary_hashtags', function (Blueprint $table) {
+        Schema::create('diary', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('diary_id')->constrained('diary')->onDelete('cascade');
-            $table->foreignId('hashtag_id')->constrained('hashtag')->onDelete('cascade');
+            $table->string('image')->nullable();
+            $table->string('title')->nullable();
+            $table->text('content')->nullable();
+            $table->integer('status');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Liên kết với bảng users
             $table->timestamps();
         });
     }
@@ -24,7 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diary_hashtags');
-        // Schema::rollback();
+        Schema::dropIfExists('diary');
     }
 };

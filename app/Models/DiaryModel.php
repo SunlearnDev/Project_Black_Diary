@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class DiaryModel extends Model
 {
     use HasFactory;
     protected $table = 'diary';
 
-    protected $fillable = [
-        'image',
-        'title',
-        'content',
-
+    protected $guarded = [
+        'id'
     ];
-     /**
+    /**
      * Get the roles that owns the UserModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -25,14 +24,23 @@ class DiaryModel extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class);
     }
-    public function hastag(){
-        return $this->belongsTo(Hashtag::class, 'id_hastag', 'hastag_id');
-    }
+
     public function hashtags()
     {
-        return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
+        return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id')->withTimestamps();
     }
-    
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'diary_id');
+    }
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value),
+        );
+    }
 }
