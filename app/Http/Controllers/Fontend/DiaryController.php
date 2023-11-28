@@ -75,13 +75,13 @@ class DiaryController extends Controller
             }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
-            // return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
-            dd('Success');
+            return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
+            // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
-            // return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
-            dd('Fail');
+            return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
+            // dd('Fail');
         }
     }
 }
