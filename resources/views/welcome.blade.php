@@ -24,9 +24,9 @@
 <body class="bg-white">
     {{-- header --}}
     @include('Fontend.layouts.header')
-        {{-- main --}}
-         @yield('content')
- 
+    {{-- main --}}
+    @yield('content')
+
     @include('sweetalert::alert')
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>

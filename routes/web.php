@@ -76,7 +76,6 @@
         Route::patch('/setting/update', [PostProfile::class, 'updateProfile'])->name('profile.update');
         Route::patch('/setting/update_password', [PostProfile::class, 'updatePassword'])->name('profile.password');
         Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
-        // Route::get('/create', [PostDiary::class,'viewCreate'])->name('create');
         // Đăng xuất
         Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
 

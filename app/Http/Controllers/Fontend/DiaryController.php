@@ -16,14 +16,30 @@ use App\Models\Hashtag;
 class DiaryController extends Controller
 {
 
-    public function viewPosts()
+    public function viewPosts($userId = null, $hashTag = null)
     {
-        $posts = DiaryModel::where('user_id', auth()->id())
-            ->with('hashtags', 'comments.user:id,name')
-            ->withCount('comments')
-            ->orderByDesc('id')->get();
-        return view('postdiary.posts', compact('posts'));
-        
+        if ($userId == auth()->id()) {
+            $posts = DiaryModel::where('user_id', $userId)
+                ->with('hashtags', 'comments.user:id,name')
+                ->withCount('comments')
+                ->orderByDesc('id')->get();
+            return $posts;
+        } elseif ($userId == null) {
+            $posts = DiaryModel::where('status', 1)
+                ->with('hashtags', 'comments.user:id,name')
+                ->withCount('comments')
+                ->orderByDesc('id')->get();
+            return view('/', compact('posts'));
+        } else {
+            $posts = DiaryModel::where('user_id', $userId)
+                ->where('status', 1)
+                ->with('hashtags', 'comments.user:id,name')
+                ->withCount('comments')
+                ->orderByDesc('id')->get();
+            return $posts;
+        }
+
+
         // $test = DiaryModel::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
         //     $query->where('content', 'password');
         // });
@@ -36,7 +52,7 @@ class DiaryController extends Controller
 
     public function viewCreate()
     {
-        return view('postdiary.create_post');
+        return view('Fontend.postdiary.diaryCreate');
     }
 
     public function store(Request $request)
