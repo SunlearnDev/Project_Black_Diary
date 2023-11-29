@@ -114,7 +114,6 @@
                 {{-- showdiary --}}
                 <div class="float-right w-[65%] py-2">
                     @include('Fontend.layouts.diary-nav')
-                    
                 </div>
             </div>
         </div>

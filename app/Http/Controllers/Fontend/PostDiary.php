@@ -10,15 +10,16 @@ use App\Http\Requests\User\Post\RequestsPost;
 use App\Http\Requests\User\Post\RequestsUpdatePost;
 use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\DiaryModel;
-use App\Models\Hastag;
+use App\Models\Hashtag;
 use App\Models\DiaryHashtag;
 
 class PostDiary extends Controller
 {
     
-   
-    
     public function viewCreate(){
+        return view('Fontend.postdiary.diaryCreate');
+    }
+    public function viewshowDiaryId($id){
         return view('Fontend.postdiary.diaryCreate');
     }
     public function store(RequestsPost $request){
@@ -49,9 +50,9 @@ class PostDiary extends Controller
             // Xử lý HashTag
             $hashTag = explode('#', $request->hastag);
             foreach ($hashTag as $tag){
-                $hashTag_id = Hastag::where('name', $tag)->first()->hastag_id; 
+                $hashTag_id = Hashtag::where('name', $tag)->first()->hastag_id; 
                 if(!$hashTag_id){
-                    $hashTag_id = Hastag::create(['name' => $tag])->hastag_id;
+                    $hashTag_id = Hashtag::create(['name' => $tag])->hastag_id;
                 }
                 DiaryHashtag::create(["diary_id" => $dataPost->diary_id , "hastag_id" => $hashTag_id]);
             }

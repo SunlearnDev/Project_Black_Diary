@@ -30,6 +30,7 @@
     Route::get('/listsearch',[SearchController::class,'getDataSearch']);
     // Router show User search
     Route::get('/profile/{id}-{name}',[PostProfile::class,'showProfilesId'])->name('profile.search');
+    Route::get('/diary/{id}',[PostDiary::class,'showDiaryId'])->name('diary.showDiaryId');
     // User Đăng nhập
     Route::get('login/', [PostProfile::class, 'index'])->name('login');
     Route::post('login', [PostProfile::class, 'postLogin']);

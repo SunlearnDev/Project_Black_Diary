@@ -67,19 +67,19 @@
                 <label class="mr-4 flex items-center">
                     <input type="radio" id="gender_male" name="gender" value="male"
                         {{ $data->gender === 'male' ? 'checked' : '' }}>
-                    <span class="ml-2">Nam</span>
+                    <span class="ml-2">Male</span>
                 </label>
                 <label class="flex items-center">
                     <input type="radio" id="gender_female" name="gender" value="female"
                         {{ $data->gender === 'female' ? 'checked' : '' }}>
-                    <span class="ml-2">Nữ</span>
+                    <span class="ml-2">Female</span>
                 </label>
             </div>
         </div>
 
         <!-- Ngày sinh -->
         <div class="mb-4">
-            <label for="birthdate" class="block text-gray-700 font-bold mb-2">Ngày sinh</label>
+            <label for="birthdate" class="block text-gray-700 font-bold mb-2">Birthday</label>
             <input type="date" id="birthdate" name="birthdate" value="{{ $data->birthdate }}"
                 class="w-full p-3 border border-gray-300 rounded">
         </div>
@@ -134,7 +134,7 @@
         </div>
         <div class="flex items-center gap-4">
             <button type="submit"
-                class=" text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"b>
+                class=" text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
                 Save</button>
         </div>
     </form>
