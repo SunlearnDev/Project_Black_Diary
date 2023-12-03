@@ -17,7 +17,7 @@ class DiaryHashtag extends Model
 
   public function diary()
   {
-    return $this->belongsTo(DiaryModel::class);
+    return $this->belongsTo(Diary::class);
   }
 
   public function hashtag()

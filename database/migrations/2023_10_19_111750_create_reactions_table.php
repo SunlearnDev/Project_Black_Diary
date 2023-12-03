@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hashtag', function (Blueprint $table) {
-            $table->id(); // khóa chính tự động tăng
-            $table->text('content')->nullable(); // content (cho phép giá trị null)
+        Schema::create('reactions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedTinyInteger('status');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hashtag');
+        Schema::dropIfExists('reactions');
     }
 };

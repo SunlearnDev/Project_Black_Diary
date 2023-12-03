@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Citys;
-use App\Models\DistrictModel;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,22 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
     protected $table = 'users';
-    protected $fillable = [
-        'name',
-        'other_name',
-        'email',
-        'password',
-        'avatar',
-        'about',
-        'phone',
-        'address',
-        'gender',
-        'birthday',
-        'city_id',
-        'district_id',
-        'google_id',
-        'role',
-        'remember_token',
+    protected $guarded = [
+        'id'
     ];
 
     /**
@@ -65,11 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function City()
     {
-        return $this->belongsTo(Citys::class, 'city_id', 'city_id');
+        return $this->belongsTo(City::class, 'city_id', 'city_id');
     }
     public function District()
     {
-        return $this->belongsTo(DistrictModel::class, 'district_id', 'district_id');
+        return $this->belongsTo(District::class, 'district_id', 'district_id');
     }
 
     public function followers()
@@ -89,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function diary()
     {
-        return $this->hasMany(DiaryModel::class);
+        return $this->hasMany(Diary::class);
     }
 
     public function comments()

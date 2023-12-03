@@ -9,29 +9,30 @@ use Illuminate\Support\Facades\Auth;
 // use App\Http\Requests\User\Post\RequestsPost;
 // use App\Http\Requests\User\Post\RequestsUpdatePost;
 // use App\Http\Controllers\HandleImg\ImdUpload;
-use App\Models\DiaryModel;
+use App\Models\Diary;
 use App\Models\Hashtag;
 // use App\Models\DiaryHashtag;
 
 class DiaryController extends Controller
 {
 
-    public function viewPosts($userId = null, $hashTag = null)
+    public function viewPosts(?int $userId = null, ?string $hashTag = null)
     {
         if ($userId == auth()->id()) {
-            $posts = DiaryModel::where('user_id', $userId)
+            $posts = Diary::where('user_id', $userId)
                 ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return $posts;
         } elseif ($userId == null) {
-            $posts = DiaryModel::where('status', 1)
+            $posts = Diary::where('status', 1)
                 ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
-            return view('/', compact('posts'));
+                // dd($posts->toRawSql(), $posts->get());
+            return view('Fontend.postDiary.diaryPublic', compact('posts'));
         } else {
-            $posts = DiaryModel::where('user_id', $userId)
+            $posts = Diary::where('user_id', $userId)
                 ->where('status', 1)
                 ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
@@ -40,10 +41,10 @@ class DiaryController extends Controller
         }
 
 
-        // $test = DiaryModel::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
+        // $test = Diary::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
         //     $query->where('content', 'password');
         // });
-        // $test = DiaryModel::where('user_id', auth()->id())
+        // $test = Diary::where('user_id', auth()->id())
         //     ->with('hashtags', 'comments.user:id,name')
         //     ->withCount('comments')
         //     ->orderByDesc('id');
@@ -60,7 +61,7 @@ class DiaryController extends Controller
         DB::beginTransaction();
         try {
             // Tạo 1 bài viết mới
-            $dataPost = new DiaryModel;
+            $dataPost = new Diary;
             $dataPost->title = $request->title;
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('title')->nullable();
             $table->text('content')->nullable();
-            $table->integer('status');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Liên kết với bảng users
+            $table->unsignedTinyInteger('status');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

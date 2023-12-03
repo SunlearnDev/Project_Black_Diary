@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('content');
-            $table->string('status');
+            $table->unsignedTinyInteger('status');
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('diary_id')->nullable()->constrained('diary')->nullOnDelete();
             $table->foreignId('cmt_id')->nullable()->constrained('comments')->nullOnDelete();
             $table->foreignId('msg_id')->nullable()->constrained('messages')->nullOnDelete();
-            $table->foreignId('like_id')->nullable()->constrained('likes')->nullOnDelete();
+            $table->foreignId('reaction_id')->nullable()->constrained('reactions')->nullOnDelete();
             $table->timestamps();
         });
     }

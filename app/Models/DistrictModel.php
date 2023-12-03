@@ -10,5 +10,7 @@ class DistrictModel extends Model
     use HasFactory;
     protected $table = 'districts';
 
-    protected $primaryKey = 'district_id';
+    protected $guarded = [
+        'id'
+    ];
 }
