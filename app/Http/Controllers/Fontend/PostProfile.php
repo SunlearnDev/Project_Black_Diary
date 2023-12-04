@@ -26,12 +26,12 @@ class PostProfile extends Controller
     }
 
     //  Lấy dữ liệu từ DB
-    public function index()
+    public function index($id = null)
     {
         if (Auth::check()) {
             $data = Auth::user();
             $dataCity = Citys::all();
-            $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts(auth()->id());
+            $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts($id);
             return view('Fontend.profile.profile', [
                 'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
             ]);

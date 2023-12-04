@@ -16,7 +16,7 @@ use App\Models\Hashtag;
 class DiaryController extends Controller
 {
 
-    public function viewPosts(int $userId = null, string $hashTag = null)
+    public function viewPosts(int $userId = null)
     {
         if (Auth::check() && $userId == auth()->id()) {
             $posts = Diary::where('user_id', $userId)
@@ -49,6 +49,10 @@ class DiaryController extends Controller
         //     ->withCount('comments')
         //     ->orderByDesc('id');
         // dd($test->toRawSql(), $test->get());
+    }
+
+    public function hashtagFilter(string $hashTag) {
+        
     }
 
     public function viewCreate()
