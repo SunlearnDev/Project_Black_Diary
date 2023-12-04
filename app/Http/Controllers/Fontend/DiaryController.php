@@ -16,9 +16,9 @@ use App\Models\Hashtag;
 class DiaryController extends Controller
 {
 
-    public function viewPosts(?int $userId = null, ?string $hashTag = null)
+    public function viewPosts(int $userId = null, string $hashTag = null)
     {
-        if ($userId == auth()->id()) {
+        if (Auth::check() && $userId == auth()->id()) {
             $posts = Diary::where('user_id', $userId)
                 ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')

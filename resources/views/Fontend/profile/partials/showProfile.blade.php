@@ -108,8 +108,8 @@
                             <li
                                 class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit">
                                 @foreach ($dataCity as $item)
-                                    @if ($data->city_id == $item->city_id)
-                                        <strong class="text-slate-700">Location:</strong> {{ $item->city_name }}
+                                    @if ($data->city_id == $item->id)
+                                        <strong class="text-slate-700">Location:</strong> {{ $item->name }}
                                     @endif
                                 @endforeach
                             </li>
