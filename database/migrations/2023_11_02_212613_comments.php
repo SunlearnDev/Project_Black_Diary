@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diary_hashtags', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('diary_id')->constrained('diary')->onDelete('cascade');
-            $table->foreignId('hashtag_id')->constrained('hashtag')->onDelete('cascade');
+            $table->string('content');
+            $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diary_hashtags');
-        Schema::rollback();
+        Schema::dropIfExists('comments');
     }
 };

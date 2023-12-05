@@ -1,13 +1,14 @@
-<button data-popover-target="popover-user-profile" type="button"
-    class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center">User
-    profile</button>
+{{-- <button data-popover-target="popover-user-profile" type="button"
+    class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold
+     hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center">
+    {{$post->user->name}}</button>
 <!-- Dropdown profiel -->
 <div data-popover id="popover-user-profile" role="tooltip"
     class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity  duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 backdrop-blur-xl bg-opacity-70">
     <div class="p-3">
         <div class="flex items-center justify-between mb-2">
             <a href="#">
-                <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Jese Leos">
+                <img class="w-10 h-10 rounded-full" src="{{$post->user->avatar}}" alt="Jese Leos">
             </a>
             <div>
                 <button type="button"
@@ -21,7 +22,7 @@
             <a href="#" class="hover:underline">@jeseleos</a>
         </p>
         <p class="mb-4 text-sm">Open-source contributor. Building <a href="#"
-                class="text-blue-600 dark:text-blue-500 hover:underline">ccccc</a>.</p>
+                class="text-blue-600 dark:text-blue-500 hover:underline">{{$post->user->name}}</a>.</p>
         <ul class="flex text-sm">
             <li class="mr-2">
                 <a href="#" class="hover:underline">
@@ -38,4 +39,4 @@
         </ul>
     </div>
     <div data-popper-arrow></div>
-</div>
+</div> --}}

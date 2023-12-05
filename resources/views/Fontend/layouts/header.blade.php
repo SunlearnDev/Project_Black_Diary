@@ -26,7 +26,7 @@
                         class="relative  inline-flex items-center justify-center p-0.5 shadow-lg hover:shadow-cyan-500/50 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 ">
                         <span
                             class="relative p-2  transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Bài đăng mới
+                            Create Post
                         </span>
                     </button>
                 </a>
@@ -97,7 +97,7 @@
                                     @csrf
                                     <button type="submit" class="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     role="menuitem">
-                                    Sign out</button>
+                                    Log out</button>
                                 </form>
                             </li>
                         </ul>

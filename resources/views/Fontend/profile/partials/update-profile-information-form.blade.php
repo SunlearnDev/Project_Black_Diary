@@ -97,7 +97,6 @@
         </div>
         
         <!-- sdt -->
-       
         <div class="mb-4">
             <label for="phone" class="block text-gray-700 font-bold mb-2">Phone</label>
             <input type="text" id="phone" name="phone" value="{{ $data->phone }}"
@@ -109,14 +108,13 @@
             @enderror
         </div>
         {{-- city --}}
-        
         <div class="mb-4 flex justify-between items-center">
             <div class="w-1/2 h-10">
                 <select name="city_id" id="city_id" >
                     <option value="" disabled selected hidden>Thành phố</option>
                     @foreach ($dataCity as $item)
-                        <option value="{{ $item->city_id }}" @if($item->city_id == $data->city_id) {{'selected'}} @endif>
-                            {{ $item->city_name }}
+                        <option value="{{ $item->id }}" @if($item->id == $data->city_id) {{'selected'}} @endif>
+                            {{ $item->name }}
                         </option>
                     @endforeach
                 </select>
@@ -126,7 +124,7 @@
                 <select name="district_id" id="district_id">
                     <option value="select" disabled selected hidden>Quận/Huyện</option>
                     @if($data->district_id != null)
-                        <option value="{{$data->district_id}}" selected>{{$data->District->district_name}}</option>
+                        <option value="{{$data->district_id}}" selected>{{$data->District->name}}</option>
                     @endif
                 </select>
             </div>
@@ -153,29 +151,5 @@
     }
  }
 
-    //QUET HUYEN
-    var $this = $('#city_id');
-  $('#city_id').on('change', function(){
-    var city_id = $(this).val();
-    console.log(city_id);
-    if (city_id){
-        $.ajax({
-            url:'/get_distric',
-            type: 'POST',
-            data:{
-                _token:"{{csrf_token()}}",
-                city_id:city_id
-            },
-            seccess:function(data){
-                var html = '';
-                html += '<option value="">Chọn Quận/Huyện</option>';
-                $.each(dataDistrict, function(key, district){
-                    html += '<option value="' + district.id + '">' + district.name + '</option>';
-                });
-                $('#district').html(html);
-            }
-        });
-    }
-  })
  </script>
 

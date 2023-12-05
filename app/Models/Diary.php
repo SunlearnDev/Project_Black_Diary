@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DiaryModel extends Model
+class Diary extends Model
 {
     use HasFactory;
     protected $table = 'diary';
 
-    protected $fillable = [
-        'image',
-        'title',
-        'content',
-
-    ];
+    protected $guarded = [
+        'id'
+    ]; 
+    public $incrementing = true; // Bật auto-increment
      /**
      * Get the roles that owns the UserModel
      *
@@ -25,14 +23,16 @@ class DiaryModel extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class);
     }
-    public function hastag(){
-        return $this->belongsTo(Hashtag::class, 'id_hastag', 'hastag_id');
-    }
+
     public function hashtags()
     {
-        return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
+    return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
     }
-    
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'diary_id');
+    }
+
 }

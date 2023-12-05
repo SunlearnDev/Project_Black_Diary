@@ -1,39 +1,38 @@
     <?php
 
-    use App\Http\Controllers\Fontend\PostProfile;
-    use Illuminate\Support\Facades\Route;
-    use Illuminate\Foundation\Auth\EmailVerificationRequest;
-    use Illuminate\Http\Request;
-    use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
-    use App\Http\Controllers\Auth\AuthenticatedSessionController;
-    use App\Http\Controllers\Auth\ConfirmablePasswordController;
-    use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-    use App\Http\Controllers\Auth\EmailVerificationPromptController;
-    use App\Http\Controllers\Auth\NewPasswordController;
-    use App\Http\Controllers\Auth\PasswordController;
-    use App\Http\Controllers\Auth\PasswordResetLinkController;
-    use App\Http\Controllers\Auth\RegisteredUserController;
-    use App\Http\Controllers\Auth\VerifyEmailController;
-    use App\Http\Controllers\Fontend\PostDiary;
-    use App\Http\Controllers\Fontend\AddressController;
-    use App\Http\Controllers\Fontend\SearchController;
-    use App\Http\Middleware\HandleLoginCustomer;
-    use App\Http\Controllers\Fontend\SocialController;
-    Route::get('/', function () {
-        return view('Fontend.postDiary.diaryPublic');
-    });
+use App\Http\Controllers\Fontend\PostProfile;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Fontend\DiaryController;
+use App\Http\Controllers\Fontend\AddressController;
+use App\Http\Controllers\Fontend\SearchController;
+use App\Http\Middleware\HandleLoginCustomer;
+use App\Http\Controllers\Fontend\SocialController;
     
+    
+    Route::get('/',[DiaryController::class,'viewPosts']);
     // Route list Quận huyện
     Route::post('/get_district',[AddressController::class,'getDistrictCheckout']);
     // Router User 
     // Router link search
     Route::get('/listsearch',[SearchController::class,'getDataSearch']);
     // Router show User search
-    Route::get('/profile/{id}-{name}',[PostProfile::class,'showProfilesId'])->name('profile.search');
-    Route::get('/diary/{id}',[PostDiary::class,'showDiaryId'])->name('diary.showDiaryId');
+    Route::get('/profile/{id}',[PostProfile::class,'index'])->name('profile.search');
+    Route::get('/diary/{id}',[DiaryController::class,'showDiaryId'])->name('diary.showDiaryId');
     // User Đăng nhập
-    Route::get('login/', [PostProfile::class, 'index'])->name('login');
-    Route::post('login', [PostProfile::class, 'postLogin']);
+    Route::get('/login', [PostProfile::class, 'login'])->name('login');
+    Route::post('/login', [PostProfile::class, 'postLogin']);
     // Đăng nhập bằng gg
     Route::get('/google',[SocialController::class,'redirect']);
     Route::get('/google/callback',[SocialController::class,'callback']);
@@ -62,10 +61,8 @@
          return redirect('/home');
      })->middleware(['auth', 'signed'])->name('verification.verify');
     
-     // Trang chính sau khi xác thực email
-     Route::get('/', function () {
-         return view('Fontend.postDiary.diaryPublic');
-     })->middleware(['auth', 'verified'])->name('index');
+    //  Trang chính sau khi xác thực email
+     Route::get('/diary',[DiaryController::class,'viewPosts'])->middleware(['auth', 'verified'])->name('index');
     Route::prefix('/user')->middleware('handleLoginCustomer')->group(function (){
         // Các tuyến đường liên quan đến quản lý profile
         Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');
@@ -73,14 +70,14 @@
         Route::patch('/setting/update', [PostProfile::class, 'updateProfile'])->name('profile.update');
         Route::patch('/setting/update_password', [PostProfile::class, 'updatePassword'])->name('profile.password');
         Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
-        Route::get('/create', [PostDiary::class,'viewCreate'])->name('create');
-        // Đăng xuất
-        Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
+        Route::get('/create', [DiaryController::class,'viewCreate'])->name('create');
+      
         
         //Post diary
-        Route::get('/create', [PostDiary::class, 'viewCreate'])->name('create');
-        Route::post('/create', [PostDiary::class, 'store']);
+        Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
+        Route::post('/create', [DiaryController::class, 'store']);
     });
     
-   
+     // Đăng xuất
+     Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
     require __DIR__ . '/auth.php';

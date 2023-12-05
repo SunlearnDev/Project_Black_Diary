@@ -38,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'remember_token',
     ];
-
+    public $incrementing = true; // Bật auto-increment
     /**
      * The attributes that should be hidden for serialization.
      *

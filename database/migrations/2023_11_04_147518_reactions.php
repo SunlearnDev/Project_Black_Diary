@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('districts', function (Blueprint $table) {
-            $table->id('district_id');
-            $table->string('district_name', 100);
-            $table->string('district_type', 50);
-            $table->foreignId('city_id')->constrained('citys', 'city_id')->onDelete('cascade');
+        Schema::create('reactions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedTinyInteger('status');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('districts');
+        Schema::dropIfExists('reactions');
     }
 };

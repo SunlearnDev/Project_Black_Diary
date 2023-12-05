@@ -25,7 +25,6 @@
             
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-
                 <!-- Email Address -->
                 <div>
                     <label id="email" class="text-sm font-medium leading-none text-gray-800">

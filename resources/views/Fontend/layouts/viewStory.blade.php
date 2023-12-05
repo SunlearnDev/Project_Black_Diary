@@ -1,10 +1,10 @@
-<div class="bg-white grid grid-rows-4 flex-col justify-start px-6 py-2">
+<div class="bg-white grid grid-rows-4 px-6 py-2">
     <div class="flex items-center ">
         <!-- link den ca nhan -->
         <a href="#" class="hidden"></a>
         <div class="">
-            <img class="w-10 h-10 rounded-full mr-4 "
-                src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="Rounded avatar">
+            <img class="w-10 h-10 rounded-full mr-4  "
+                src="{{'storage/' . $post->image }}" alt="Rounded avatar">
         </div>
         <div class="gird grid-rows-2">
             <!-- div usename -->
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <!-- time -->
-                <time title="" class="text-gray-400 pl-1"> 2h 30 ngya </time>
+                <time title="" class="text-gray-400 pl-1"> {{ $post->created_at->diffForHumans()}} </time>
             </div>
         </div>
     </div>
@@ -25,13 +25,18 @@
     <div class="row-span-3 pl-14 ">
         <!-- <title> -->
         <h3 class="mb-2"><a href=""
-                class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>Lorem Ipsum Dolor Sit
-                    Amet Dolor Sit Amet </span></a></h3>
+                class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span> {{ $post->title}} </span></a></h3>
         <!-- hagtag -->
         <div class=" gird grid-cols-5 mb-2 ">
-            <kbd
-                class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg hover:bg-gray-300"><a
-                    href="" class="">#test</a></kbd>
+            @foreach (  $post->hashtags as $hashtag )
+                
+                    <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200"> 
+                     <a href="" class="">
+                        #{{ $hashtag->content }}
+                     </a>
+                    </kbd>
+                     
+            @endforeach
         </div>
         <!-- interact -->
         <div class="mb-2 flex justify-between  items-center">
@@ -41,12 +46,7 @@
                 <div class="flex -space-x-3 mr-2">
                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
                         src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                    <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                        src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                    <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                        src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                    <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                        src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
+                   
                     <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
                         href="#">+99</a>
                 </div>
@@ -68,8 +68,6 @@
                 </svg>
             </div>
         </div>
-        <span class="pb-6 ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta dui.
-            Ut eu iaculis massa. Sed ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet posuere
-            magna..</span>
+        <span class="pb-6 ">{{ $post->title}}</span>
     </div>
 </div>

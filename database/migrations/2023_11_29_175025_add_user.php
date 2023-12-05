@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('phone')->nullable()->after('about')->length(10);
             $table->string('address')->nullable()->after('phone')->length(255);
             $table->string('gender')->nullable()->after('address');
-            $table->string('address')->nullable()->after('google_id');
-            $table->date('birthdate')->nullable()->after('gender');
-            $table->integer('city_id')->nullable()->after('birthdate');
-            $table->integer('district_id')->nullable()->after('city_id');
-            $table->integer('role')->after('district_id');
+            $table->string('google_id')->nullable()->after('gender');
+            $table->date('birthdate')->nullable()->after('google_id');
+            $table->foreignId('city_id')->nullable()->constrained('citys')->nullOnDelete();
+            $table->foreignId('district_id')->nullable()->constrained('districts')->nullOnDelete();
+            $table->unsignedTinyInteger('role')->after('district_id');
         });
     }
 

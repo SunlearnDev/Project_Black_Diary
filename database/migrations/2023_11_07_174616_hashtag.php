@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
-            $table->id('image_id');
-            $table->integer('product_id');
-            $table->text('image_name');
+        Schema::create('hashtags', function (Blueprint $table) {
+            $table->id(); // khóa chính tự động tăng
+            $table->text('content')->nullable(); // content (cho phép giá trị null)
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('hashtags');
     }
 };

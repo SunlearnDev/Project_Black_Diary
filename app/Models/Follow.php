@@ -11,4 +11,5 @@ class Follow extends Model
     protected $talbe= 'follows';
     
     protected $fillable = ['follower_id','following_id'];
+    public $incrementing = true; // Bật auto-increment
 }

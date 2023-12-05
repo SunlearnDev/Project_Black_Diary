@@ -7,22 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class DiaryHashtag extends Model
 {
-    use HasFactory;
-    protected $table = 'diary_hashtags';
+  use HasFactory;
+  protected $table = 'diary_hashtags';
 
-    protected $fillable = [
-        'diary_id',
-        'hashtag_id',
-    ];
+  protected $fillable = [
+    'diary_id',
+    'hashtag_id',
+  ];
 
-    public function diary()
+  public function diary()
   {
-    return $this->belongsTo(DiaryModel::class);
+    return $this->belongsTo(Diary::class);
   }
 
   public function hashtag()
   {
     return $this->belongsTo(Hashtag::class);
   }
-
 }
