@@ -1,7 +1,7 @@
 @extends('welcome')
 
 @section('content')
-<div class="flex flex-wrap mx-20 gap-2 pt-[70px]">
+<div class="flex  mx-20 gap-2 pt-[70px]">
     {{-- Left --}}
     @include('Fontend.layouts.left-search')
     {{-- Main --}}

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="flex flex-wrap mx-20 gap-2 pt-[70px]">
+<div class="flex  justify-between  sm:mx-2 lg:mx-20  pt-[70px]">
     {{-- left --}}
      @include('Fontend.layouts.left-nav')
     {{-- main --}}
