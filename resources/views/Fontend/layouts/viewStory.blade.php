@@ -4,7 +4,7 @@
         <a href="#" class="hidden"></a>
         <div class="">
             <img class="w-10 h-10 rounded-full mr-4  "
-                src="{{'storage/' . $post->image }}" alt="Rounded avatar">
+                src="{{$post->user->avatar }}" alt="Rounded avatar">
         </div>
         <div class="gird grid-rows-2">
             <!-- div usename -->
@@ -30,7 +30,7 @@
         <div class=" gird grid-cols-5 mb-2 ">
             @foreach (  $post->hashtags as $hashtag )
                 
-                    <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200"> 
+                    <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200 mr-2"> 
                      <a href="" class="">
                         #{{ $hashtag->content }}
                      </a>

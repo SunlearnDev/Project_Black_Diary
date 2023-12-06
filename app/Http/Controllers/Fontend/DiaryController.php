@@ -54,7 +54,7 @@ class DiaryController extends Controller
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-
+          
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
@@ -62,24 +62,24 @@ class DiaryController extends Controller
             }
             // Lưu bài viết
             $dataPost->save();
-            // Xử lý HashTag
-            $hashTag = explode('#', $request->hashtag);
-            array_shift($hashTag);
-            foreach ($hashTag as $tag) {
-                $tag = trim(strtolower($tag));
-                $hashtag_id = Hashtag::where('content', $tag)->value('id');
-                if (!$hashtag_id) {
-                    // Hashtag chưa tồn tại, thêm mới
-                    $newHashTag = Hashtag::create(['content' => $tag]);
-                    $hashtag_id = $newHashTag->id;
-                }
-                // Liên kết Hashtag với Post trong bảng trung gian
-                $dataPost->hashtags()->attach($hashtag_id);
-            }
+               // Xử lý HashTag
+               $hashTag = explode('#', $request->hashtag);
+               array_shift($hashTag);
+               foreach ($hashTag as $tag) {
+                   $tag = trim(strtolower($tag));
+                   $hashtag_id = Hashtag::where('content', $tag)->value('id');
+                   if (!$hashtag_id) {
+                       // Hashtag chưa tồn tại, thêm mới
+                       $newHashTag = Hashtag::create(['content' => $tag]);
+                       $hashtag_id = $newHashTag->id;
+                   }
+                   // Liên kết Hashtag với Post trong bảng trung gian
+                   $dataPost->hashtags()->attach($hashtag_id);
+               }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
             Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
-            return view('Fontend.profile.partials.showProfile')->with('msgSuccess', 'Đăng bài viết thành công');
+            return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi

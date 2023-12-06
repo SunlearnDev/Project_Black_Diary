@@ -161,7 +161,7 @@
                     {{-- Public or Private --}}
                     <section class="mb-2">
                         <div class="relative inline-block w-32">
-                            <select name="order" id="order"
+                            <select name="status" id="status"
                                 class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 focus:text-gray-900">
                                 <option value="1">Public</option>
                                 <option value="2">Private</option>

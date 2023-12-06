@@ -1,4 +1,4 @@
-{{-- <button data-popover-target="popover-user-profile" type="button"
+<button data-popover-target="popover-user-profile" type="button"
     class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold
      hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center">
     {{$post->user->name}}</button>
@@ -16,13 +16,13 @@
             </div>
         </div>
         <p class="text-base font-semibold leading-none text-gray-900 ">
-            <a href="#">Jese Leos</a>
+            <a href="#">{{$post->user->name}}</a>
         </p>
         <p class="mb-3 text-sm font-normal">
-            <a href="#" class="hover:underline">@jeseleos</a>
+            <a href="#" class="hover:underline">{{$post->user->other_name}}</a>
         </p>
-        <p class="mb-4 text-sm">Open-source contributor. Building <a href="#"
-                class="text-blue-600 dark:text-blue-500 hover:underline">{{$post->user->name}}</a>.</p>
+        <p class="mb-4 text-sm"> <a href="#"
+                class="text-blue-600 dark:text-blue-500 hover:underline"></a></p>
         <ul class="flex text-sm">
             <li class="mr-2">
                 <a href="#" class="hover:underline">
@@ -39,4 +39,4 @@
         </ul>
     </div>
     <div data-popper-arrow></div>
-</div> --}}
+</div>

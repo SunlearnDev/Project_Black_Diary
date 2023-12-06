@@ -76,6 +76,10 @@ use App\Http\Controllers\Fontend\SocialController;
         //Post diary
         Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
         Route::post('/create', [DiaryController::class, 'store']);
+        Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
+        Route::get('/edit/diary/{id}',[DiaryController::class, 'showEdit'])->name('showEdit.diary');
+        Route::patch('/edit/diary/{id}',[DiaryController::class,'edit'])->name('edit.diary');
+        Route::delete('/delete/diary/{id}',[DiaryController::class,'delete'])->name('delete.diary');
     });
     
      // Đăng xuất
