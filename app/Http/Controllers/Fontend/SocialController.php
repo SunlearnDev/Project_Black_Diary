@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Fontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
@@ -15,7 +13,7 @@ class SocialController extends Controller
 {
     public function redirect(){
             // Socialite::driver('google'): Chọn driver cho dịch vụ xã hội, trong trường hợp này là Google.
-            return   Socialite::driver('google') ->redirect();
+            return  Socialite::driver('google')->redirect();
     }
 
     public function callback(){
@@ -23,8 +21,10 @@ class SocialController extends Controller
             $googleUser = Socialite::driver('google')->user();
             $user = $this->createUser($googleUser);
             auth()->login($user);
-            
-            return redirect('/user/profile/{id}')->with('msgSuccess', 'Đăng nhập thành công');
+            if ($user->email_verified_at == null){
+                return redirect('/email/verify');
+            }      
+            return redirect('/user/profile')->with('msgSuccess', 'Đăng nhập thành công');
     }
     function createUser($googleUser){
         $user = User::Where('email',$googleUser->email)->first();

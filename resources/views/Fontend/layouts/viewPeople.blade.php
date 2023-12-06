@@ -1,6 +1,6 @@
 @if(count($users) > 0)
 @foreach ($users as $user )
-<a href="{{route('profile.search',[$user->id, Str::slug($user->name)])}}" class="flex flex-col items-center mb-2 bg-white border border-gray-200 rounded-f shadow md:flex-row md:max-w-xl p-2 ">
+<a href="{{route('profile.search',[$user->id])}}" class="flex flex-col items-center mb-2 bg-white border border-gray-200 rounded-f shadow md:flex-row md:max-w-xl p-2 ">
     <img class="object-cover w-14 h-14  rounded-full border  md:h-14 md:w-14 " src="{{$user->avatar}}" alt="">
     <div class="flex w-full item-center justify-between p-4 leading-normal">
         <div class="flex flex-col justify-start">

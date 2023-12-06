@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\HandleImg\ImdUpload;
@@ -26,26 +25,33 @@ class PostProfile extends Controller
     }
 
     //  Lấy dữ liệu từ DB
+    /**
+     * int 
+     */
     public function index($id = null)
     {
-        if (Auth::check()) {
-            $data = Auth::user();
-            $dataCity = Citys::all();
-            $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts($id);
-            return view('Fontend.profile.profile', [
+        $data = User::find($id);
+        $dataCity = Citys::all();
+        $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts($id);
+        if (Auth::check() && Auth::user()->id == $id) {
+            return view('Fontend.profile.profileAccount', [
                 'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
             ]);
         } else {
-            return view('auth.login');
+            return view('Fontend.profile.profileAccount', [
+                'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
+            ]);
         }
     }
-
+    public function login()
+    {
+        return view('auth.login');
+    }
     // view edit profile
     public function edit()
     {
         $data = Auth::user();
         $dataCity = Citys::all();
-
         return view('Fontend.profile.edit', [
             'data' => $data, 'dataCity' => $dataCity,
         ]);
@@ -56,12 +62,14 @@ class PostProfile extends Controller
     {
         $request->authenticate();
         $request->session()->regenerate();
-
         $email = $request->email;
         $password = $request->password;
 
         if (Auth::attempt(['email' => $email, 'password' => $password], $request->has('remember'))) {
-            return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
+            if (Auth::user()->email_verified_at == null) {
+                return redirect('/email/verify');
+            }
+            return redirect()->back()->with('msgSuccess', 'Đăng nhập thành công');
         } else {
             return view('auth.login')->with('msgError', 'Email hoặc mật khẩu không đúng');
         }
@@ -116,7 +124,7 @@ class PostProfile extends Controller
         $user->save();
         event(new Registered($user));
         Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 
     //chức năng đăng xuất
@@ -133,12 +141,12 @@ class PostProfile extends Controller
         $request->validate(
             [
                 'name' => 'string|max:255',
-                'other_name' => 'string|max:255',
+                'other_name' => 'nullable|string|max:255',
                 'about' => 'nullable|string|max:500',
-                'phone' => 'string|min:10|max:10',
-                'address' => 'string|max:255',
+                'phone' => 'nullable|string|min:10|max:10',
+                'address' => 'nullable|string|max:255',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'birthdate' => 'Before:' . Carbon::now()->subYears(16)->format('Ymd'),
+                'birthdate' => 'nullable|Before:' . Carbon::now()->subYears(16)->format('Ymd'),
             ],
         );
         $data = User::find(Auth::id());
@@ -169,7 +177,7 @@ class PostProfile extends Controller
         $data->district_id = $request->district_id;
         $data->birthdate = $request->birthdate;
         if ($data->save()) {
-            return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
+            return redirect('/user/profile/{id}')->with('msgSuccess', 'Cập Nhật thông tin thành công');
         } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }

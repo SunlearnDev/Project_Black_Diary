@@ -40,7 +40,6 @@ class DiaryController extends Controller
             return $posts;
         }
 
-
         // $test = Diary::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
         //     $query->where('content', 'password');
         // });
@@ -97,11 +96,15 @@ class DiaryController extends Controller
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
             return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
+            
+            // Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
+            // return view('Fontend.profile.partials.showProfile')->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
+            // Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
             // dd('Fail');
         }
     }

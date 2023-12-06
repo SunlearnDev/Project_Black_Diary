@@ -22,7 +22,7 @@
                 <img class="w-20 h-20 fill-current text-gray-500  scale-125" src="{{ asset('img/logo/2.png') }}" alt="">
             </div>
 
-            <div class="w-full sm:max-w-md mt-3  overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-3 p-4 overflow-hidden sm:rounded-lg">
                
                 {{ $slot }}
             </div>

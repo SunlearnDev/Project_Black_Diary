@@ -12,17 +12,17 @@
             <span class="underline underline-offset-3 decoration-8 decoration-blue-400 text-gray-700 md:text-md lg:text-xl">{{$searchName}}</span></h2>
         </div>
         {{-- All --}}
-        <div class=" pt-5 mx-10 " id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class=" pt-5 mx-10 w-full" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             @include('Fontend.layouts.viewPeople')
              <hr class="my-2 text-gray-50">
             @include('Fontend.layouts.diary-nav')
         </div>
         {{-- Post --}}
-        <div class="hidden pt-5 mx-10 " id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+        <div class="hidden pt-5 mx-10 w-full" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
             @include('Fontend.layouts.diary-nav')
         </div>
         {{-- people --}}
-        <div class="hidden pt-5 mx-10 " id="settings" role="tabpanel" aria-labelledby="settings-tab">
+        <div class="hidden pt-5 mx-10 w-full" id="settings" role="tabpanel" aria-labelledby="settings-tab">
             @include('Fontend.layouts.viewPeople')
         </div>
         {{-- tags --}}

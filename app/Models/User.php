@@ -22,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $guarded = [
         'id'
     ];
-
+    public $incrementing = true; // Bật auto-increment
     /**
      * The attributes that should be hidden for serialization.
      *

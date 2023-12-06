@@ -14,9 +14,9 @@ class SearchController extends Controller
     public function getDataSearch()
     {
         $users = User::orderBy('created_at', 'DESC');
-
+    
         $diaries = Diary::orderBy('created_at', 'DESC');
-
+        
         $hashtags = Hashtag::orderBy('created_at', 'DESC');
         $searchName = request()->get('search');
         if (request()->has('search')) {
@@ -38,8 +38,7 @@ class SearchController extends Controller
         $users = $users->get();
         $diaries = $diaries->get();
         $hashtags = $hashtags->get();
-
-
+       
         return view('layouts.viewSearch', [
             'users' => $users,
             'posts' => $diaries,
