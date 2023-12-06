@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diary_hashtags', function (Blueprint $table) {
+        Schema::create('hashtags', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();
-            $table->foreignId('hashtag_id')->constrained('hashtags')->cascadeOnDelete();
+            $table->string('content');
             $table->timestamps();
         });
     }
@@ -24,7 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diary_hashtags');
-
+        Schema::dropIfExists('hashtags');
     }
 };

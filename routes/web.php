@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 use App\Http\Controllers\Fontend\PostProfile;
 use Illuminate\Support\Facades\Route;

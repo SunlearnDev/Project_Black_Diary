@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <base href="{{ asset('') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,13 +26,14 @@
 <body class="bg-white">
     {{-- header --}}
     @include('Fontend.layouts.header')
-        {{-- main --}}
-         @yield('content')
- 
+    {{-- main --}}
+    @yield('content')
+
     @include('sweetalert::alert')
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="{{ asset('js/districts.js') }}"></script>
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 </body>
+
 </html>

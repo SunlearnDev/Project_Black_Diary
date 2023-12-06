@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Citys;
-use App\Models\DistrictModel;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,22 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
     protected $table = 'users';
-    protected $fillable = [
-        'name',
-        'other_name',
-        'email',
-        'password',
-        'avatar',
-        'about',
-        'phone',
-        'address',
-        'gender',
-        'birthday',
-        'city_id',
-        'district_id',
-        'google_id',
-        'role',
-        'remember_token',
+    protected $guarded = [
+        'id'
     ];
     public $incrementing = true; // Bật auto-increment
     /**
@@ -58,18 +42,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
- /**
+    /**
      * Get the roles that owns the UserModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function City()
     {
-        return $this->belongsTo(Citys::class, 'city_id', 'city_id');
+        return $this->belongsTo(City::class, 'city_id', 'city_id');
     }
     public function District()
     {
-        return $this->belongsTo(DistrictModel::class, 'district_id', 'district_id');
+        return $this->belongsTo(District::class, 'district_id', 'district_id');
     }
 
     public function followers()
@@ -82,6 +66,20 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
     }
 
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('following_id', $user->id)->exists();
+    }
+
+    public function diary()
+    {
+        return $this->hasMany(Diary::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
 
 

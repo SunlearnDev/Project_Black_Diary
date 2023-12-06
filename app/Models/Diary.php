@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Support\Carbon;
+// use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Diary extends Model
 {
@@ -12,9 +14,8 @@ class Diary extends Model
 
     protected $guarded = [
         'id'
-    ]; 
-    public $incrementing = true; // Bật auto-increment
-     /**
+    ];
+    /**
      * Get the roles that owns the UserModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -28,11 +29,18 @@ class Diary extends Model
 
     public function hashtags()
     {
-    return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id');
+        return $this->belongsToMany(Hashtag::class, 'diary_hashtags', 'diary_id', 'hashtag_id')->withTimestamps();
     }
+
     public function comments()
     {
         return $this->hasMany(Comment::class, 'diary_id');
     }
 
+    // protected function createdAt(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) => Carbon::parse($value),
+    //     );
+    // }
 }

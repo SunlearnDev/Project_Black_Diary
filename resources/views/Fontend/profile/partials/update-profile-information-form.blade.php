@@ -10,23 +10,23 @@
             <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
             <input type="text" id="name" name="name" value="{{ $data->name }}" equired autofocus
                 class="w-full p-3 border border-gray-300 rounded">
-                @error('name')
+            @error('name')
                 <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-                    <span class="font-medium">{{ $message }}</span> 
-                  </div>
-                @enderror
+                    <span class="font-medium">{{ $message }}</span>
+                </div>
+            @enderror
         </div>
-  <!-- Tên -->
-  <div class="mb-4">
-    <label for="other_name" class="block text-gray-700 font-bold mb-2">Other name</label>
-    <input type="text" id="other_name" name="other_name" value="{{ $data->other_name }}" equired autofocus
-        class="w-full p-3 border border-gray-300 rounded">
-        @error('other_name')
-        <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-            <span class="font-medium">{{ $message }}</span> 
-          </div>
-        @enderror
-</div>
+        <!-- Tên -->
+        <div class="mb-4">
+            <label for="other_name" class="block text-gray-700 font-bold mb-2">Other name</label>
+            <input type="text" id="other_name" name="other_name" value="{{ $data->other_name }}" equired autofocus
+                class="w-full p-3 border border-gray-300 rounded">
+            @error('other_name')
+                <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                    <span class="font-medium">{{ $message }}</span>
+                </div>
+            @enderror
+        </div>
         <!-- Avatar -->
         <div class="mb-4 ">
             <label for="avatar" class="block text-gray-700 font-bold mb-2 mr-4">Avatar</label>
@@ -34,7 +34,8 @@
 
                 <!-- Hình ảnh -->
                 <div class="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden mr-2">
-                    <img src="{{ $data->avatar }}" alt="Avatar" id="avatar" name="avatar" class="w-full h-full object-cover">
+                    <img src="{{ $data->avatar }}" alt="Avatar" id="avatar" name="avatar"
+                        class="w-full h-full object-cover">
                 </div>
 
                 <!-- Nút chọn tệp bên phải -->
@@ -43,9 +44,9 @@
 
             </div>
             @error('avatar')
-            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-                <span class="font-medium">{{ $message }}</span> 
-              </div>
+                <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                    <span class="font-medium">{{ $message }}</span>
+                </div>
             @enderror
         </div>
 
@@ -54,9 +55,9 @@
             <label for="about" class="block text-gray-700 font-bold mb-2">Profile Information</label>
             <textarea id="about" name="about" class="w-full p-3 border border-gray-300 rounded">{{ $data->about }}</textarea>
             @error('about')
-            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-                <span class="font-medium">{{ $message }}</span> 
-              </div>
+                <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                    <span class="font-medium">{{ $message }}</span>
+                </div>
             @enderror
         </div>
 
@@ -85,35 +86,36 @@
         </div>
         @error('birthdate')
             <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-                <span class="font-medium">{{ $message }}</span> 
-              </div>
-            @enderror
+                <span class="font-medium">{{ $message }}</span>
+            </div>
+        @enderror
         <!-- Địa chỉ -->
-       
+
         <div class="mb-4">
             <label for="address" class="block text-gray-700 font-bold mb-2">Address</label>
             <input type="text" id="address" name="address" value="{{ $data->address }}"
                 class="w-full p-3 border border-gray-300 rounded">
         </div>
-        
+
         <!-- sdt -->
         <div class="mb-4">
             <label for="phone" class="block text-gray-700 font-bold mb-2">Phone</label>
             <input type="text" id="phone" name="phone" value="{{ $data->phone }}"
                 class="w-full p-3 border border-gray-300 rounded">
             @error('phone')
-            <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
-                <span class="font-medium">{{ $message }}</span> 
-              </div>
+                <div class="p-4 my-2 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                    <span class="font-medium">{{ $message }}</span>
+                </div>
             @enderror
         </div>
         {{-- city --}}
         <div class="mb-4 flex justify-between items-center">
             <div class="w-1/2 h-10">
-                <select name="city_id" id="city_id" >
+                <select name="city_id" id="city_id">
                     <option value="" disabled selected hidden>Thành phố</option>
                     @foreach ($dataCity as $item)
-                        <option value="{{ $item->id }}" @if($item->id == $data->city_id) {{'selected'}} @endif>
+                        <option value="{{ $item->id }}"
+                            @if ($item->id == $data->city_id) {{ 'selected' }} @endif>
                             {{ $item->name }}
                         </option>
                     @endforeach
@@ -123,12 +125,12 @@
             <div class="w-1/2 h-10">
                 <select name="district_id" id="district_id">
                     <option value="select" disabled selected hidden>Quận/Huyện</option>
-                    @if($data->district_id != null)
-                        <option value="{{$data->district_id}}" selected>{{$data->District->name}}</option>
+                    @if ($data->district_id != null)
+                        <option value="{{ $data->district_id }}" selected>{{ $data->District->name }}</option>
                     @endif
                 </select>
             </div>
-          
+
         </div>
         <div class="flex items-center gap-4">
             <button type="submit"
@@ -136,20 +138,17 @@
                 Save</button>
         </div>
     </form>
-
 </section>
 
 <script>
     //Preview an image before it is uploaded
- function loadFile(file){
-    if(file && file.files[0]){
-        var reader = new FileReader();
-        reader.onload = function(e){
-            $('#avatar').attr('src', e.target.result)
+    function loadFile(file) {
+        if (file && file.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#avatar').attr('src', e.target.result)
+            }
+            reader.readAsDataURL(file.files[0]);
         }
-        reader.readAsDataURL(file.files[0]);
     }
- }
-
- </script>
-
+</script>
