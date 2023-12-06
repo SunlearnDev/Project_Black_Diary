@@ -19,7 +19,7 @@ use App\Http\Controllers\Fontend\AddressController;
 use App\Http\Controllers\Fontend\SearchController;
 use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
-    
+
     
     Route::get('/',[DiaryController::class,'viewPosts']);
     // Route list Quận huyện
@@ -35,7 +35,7 @@ use App\Http\Controllers\Fontend\SocialController;
     Route::post('/login', [PostProfile::class, 'postLogin']);
     // Đăng nhập bằng gg
     Route::get('/google',[SocialController::class,'redirect']);
-    Route::get('/google/callback',[SocialController::class,'callback']);
+    Route::get('/callback/google',[SocialController::class,'callback']);
     // User Đăng Ký
     Route::get('register', [PostProfile::class, 'showRegister'])->name('register');
     Route::post('register', [PostProfile::class, 'postRegister']);

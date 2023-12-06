@@ -49,11 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function City()
     {
-        return $this->belongsTo(City::class, 'city_id', 'city_id');
+        return $this->belongsTo(Citys::class, 'city_id', 'city_id');
     }
     public function District()
     {
-        return $this->belongsTo(District::class, 'district_id', 'district_id');
+        return $this->belongsTo(DistrictModel::class, 'district_id', 'district_id');
     }
 
     public function followers()
@@ -64,21 +64,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
-    }
-
-    public function isFollowing(User $user)
-    {
-        return $this->following()->where('following_id', $user->id)->exists();
-    }
-
-    public function diary()
-    {
-        return $this->hasMany(Diary::class);
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 }
 

@@ -24,7 +24,7 @@ class SocialController extends Controller
             if ($user->email_verified_at == null){
                 return redirect('/email/verify');
             }      
-            return redirect('/user/profile')->with('msgSuccess', 'Đăng nhập thành công');
+            return redirect('/user/profile/'.$user->id)->with('msgSuccess', 'Đăng nhập thành công');
     }
     function createUser($googleUser){
         $user = User::Where('email',$googleUser->email)->first();
