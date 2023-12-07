@@ -14,6 +14,7 @@
             </div>
             <!-- cmt -->
             <div class="">
+                {{-- nếu ở trên có rồi thì ở dưới hiển thị số lượng cmt với ý nghĩa là gì  --}}
                 <div class="w-full p-2 @empty($post->comments) hidden @endempty">
                     <div class="flex w-full items-center justify-end dark:text-white py-2 border-b border-gray-300">
                         <div class="flex items-center gap-1 hover:underline cursor-pointer"
@@ -57,5 +58,5 @@
             </div>
         </div>
     </div>
-    <x-comment></x-comment>
+
 </div>

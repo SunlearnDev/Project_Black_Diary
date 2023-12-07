@@ -68,17 +68,8 @@
                         Comment
                     @endif
                 </span>
-                <div
-                    class=" flex justify-start items-center hover:bg-gray-200 rounded-md h-10 cursor-pointer px-2 py-1">
-                    <div class="flex -space-x-3 mr-2">
-                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                            src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-
-                        <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
-                            href="#">+99</a>
-                        >>>>>>> taidev
-                    </div>
-                </div>
+            </div>
+                
                 <!-- save -->
                 <div class="flex justify-end right-0 items-center cursor-pointer ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -87,9 +78,10 @@
                         21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
                     </svg>
                 </div>
-            </div>
-            <span class="pb-6 ">{{ $post->content }}</span>
-            {{-- <span class="pb-6 ">{{ $post->title }}</span> --}}
         </div>
+        <div class="">
+            <span class="pb-6 ">{{ $post->content }}</span>
+        </div>
+
     </div>
 </div>
