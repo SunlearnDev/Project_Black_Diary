@@ -9,14 +9,14 @@
             <!-- div usename -->
             <div class="grid grid-row-2 w-full justify-start items-center">
                 <!-- name -->
-                <div class="text-blue-700 text-sm font-bold uppercase  flex items-center ">
-                    <a href=""></a>
+                <div class="text-blue-700 text-sm font-bold uppercase inline-block items-center ">
+                    <a href="">{{ $post->user->name }}</a>
                     <div class="w-full ">
                         @include('Fontend.layouts.proflieSmall')
                     </div>
                 </div>
                 <!-- time -->
-                <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow(true) }}</time>
+                <time title="" class="text-gray-400">{{ $post->created_at->fromNow() }}</time>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <!-- sl cmt -->
-            <div class="">
+            <div class="flex justify-between items-center">
                 <span
                     class="px-2 py-2 text-md font-medium text-gray-500 hover:bg-gray-200 cursor-pointer rounded-md">{{ $post->comments_count }}
                     @if ($post->comments_count > 1)
@@ -75,7 +75,6 @@
 
                         <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
                             href="#">+99</a>
-                        >>>>>>> taidev
                     </div>
                 </div>
                 <!-- save -->
@@ -87,8 +86,7 @@
                     </svg>
                 </div>
             </div>
-            <span class="pb-6 ">{{ $post->content }}</span>
-            {{-- <span class="pb-6 ">{{ $post->title }}</span> --}}
         </div>
+        {{-- <span class="pb-6 ">{{ $post->content }}</span> --}}
     </div>
 </div>

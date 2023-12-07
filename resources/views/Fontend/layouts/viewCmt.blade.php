@@ -1,19 +1,21 @@
 {{-- Comments --}}
-<div class="px-6 py-2 mt-2">
-    <div class="w-full mb-2 flex justify-start">
-        <div class="">
-            <a href="">
-                <img class="w-10 h-10 rounded-full mr-4 "
-                    src="{{'storage/' . $post->image }}" alt="Rounded avatar">
-            </a>
-        </div>
-        <div class="w-full bg-gray-200 p-4 rounded-lg ">
-            <!-- name -->
-            <div class="mb-4 ">
-                @include("Fontend.layouts.proflieSmall")
-            </div>
-            <!-- cmt -->
+@if ($post->comments_count)
+    <div class="px-6 py-2 mt-2">
+        <div class="w-full mb-2 flex justify-start">
             <div class="">
+                <a href="">
+                    {{-- <img class="w-10 h-10 rounded-full mr-4 "
+                    src="{{'storage/' . $post->image }}" alt="Rounded avatar"> --}}
+                    <img class="w-10 h-10 rounded-full mr-4 " src="{{ $post->image }}" alt="Rounded avatar">
+                </a>
+            </div>
+            <div class="w-full bg-gray-200 p-4 rounded-lg ">
+                <!-- name -->
+                <div class="mb-4 ">
+                    @include('Fontend.layouts.proflieSmall')
+                </div>
+                <!-- cmt -->
+                {{-- <div class="">
                 <div class="w-full p-2 @empty($post->comments) hidden @endempty">
                     <div class="flex w-full items-center justify-end dark:text-white py-2 border-b border-gray-300">
                         <div class="flex items-center gap-1 hover:underline cursor-pointer"
@@ -54,8 +56,9 @@
                         </ul>
                     </div>
                 </div>
+            </div> --}}
             </div>
         </div>
+        {{-- <x-comment></x-comment> --}}
     </div>
-    <x-comment></x-comment>
-</div>
+@endif

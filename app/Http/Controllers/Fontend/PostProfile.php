@@ -69,7 +69,7 @@ class PostProfile extends Controller
             if (Auth::user()->email_verified_at == null) {
                 return redirect('/email/verify');
             }
-            return redirect()->back()->with('msgSuccess', 'Đăng nhập thành công');
+            return view('Fontend.profile.partials.showProfile')->with('msgSuccess', 'Đăng nhập thành công');
         } else {
             return view('auth.login')->with('msgError', 'Email hoặc mật khẩu không đúng');
         }

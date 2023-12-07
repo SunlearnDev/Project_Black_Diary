@@ -91,5 +91,5 @@
     });
 
     // Đăng xuất
-    Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
+    // Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
     require __DIR__ . '/auth.php';

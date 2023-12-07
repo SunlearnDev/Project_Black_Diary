@@ -13,4 +13,9 @@ class DistrictModel extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(Citys::class);
+    }
 }

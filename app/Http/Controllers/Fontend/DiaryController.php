@@ -84,13 +84,7 @@ class DiaryController extends Controller
             array_shift($hashTag);
             foreach ($hashTag as $tag) {
                 $tag = trim(strtolower($tag));
-                $hashtag_id = Hashtag::where('content', $tag)->value('id');
-                if (!$hashtag_id) {
-                    // Hashtag chưa tồn tại, thêm mới
-                    $newHashTag = Hashtag::create(['content' => $tag]);
-                    $hashtag_id = $newHashTag->id;
-                }
-                // Liên kết Hashtag với Post trong bảng trung gian
+                $hashtag_id = Hashtag::firstOrCreate(['content' => $tag])->value('id');
                 $dataPost->hashtags()->attach($hashtag_id);
             }
             // Commit Tranction nếu mọi thứ thành công
