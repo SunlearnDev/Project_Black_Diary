@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\User;
 use App\Models\Citys;
@@ -31,7 +30,6 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail,
-            'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'remember_token' => Str::random(10),
             'other_name' => $this->faker->userName,
@@ -43,6 +41,10 @@ class UserFactory extends Factory
             'city_id' => $citys->id,
             'district_id' => $citys->districts[0]->id,
             'role' => 3,
+            'created_at' => $this->faker->dateTimeInInterval('-2 years', '+5 days'),
+            'email_verified_at' => function (array $attributes) {
+                return $this->faker->dateTimeInInterval($attributes['created_at'], '+1 hour');
+            },
         ];
     }
 
@@ -62,6 +64,7 @@ class UserFactory extends Factory
     public function configure(): static
     {
         return $this->afterMaking(function (User $user) {
+            //
         })->afterCreating(function (User $user) {
             $avatar = new ImdUpload;
             $avatar->autoAvatar($user);

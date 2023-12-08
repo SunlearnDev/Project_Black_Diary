@@ -7,7 +7,7 @@
             <a href=""></a>
             <!-- hình ảnh -->
             <div class="hover:opacity-75  w-full flex justify-center ">
-                <img src="{{ '/storage/' . $post->image }}"
+                <img src="{{ $post->image }}"
                     class="rounded-t-lg @if ($post->image == null) hidden @endif">
             </div>
             <!-- story -->

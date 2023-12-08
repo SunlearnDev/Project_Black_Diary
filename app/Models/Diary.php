@@ -37,6 +37,11 @@ class Diary extends Model
         return $this->hasMany(Comment::class, 'diary_id');
     }
 
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'diary_id');
+    }
+    
     // protected function createdAt(): Attribute
     // {
     //     return Attribute::make(

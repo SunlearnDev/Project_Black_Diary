@@ -9,21 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class DiaryController extends Controller
 {
 
-    public function viewPosts( $userId = null)
+    public function viewPosts($userId = null)
     {
         if (Auth::check() && $userId == auth()->id()) {
             $posts = Diary::where('user_id', $userId)
-                ->with('hashtags', 'comments.user:id,name')
+                // ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return $posts;
         } elseif ($userId == null) {
             $posts = Diary::where('status', 1)
-                ->with('hashtags', 'comments.user:id,name')
+                // ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             // dd($posts->toRawSql(), $posts->get());
@@ -31,7 +32,7 @@ class DiaryController extends Controller
         } else {
             $posts = Diary::where('user_id', $userId)
                 ->where('status', 1)
-                ->with('hashtags', 'comments.user:id,name')
+                // ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return $posts;
@@ -66,11 +67,11 @@ class DiaryController extends Controller
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-          
+
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
-                $dataPost->image = $imagePath;
+                $dataPost->image = Storage::url($imagePath);
             }
             // Lưu bài viết
             $dataPost->save();

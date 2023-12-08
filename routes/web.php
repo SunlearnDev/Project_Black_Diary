@@ -77,6 +77,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 //  Trang chính sau khi xác thực email
 Route::get('/diary', [DiaryController::class, 'viewPosts'])->middleware(['auth', 'verified'])->name('index');
+
 Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     // Các tuyến đường liên quan đến quản lý profile
     Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');
@@ -88,8 +89,6 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
 
     Route::post('/{id}/follow', [FollowController::class, 'follow'])->name('user.follow');
     Route::post('/{id}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
-
-
 
     //Post diary
     Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
