@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\User\Post\RequestsPost;
-// use App\Http\Requests\User\Post\RequestsUpdatePost;
-// use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\Diary;
 use App\Models\Hashtag;
-// use App\Models\DiaryHashtag;
+use Illuminate\Support\Facades\Log;
 
 class DiaryController extends Controller
 {
 
-    public function viewPosts(int $userId = null)
+    public function viewPosts( $userId = null)
     {
         if (Auth::check() && $userId == auth()->id()) {
             $posts = Diary::where('user_id', $userId)
@@ -69,13 +66,12 @@ class DiaryController extends Controller
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-
+          
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
                 $dataPost->image = $imagePath;
             }
-
             // Lưu bài viết
             $dataPost->save();
 
@@ -90,11 +86,13 @@ class DiaryController extends Controller
 
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
+            Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
             return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
+            Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
             // dd('Fail');
         }
