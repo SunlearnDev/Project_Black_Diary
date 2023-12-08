@@ -2,12 +2,12 @@
 
 @section('content')
 
-<div class="flex  justify-between  sm:mx-2 lg:mx-20  pt-[70px]">
+<div class="flex  mx-20 gap-2 pt-[70px]">
+    
     {{-- left --}}
-     @include('Fontend.layouts.left-nav')
+     @include('Fontend.layouts.left-show-diary')
     {{-- main --}}
-     @include('Fontend.layouts.post')
-    {{-- Right --}} 
-     @include('Fontend.layouts.right-nav')
+     @include('Fontend.layouts.show-diary')
+
 </div>
 @endsection

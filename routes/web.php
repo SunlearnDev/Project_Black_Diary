@@ -19,8 +19,11 @@ use App\Http\Controllers\Fontend\AddressController;
 use App\Http\Controllers\Fontend\SearchController;
 use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
+use App\Http\Controllers\Fontend\FollowController;
 
-    
+    Route::get('/s',function(){
+        return view('Fontend.postdiary.diaryPost');
+    });
     Route::get('/',[DiaryController::class,'viewPosts']);
     // Route list Quận huyện
     Route::post('/get_district',[AddressController::class,'getDistrictCheckout']);
@@ -72,7 +75,11 @@ use App\Http\Controllers\Fontend\SocialController;
         Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
         Route::get('/create', [DiaryController::class,'viewCreate'])->name('create');
       
-        
+        Route::post('/{id}/follow',[FollowController::class,'follow'])->name('user.follow');
+        Route::post('/{id}/unfollow',[FollowController::class,'unfollow'])->name('user.unfollow');
+
+
+
         //Post diary
         Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
         Route::post('/create', [DiaryController::class, 'store']);

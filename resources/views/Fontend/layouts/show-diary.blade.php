@@ -4,7 +4,7 @@
         <article class="flex items-center">
             <div class="">
             <img class="w-10 h-10 rounded-full mr-4  "
-                src="{{$post->user->avatar }}" alt="Rounded avatar">
+                src="" alt="Rounded avatar">
             </div>
             <div class="gird grid-rows-2">
             <!-- div usename -->
@@ -13,11 +13,11 @@
                 <div class="text-blue-700 text-sm font-bold uppercase  flex items-center ">
                     <a href=""></a>
                     <div class="w-full ">
-                        @include('Fontend.layouts.proflieSmall')
+                        xx
                     </div>
                 </div>
                 <!-- time -->
-                <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow(true) }}</time>
+                <time title="" class="text-gray-400 pl-1">x</time>
             </div>
             </div>
         </article>
@@ -52,6 +52,7 @@
                             <a href="#"
                                 class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Report</a>
                         </li>
+                        
                     </ul>
                 </div>
             </footer>
@@ -61,17 +62,17 @@
     <div class="row-span-3 pl-14 ">
         <!-- <title> -->
         <h3 class="mb-2"><a href="" class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>
-                    {{ $post->title }} </span></a></h3>
+                    x</span></a></h3>
         <!-- hagtag -->
         <div class=" gird grid-cols-5 mb-2 ">
-            @foreach (  $post->hashtags as $hashtag )
+          
                 
                     <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200 mr-2"> 
                      <a href="" class="">
-                        #{{ $hashtag->content }}
+                        #x
                     </a>
                 </kbd>
-            @endforeach
+         
         </div>
         <!-- interact -->
         <div class="mb-2 flex justify-between items-center">
@@ -96,12 +97,12 @@
                 <!-- sl cmt -->
             <div class="">
                 <span
-                    class="px-2 py-2 text-md font-medium text-gray-500 hover:bg-gray-200 cursor-pointer rounded-md">{{ $post->comments_count }}
-                    @if ($post->comments_count > 1)
+                    class="px-2 py-2 text-md font-medium text-gray-500 hover:bg-gray-200 cursor-pointer rounded-md">x
+                    x
                         Comments
-                    @else
+                    x
                         Comment
-                    @endif
+                    x
                 </span>
             </div>
             </div>
@@ -115,8 +116,8 @@
                 </div>
         </div>
         <div class="">
-            <span class="pb-6 ">{{ $post->content }}</span>
+            <span class="pb-6 ">xxxxxxxxxx</span>
         </div>
-
+        <x-comment></x-comment>
     </div>
 </div>

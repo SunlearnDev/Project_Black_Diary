@@ -58,20 +58,20 @@ class PostProfile extends Controller
     public function postLogin(LoginRequest $request){
         $request->authenticate();
         $request->session()->regenerate();
-        $email = $request->email;
-        $password = $request->password;
+        $urlPrevious = url()->previous();
+        $urlBase = url()->to('/');
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
         
-        if(Auth::attempt(['email'=> $email,'password'=> $password],$request->has('remember'))){
+        if(Auth::attempt($credentials, $remember)){
             if (Auth::user()->email_verified_at == null){
                 return redirect('/email/verify');
-            } 
-            return view('Fontend.profile.partials.showProfile')->with('msgSuccess', 'Đăng nhập thành công');
-        }else{
-            return view('auth.login')->with('msgError','Email hoặc mật khẩu không đúng');
+            }
+            return redirect()->intended('/')->with('msgSuccess', 'Đăng nhập thành công');
         }
+        return back()->with('msgError','Email hoặc mật khẩu không đúng');
     }
 
-  
     // View đăng ký
     public function showRegister(){
         return view('auth.register');

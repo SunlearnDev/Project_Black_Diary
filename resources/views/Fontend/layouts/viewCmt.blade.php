@@ -58,5 +58,5 @@
             </div>
         </div>
     </div>
-
+    <x-comment></x-comment>
 </div>
