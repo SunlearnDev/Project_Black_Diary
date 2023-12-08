@@ -10,7 +10,13 @@
             <div class="grid grid-row-2 w-full justify-start items-center">
                 <!-- name -->
                 <div class="text-blue-700 text-sm font-bold uppercase inline-block items-center ">
-                    <a href="">{{ $post->user->name }}</a>
+                    <a href="">
+                        @empty($post->user->other_name)
+                            {{ $post->user->name }}
+                        @else
+                            {{ $post->user->other_name }}
+                        @endempty
+                    </a>
                     <div class="w-full ">
                         @include('Fontend.layouts.proflieSmall')
                     </div>
@@ -26,7 +32,7 @@
         <h3 class="mb-2"><a href="" class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>
                     {{ $post->title }} </span></a></h3>
         <!-- hagtag -->
-        <div class=" gird grid-cols-5 mb-2 ">
+        <div class=" grid grid-cols-5 mb-2 ">
             @foreach ($post->hashtags as $hashtag)
                 <kbd
                     class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200">

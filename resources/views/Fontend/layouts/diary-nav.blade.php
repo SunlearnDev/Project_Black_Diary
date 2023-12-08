@@ -7,8 +7,7 @@
             <a href=""></a>
             <!-- hình ảnh -->
             <div class="hover:opacity-75">
-                {{-- <img src="{{ asset('storage/' . $post->image) }}" class="rounded-t-lg w-full"> --}}
-                <img src="{{ $post->image }}" class="rounded-t-lg w-full">
+                <img src="{{ asset('storage/' . $post->image) }}" class="rounded-t-lg w-full">
             </div>
             <!-- story -->
             @include('Fontend.layouts.viewStory')

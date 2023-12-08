@@ -29,7 +29,7 @@ class DiaryController extends Controller
                 ->with('hashtags', 'comments.user:id,name')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
-                // dd($posts->toRawSql(), $posts->get());
+            // dd($posts->toRawSql(), $posts->get());
             return view('Fontend.postDiary.diaryPublic', compact('posts'));
         } else {
             $posts = Diary::where('user_id', $userId)
@@ -50,8 +50,8 @@ class DiaryController extends Controller
         // dd($test->toRawSql(), $test->get());
     }
 
-    public function hashtagFilter(string $hashTag) {
-        
+    public function hashtagFilter(string $hashTag)
+    {
     }
 
     public function viewCreate()
@@ -84,21 +84,18 @@ class DiaryController extends Controller
             array_shift($hashTag);
             foreach ($hashTag as $tag) {
                 $tag = trim(strtolower($tag));
-                $hashtag_id = Hashtag::firstOrCreate(['content' => $tag])->value('id');
-                $dataPost->hashtags()->attach($hashtag_id);
+                $hashtagId = Hashtag::firstOrCreate(['content' => $tag])->value('id');
+                $dataPost->hashtags()->attach($hashtagId);
             }
+
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
             return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
-            
-            // Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
-            // return view('Fontend.profile.partials.showProfile')->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
-            // Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
             // dd('Fail');
         }
     }

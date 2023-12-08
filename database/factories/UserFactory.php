@@ -5,7 +5,8 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-// use App\Models\User;
+use App\Http\Controllers\HandleImg\ImdUpload;
+use App\Models\User;
 use App\Models\Citys;
 
 /**
@@ -14,6 +15,7 @@ use App\Models\Citys;
 class UserFactory extends Factory
 {
     // protected $model = User::class;
+    
     /**
      * Define the model's default state.
      *
@@ -23,19 +25,19 @@ class UserFactory extends Factory
     {
         $citys = Citys::inRandomOrder()
             ->with(['districts' => function ($query) {
-                $query->inRandomOrder()->first();
+                $query->inRandomOrder()->value('id');
             }])->first();
 
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => fake()->name,
+            'email' => fake()->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'remember_token' => Str::random(10),
-            'other_name' => $this->faker->userName(),
+            'other_name' => $this->faker->userName,
             'about' => $this->faker->text(200),
             'phone' => $this->faker->numerify('0#########'),
-            'address' => $this->faker->streetAddress(),
+            'address' => $this->faker->streetAddress,
             'gender' => $this->faker->randomElement(['male', 'female']),
             'birthdate' => $this->faker->date,
             'city_id' => $citys->id,
@@ -52,5 +54,17 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function (User $user) {
+        })->afterCreating(function (User $user) {
+            $avatar = new ImdUpload;
+            $avatar->autoAvatar($user);
+        });
     }
 }
