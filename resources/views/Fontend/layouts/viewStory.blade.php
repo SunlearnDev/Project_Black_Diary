@@ -1,4 +1,4 @@
-<div class="bg-white grid grid-rows-4 px-6 py-2">
+<div class="bg-white grid grid-row px-6 py-2">
     <div class="flex items-center justify-between">
         <!-- link den ca nhan -->
         <article class="flex items-center">
@@ -6,12 +6,11 @@
             <img class="w-10 h-10 rounded-full mr-4  "
                 src="{{$post->user->avatar }}" alt="Rounded avatar">
             </div>
-            <div class="gird grid-rows-2">
+            <div class="grid grid-rows">
             <!-- div usename -->
             <div class="grid grid-row-2 w-full justify-start items-center">
                 <!-- name -->
                 <div class="text-blue-700 text-sm font-bold uppercase  flex items-center ">
-                    <a href=""></a>
                     <div class="w-full ">
                         @include('Fontend.layouts.proflieSmall')
                     </div>
@@ -65,7 +64,6 @@
         <!-- hagtag -->
         <div class=" gird grid-cols-5 mb-2 ">
             @foreach (  $post->hashtags as $hashtag )
-                
                     <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200 mr-2"> 
                      <a href="" class="">
                         #{{ $hashtag->content }}
@@ -106,7 +104,7 @@
             </div>
             </div>
                 <!-- save -->
-                <div class="flex justify-end right-0 items-center cursor-pointer ">
+                <div class="flex justify-end right-0 items-center cursor-pointer mr-2 ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 p-1 rounded-md hover:bg-blue-200 text-gray-500">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5
@@ -114,9 +112,16 @@
                     </svg>
                 </div>
         </div>
-        <div class="">
-            <span class="pb-6 ">{{ $post->content }}</span>
-        </div>
-
+        <!-- cmt -->
+        @if ($post->comments_count > 1)
+        <a href="" class="text-gray-500 hover:text-gray-600">See all {{ $post->comments_count }}
+            comments </a>
+        @else
+        <a href="" class="flex items-center justify-start text-gray-400 hover:text-gray-500 pt-4 pb-2"> 
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
+            </svg>
+           Add comment first </a>
+    @endif
     </div>
 </div>

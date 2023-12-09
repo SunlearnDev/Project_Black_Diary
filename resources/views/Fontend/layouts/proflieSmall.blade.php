@@ -1,4 +1,4 @@
-@if ($post->user_id == $post->user->id)
+@if ($post->user_id )
 <button data-popover-target="popover-user-profile" type="button"
 class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold
  hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center"><a href="{{route('profile.search',[$post->user->id])}}">{{$post->user->name}}</a>

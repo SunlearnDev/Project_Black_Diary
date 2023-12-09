@@ -8,17 +8,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\HandleImg\ImdUpload;
+use App\Models\User;
 use App\Models\Citys;
 use Carbon\Carbon;
+
 
 class PostProfile extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $active = "active";
         view()->share('activeShip', $active);
     }
@@ -27,22 +31,25 @@ class PostProfile extends Controller
     /**
      * int 
      */
-    public function index($id = null){
-        $data =User::find($id);
+    public function index($id = null)
+    {
+        $data = User::find($id);
         $dataCity = Citys::all();
         $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts($id);
-            if(Auth::check() && Auth::user()->id == $id){
-                return view('Fontend.profile.profileAccount', [
-                    'data' => $data, 'dataCity' => $dataCity,'posts' => $posts
-                ]);
-            }else{
-                return view('Fontend.profile.profileAccount', [
-                    'data' => $data, 'dataCity' => $dataCity,'posts' => $posts
-                ]);
-            }
+        if (Auth::check() && Auth::user()->id == $id) {
+            return view('Fontend.profile.profileAccount', [
+                'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
+            ]);
+        } else {
+            return view('Fontend.profile.profileAccount', [
+                'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
+            ]);
+        }
     }
-    public function login(){
-            return view('auth.login');
+    public function login()
+    {
+        Session::put('url.intended', URL::previous());
+        return view('auth.login');
     }
     // view edit profile
     public function edit()
@@ -50,30 +57,33 @@ class PostProfile extends Controller
         $data = Auth::user();
         $dataCity = Citys::all();
         return view('Fontend.profile.edit', [
-            'data' => $data, 'dataCity' => $dataCity, 
-        ]); 
+            'data' => $data, 'dataCity' => $dataCity,
+        ]);
     }
-   
+
     // xử lý login
-    public function postLogin(LoginRequest $request){
+    public function postLogin(LoginRequest $request)
+    {
         $request->authenticate();
         $request->session()->regenerate();
         $urlPrevious = url()->previous();
         $urlBase = url()->to('/');
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-        
-        if(Auth::attempt($credentials, $remember)){
-            if (Auth::user()->email_verified_at == null){
+
+        if (Auth::attempt($credentials, $remember)) {
+            if (Auth::user()->email_verified_at == null) {
                 return redirect('/email/verify');
             }
-            return redirect()->intended('/')->with('msgSuccess', 'Đăng nhập thành công');
+            
+            return redirect(Session::get('url.intended'))->with('msgSuccess', 'Đăng nhập thành công');
         }
-        return back()->with('msgError','Email hoặc mật khẩu không đúng');
+        return back()->with('msgError', 'Email hoặc mật khẩu không đúng');
     }
 
     // View đăng ký
-    public function showRegister(){
+    public function showRegister()
+    {
         return view('auth.register');
     }
 
@@ -122,45 +132,46 @@ class PostProfile extends Controller
         return redirect('/diary');
     }
 
-      //chức năng đăng xuất
-      public function logout(){
+    //chức năng đăng xuất
+    public function logout()
+    {
         Auth::logout();
         return redirect('login')->with('msgSuccess', 'Đã đăng xuất thành công');
-    } 
-    
-    
+    }
+
+
     // Xử lý cập nhật User profile
     public function updateProfile(Request $request)
     {
-        $request->validate([
-            'name' => 'string|max:255',
-            'other_name' => 'nullable|string|max:255',
-            'about' => 'nullable|string|max:500',
-            'phone' => 'nullable|string|min:10|max:10',
-            'address' => 'nullable|string|max:255',
-            'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'birthdate' => 'nullable|Before:' . Carbon::now()->subYears(16)->format('Ymd'), 
-        ],
-    );
+        $request->validate(
+            [
+                'name' => 'string|max:255',
+                'other_name' => 'nullable|string|max:255',
+                'about' => 'nullable|string|max:500',
+                'phone' => 'nullable|string|min:10|max:10',
+                'address' => 'nullable|string|max:255',
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'birthdate' => 'nullable|Before:' . Carbon::now()->subYears(16)->format('Ymd'),
+            ],
+        );
         $data = User::find(Auth::id());
 
         $imgUpload = new ImdUpload();
         $dataPathImage = $imgUpload->upLoadImg($request, 'avatar',  'profile');
-            if ($dataPathImage != null){
-                $imgPath = public_path().'/'.$data->avatar;
-                if(file_exists($imgPath)){
-                   
-                    unlink($imgPath);
-                }
-                $data->avatar = $dataPathImage;
+        if ($dataPathImage != null) {
+            $imgPath = public_path() . '/' . $data->avatar;
+            if (file_exists($imgPath)) {
+
+                unlink($imgPath);
             }
-            // Sau khi validation
+            $data->avatar = $dataPathImage;
+        }
+        // Sau khi validation
         $phone = $request->phone;
-            if(!is_numeric($phone)){
-                
-            }
+        if (!is_numeric($phone)) {
+        }
         $data->phone = $request->phone;
-            
+
 
         $data->name = $request->name;
         $data->about = $request->about;
@@ -168,51 +179,54 @@ class PostProfile extends Controller
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->city_id = $request->city_id;
-        $data->district_id= $request->district_id;
-        $data->birthdate= $request->birthdate;
-        if($data->save()){
+        $data->district_id = $request->district_id;
+        $data->birthdate = $request->birthdate;
+        if ($data->save()) {
             return redirect('/user/profile/' . $data->id)->with('msgSuccess', 'Cập Nhật thông tin thành công');
-        }else{  
+        } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
     }
 
     // Handle password change
-   public function updatePassword(Request $request){
-    $data = User::find(Auth::id());
+    public function updatePassword(Request $request)
+    {
+        $data = User::find(Auth::id());
         $request->validate(
-        [
-            'password_old' => [
-                'required',
-                function ($attribute,$password_old, $fail) {
-                    if (!Hash::check($password_old, Auth::user()->password)) {
-                        $fail('Mật khẩu chưa đúng');
-                    }
-                },
+            [
+                'password_old' => [
+                    'required',
+                    function ($attribute, $password_old, $fail) {
+                        if (!Hash::check($password_old, Auth::user()->password)) {
+                            $fail('Mật khẩu chưa đúng');
+                        }
+                    },
+                ],
+                'password' => 'required|min:5|max:20',
+                'password_again' => 'required|same:password',
             ],
-            'password' => 'required|min:5|max:20',
-            'password_again' => 'required|same:password',
-        ],[
-            'password.required' => 'Mật khẩu không được để trống',
-            'password_again.required' => 'Mật khẩu xác nhận không được để trống',
-            'password.min' => 'Mật khẩu quá ngắn phải lớn hơn 5 kí tự',
-            'password.max' => 'Mật khẩu quá dài phải nhỏ hơn 20 kí tự',
-            'password_again.same' => 'Mật khẩu xác nhận không khớp',
-        ]);
+            [
+                'password.required' => 'Mật khẩu không được để trống',
+                'password_again.required' => 'Mật khẩu xác nhận không được để trống',
+                'password.min' => 'Mật khẩu quá ngắn phải lớn hơn 5 kí tự',
+                'password.max' => 'Mật khẩu quá dài phải nhỏ hơn 20 kí tự',
+                'password_again.same' => 'Mật khẩu xác nhận không khớp',
+            ]
+        );
         $data->password = Hash::make($request->password);
-        if($data->save()){
+        if ($data->save()) {
             return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
-        }else{  
+        } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-   }
-   public function showProfilesId($id,$name){
+    }
+    public function showProfilesId($id, $name)
+    {
         $user = User::find($id);
         $dataCity = Citys::all();
-        return  view ('Fontend.profile.profileUser',
-                    ['data'=>$user,'dataCity' => $dataCity,]);
-   }
+        return  view(
+            'Fontend.profile.profileUser',
+            ['data' => $user, 'dataCity' => $dataCity,]
+        );
+    }
 }
-
-
-

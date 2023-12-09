@@ -4,7 +4,7 @@
         <div class="">
             <a href="">
                 <img class="w-10 h-10 rounded-full mr-4 "
-                    src="{{'storage/' . $post->image }}" alt="Rounded avatar">
+                    src="{{$post->user->avatar }}" alt="Rounded avatar">
             </a>
         </div>
         <div class="w-full bg-gray-200 p-4 rounded-lg ">

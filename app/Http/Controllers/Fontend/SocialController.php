@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Fontend;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
@@ -24,7 +26,7 @@ class SocialController extends Controller
             if ($user->email_verified_at == null){
                 return redirect('/email/verify');
             }      
-            return redirect('/user/profile/'.$user->id)->with('msgSuccess', 'Đăng nhập thành công');
+            return redirect(Session::get('url.intended'))->with('msgSuccess', 'Đăng nhập thành công');
     }
     function createUser($googleUser){
         $user = User::Where('email',$googleUser->email)->first();
