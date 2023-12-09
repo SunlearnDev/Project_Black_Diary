@@ -34,7 +34,7 @@
 
                 <!-- Hình ảnh -->
                 <div class="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden mr-2">
-                    <img src="{{ $data->avatar }}" alt="Avatar" id="avatar" name="avatar"
+                    <img src="{{ $data->avatar }}" alt="Avatar" id="image" name="image"
                         class="w-full h-full object-cover">
                 </div>
 
@@ -140,15 +140,4 @@
     </form>
 </section>
 
-<script>
-    //Preview an image before it is uploaded
-    function loadFile(file) {
-        if (file && file.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#avatar').attr('src', e.target.result)
-            }
-            reader.readAsDataURL(file.files[0]);
-        }
-    }
-</script>
+

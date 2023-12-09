@@ -23,9 +23,9 @@
                 <div class="gird grid-rows-2 w-full ">
                     <div class="">
                         <!-- image -->
-                        <div class="flex items-center justify-center w-full px-4 py-1">
+                        <div class="flex items-center justify-between w-full px-4 py-1">
                             <label for="dropzone-file"
-                                class="flex flex-col items-center justify-center w-3-4 h-58 border-2  rounded-lg cursor-pointer bg-gray-50 hover:bg-bray-100 px-2">
+                                class="flex flex-col items-center justify-center w-3-4 h-58 border-2  rounded-lg cursor-pointer bg-gray-50 hover:bg-bray-100 px-2"  >
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -38,8 +38,9 @@
                                     <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX.
                                         800x400px)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" class="hidden" name = "image" />
+                                <input id="dropzone-file" type="file" class="hidden" name = "image"  id = "image"  accept="image/*" id="avatarUpload" onchange="loadFile(this)" />
                             </label>
+                            <img src="" alt="Avatar" id="image" name="image" class="w-[350px] object-cover" \>
                         </div>
                         <!-- title, hastag -->
                         <div class="px-4 py-2">
