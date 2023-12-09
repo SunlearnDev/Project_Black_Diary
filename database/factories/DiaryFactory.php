@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Diary;
+use App\Models\Hashtag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
@@ -38,6 +39,13 @@ class DiaryFactory extends Factory
         return $this->afterMaking(function (Diary $diary) {
             //
         })->afterCreating(function (Diary $diary) {
+            $hashtagId = Hashtag::inRandomOrder()->value('id');
+            if ($hashtagId)
+                $diary->hashtags()->attach($hashtagId);
+            else {
+                $hashtag = Hashtag::factory()->create();
+                $diary->hashtags()->attach($hashtag->id);
+            }
             $user = User::find($diary->user_id);
             if ($user) {
                 $diary->update([

@@ -1,7 +1,7 @@
 {{-- @if ($post->user_id == $post->user->id) --}}
 <button data-popover-target="popover-user-profile" type="button"
     class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center">
-    <a href="{{ route('profile.search', [$post->user_id]) }}">
+    <a href="{{ route('profile.search', [$post->user->id]) }}">
         @empty($post->user->other_name)
             {{ $post->user->name }}
         @else
@@ -22,9 +22,9 @@
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Follow</button>
             </div>
         </div>
-        <p class="text-base font-semibold leading-none text-gray-900 ">
+        {{-- <p class="text-base font-semibold leading-none text-gray-900 ">
             <a href="#">{{ $post->user->name }}</a>
-        </p>
+        </p> --}}
         <p class="mb-3 text-sm font-normal">
             <a href="#" class="hover:underline">{{ $post->user->other_name }}</a>
         </p>

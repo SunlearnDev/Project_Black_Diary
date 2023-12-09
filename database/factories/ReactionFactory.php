@@ -20,7 +20,7 @@ class ReactionFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'status' => $this->faker->random_int(1, 5),
+            'status' => 1,
             'user_id' => User::inRandomOrder()->value('id') ?? User::factory(),
             'diary_id' => Diary::inRandomOrder()->value('id') ?? Diary::factory(),
         ];

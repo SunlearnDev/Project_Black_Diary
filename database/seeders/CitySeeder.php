@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\Citys;
+
 class CitySeeder extends Seeder
 {
     /**
@@ -16,7 +15,7 @@ class CitySeeder extends Seeder
         $data = [
             ['id' => 1, 'name' => ' Hà Nội', 'type' => 'Thủ Đô'],
             ['id' => 2, 'name' => ' Hà Giang', 'type' => ''],
-            ['id' => 4, 'name' => ' Cao Bằng', 'type' =>''],
+            ['id' => 4, 'name' => ' Cao Bằng', 'type' => ''],
             ['id' => 6, 'name' => ' Bắc Kạn',  'type' => ''],
             ['id' => 8, 'name' => ' Tuyên Quang',  'type' => ''],
             ['id' => 10, 'name' => ' Lào Cai',  'type' => ''],
@@ -79,5 +78,6 @@ class CitySeeder extends Seeder
             ['id' => 96, 'name' => ' Cà Mau',  'type' => '']
         ];
         DB::table('citys')->insert($data);
+        DB::table('citys')->update(['created_at' => now(), 'updated_at' => now()]);
     }
 }

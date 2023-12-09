@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Hashtag;
+use App\Models\Diary;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,21 @@ class HashtagFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => Hashtag::inRandomOrder()->value('content') ?? Hashtag::factory(),
+            'content' => $this->faker->word,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function () {
+            //
+        })->afterCreating(function (Hashtag $hashtag) {
+            $diaryId = Diary::inRandomOrder()->value('id');
+            if ($diaryId)
+                $hashtag->diaries()->attach($diaryId);
+        });
     }
 }

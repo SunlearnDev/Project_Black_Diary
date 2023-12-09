@@ -20,10 +20,10 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => $this->faker->sentences,
+            'content' => $this->faker->realText,
             'user_id' => User::inRandomOrder()->value('id') ?? User::factory(),
             'diary_id' => Diary::inRandomOrder()->value('id') ?? Diary::factory(),
-            // 'parent_id' => Comment::inRandomOrder()->value('id') ?? Comment::factory(),
+            'parent_id' => Comment::inRandomOrder()->value('id'),
         ];
     }
 
