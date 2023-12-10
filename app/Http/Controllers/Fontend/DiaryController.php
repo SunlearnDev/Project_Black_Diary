@@ -43,7 +43,10 @@ class DiaryController extends Controller
     {
         return view('Fontend.postdiary.diaryCreate');
     }
-
+    public function viewsdiaryAll($id){
+        $post = Diary::with('user', 'hashtags')->findOrFail($id); 
+        return view('Fontend.postdiary.diaryPost', compact('post'));
+    }
     public function store(Request $request)
     {
         DB::beginTransaction();

@@ -21,10 +21,9 @@ use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
 use App\Http\Controllers\Fontend\FollowController;
 
-    Route::get('/s',function(){
-        return view('Fontend.postdiary.diaryPost');
-    });
+    
     Route::get('/',[DiaryController::class,'viewPosts']);
+    Route::get('/diary/{id}-{title}',[DiaryController::class,'viewsdiaryAll'])->name('show.diaryAll');
     // Route list Quận huyện
     Route::post('/get_district',[AddressController::class,'getDistrictCheckout']);
     // Router User 
@@ -32,7 +31,7 @@ use App\Http\Controllers\Fontend\FollowController;
     Route::get('/listsearch',[SearchController::class,'getDataSearch']);
     // Router show User search
     Route::get('/profile/{id}',[PostProfile::class,'index'])->name('profile.search');
-    Route::get('/diary/{id}',[DiaryController::class,'showDiaryId'])->name('diary.showDiaryId');
+    // Route::get('/diary/{id}',[DiaryController::class,'showDiaryId'])->name('diary.showDiaryId');
     // User Đăng nhập
     Route::get('/login', [PostProfile::class, 'login'])->name('login');
     Route::post('/login', [PostProfile::class, 'postLogin']);

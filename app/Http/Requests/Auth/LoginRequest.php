@@ -47,7 +47,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
             //người dùng đã thử đăng nhập quá nhiều lần mà không thành công, họ sẽ bị tạm thời chặn.
             throw ValidationException::withMessages([
-                'email' => 'Email hoặc mật khẩu sai',
+                'email' => 'Email or password is wrong',
             ]);
         }
 

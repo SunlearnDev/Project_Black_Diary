@@ -10,3 +10,10 @@
         reader.readAsDataURL(file.files[0]);
     }
 }
+
+//Remove image
+function removePreview(){
+    $('#image').attr('src','');
+    $('#image').addClass('hidden')
+    $('#dropzone-file').val('');
+}

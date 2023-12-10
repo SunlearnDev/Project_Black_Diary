@@ -23,7 +23,7 @@
     @include('Fontend.layouts.style')
 </head>
 
-<body class="bg-white">
+<body class="bg-gray-50">
     {{-- header --}}
     @include('Fontend.layouts.header')
     {{-- main --}}
@@ -34,6 +34,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="{{ asset('js/districts.js') }}"></script>
     <script src="{{ asset('js/showimage.js') }}"></script>
+    <script src="{{ asset('js/randomcolorhashtag.js') }}"></script>
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 </body>
 
