@@ -31,7 +31,7 @@
                                     accept="image/*" id="avatarUpload" onchange="loadFile(this)" />
                             </label>
                             <button type="button" id="removeImage"
-                                class="text-red-700 bg-white border border-red-300  font-medium rounded-lg text-sm px-5 py-2.5 hidden ">Remove</button>
+                                class="text-red-700 bg-white border border-red-300 hover:text-white hover:bg-red-700  font-medium rounded-lg text-sm px-5 py-2.5 hidden" onclick="removePreview()">Remove</button>
                         </div>
                         <img src="" alt="Avatar" id="image" name="image"
                             class="w-[350px] h-[230px] object-cover hidden" \>
