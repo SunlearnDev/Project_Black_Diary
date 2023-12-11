@@ -81,6 +81,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Diary::class, 'user_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
     public function diariesCount()
     {
         return $this->diaries()->count();

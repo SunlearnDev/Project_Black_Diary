@@ -18,20 +18,20 @@ class DiaryController extends Controller
     {
         if (Auth::check() && $userId == auth()->id()) {
             $posts = Diary::where('user_id', $userId)
-                ->with('user', 'hashtags', 'comments.user:id,name')
+                ->with('user', 'hashtags', 'comments.user')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return $posts;
         } elseif ($userId == null) {
             $posts = Diary::where('status', 1)
-                ->with('hashtags', 'comments.user:id,name')
+                ->with('user', 'hashtags', 'comments.user')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return view('Fontend.postDiary.diaryPublic', compact('posts'));
         } else {
             $posts = Diary::where('user_id', $userId)
                 ->where('status', 1)
-                ->with('user', 'hashtags', 'comments.user:id,name')
+                ->with('user', 'hashtags', 'comments.user')
                 ->withCount('comments')
                 ->orderByDesc('id')->get();
             return $posts;

@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Fontend\DiaryController;
 use App\Http\Controllers\Fontend\AddressController;
+use App\Http\Controllers\Fontend\CommentController;
 use App\Http\Controllers\Fontend\SearchController;
 use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
@@ -102,3 +103,6 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
 // Đăng xuất
 Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
 require __DIR__ . '/auth.php';
+
+Route::get('comment-test/{id}', [CommentController::class, 'get']);
+Route::post('comment-test/{id}', [CommentController::class, 'post']);
