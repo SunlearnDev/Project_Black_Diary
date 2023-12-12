@@ -14,11 +14,18 @@ class CommentController extends Controller
     {
         $post = Diary::where('id', $id)
             ->where('status', 1)
-            ->with('comments.user')
-            ->withCount('comments')
+            ->with([
+                'user',
+                'comments' => function ($query) {
+                    $query->doesntHave('parentComment')
+                        ->with('user')
+                        ->withCount('replies');
+                },
+            ])
+            ->withCount('reactions', 'comments')
             ->orderByDesc('id')->firstOrFail();
         return view('test', compact('post'));
-        // dd($posts);
+        // dd($post->toArray());
     }
 
     public function post(Request $request, $id)
@@ -29,6 +36,7 @@ class CommentController extends Controller
                 'content' => $request->message,
                 'user_id' => Auth::id(),
                 'diary_id' => $id,
+                'parent_id' => $request->parentId,
             ])->load('user');
             return response()->json($comment);
         } else
