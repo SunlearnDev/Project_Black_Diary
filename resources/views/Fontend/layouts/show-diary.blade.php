@@ -6,7 +6,7 @@
                 class="rounded-t-lg @if ($post->image == null) hidden @endif">
         </a>
     </div>
-    <div class="bg-white grid grid-row px-6 py-4">
+    <div class="bg-white grid grid-row px-6 py-4 w-full">
         <div class="flex items-center justify-between">
             <!-- link den ca nhan -->
             <article class="flex items-center">
@@ -119,7 +119,7 @@
 
             </div>
             <div class="w-full py-2">
-                <span>{{ $post->title }}</span>
+                <span>{!! $post->content !!}</span>
             </div>
         </div>
         <!-- cmt -->

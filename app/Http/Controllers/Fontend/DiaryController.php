@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
+use App\Support\HTMLPurifier;
 use Illuminate\Support\Facades\Log;
 
 class DiaryController extends Controller
@@ -54,7 +55,7 @@ class DiaryController extends Controller
             // Tạo 1 bài viết mới
             $dataPost = new Diary;
             $dataPost->title = $request->title;
-            $dataPost->content = $request->content;
+            $dataPost->content = HTMLPurifier::clean($request->content);
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
           
@@ -63,6 +64,7 @@ class DiaryController extends Controller
                 $imagePath = $request->file('image')->store('postDiary', 'public');
                 $dataPost->image = $imagePath;
             }
+            
             // Lưu bài viết
             $dataPost->save();
                // Xử lý HashTag
