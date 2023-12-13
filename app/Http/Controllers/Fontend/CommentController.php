@@ -31,7 +31,6 @@ class CommentController extends Controller
     public function post(Request $request, $id)
     {
         if (Auth::check()) {
-            // dd($request);
             $comment = Comment::create([
                 'content' => $request->message,
                 'user_id' => Auth::id(),
@@ -41,5 +40,17 @@ class CommentController extends Controller
             return response()->json($comment);
         } else
             return response()->json('error');
+    }
+
+    public function getReplies($id)
+    {
+        $replies = Comment::where('id', $id)
+            ->with(['replies' => function ($query) {
+                $query->with('user')
+                    ->withCount('replies');
+            }])
+            ->orderByDesc('id')->firstOrFail();
+        return response()->json($replies);
+        // dd($replies->toArray());
     }
 }

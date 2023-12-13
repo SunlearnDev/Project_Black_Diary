@@ -106,3 +106,4 @@ require __DIR__ . '/auth.php';
 
 Route::get('comment-test/{id}', [CommentController::class, 'get']);
 Route::post('comment-test/{id}', [CommentController::class, 'post']);
+Route::get('comment-test/comment/{id}', [CommentController::class, 'getReplies']);

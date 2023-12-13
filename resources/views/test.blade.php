@@ -96,8 +96,8 @@
                                         Reply
                                     </button>
                                     @if ($comment->replies_count)
-                                        <button type="button"
-                                            class="flex items-center italic text-sm text-gray-500 hover:underline font-bold">
+                                        <button @click.once.prevent="showReplies(event, {{$comment->id}});"  @click="data.replyOpen = !data.replyOpen; console.log(data.replyOpen);"
+                                            class="flex cursor-pointer items-center italic text-sm text-gray-500 hover:underline font-bold">
                                             {{ $comment->replies_count }} @if ($comment->replies_count > 1)
                                                 replies
                                             @else
@@ -106,7 +106,7 @@
                                         </button>
                                     @endif
                                 </div>
-                                {{-- Reply Rorm --}}
+                                {{-- Reply Form --}}
                                 <div x-html="form"></div>
                                 {{-- <article x-data="reply('{{ url()->current() }}', {{ $comment->id }})"
                                     class="p-6 pr-0 text-base bg-white">

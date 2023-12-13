@@ -29,6 +29,11 @@ class Comment extends Model
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    public function allReplies()
+    {
+        return $this->replies()->with('allReplies');
+    }
+
     public function parentComment()
     {
         return $this->belongsTo(self::class, 'parent_id');
