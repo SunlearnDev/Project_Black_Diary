@@ -96,7 +96,7 @@
                                         Reply
                                     </button>
                                     @if ($comment->replies_count)
-                                        <button @click.once.prevent="showReplies(event, {{$comment->id}});"  @click="data.replyOpen = !data.replyOpen; console.log(data.replyOpen);"
+                                        <button @click.once.prevent="showReplies(event, {{$comment->id}});"  @click="replyOpen = !replyOpen; console.log(replyOpen);"
                                             class="flex cursor-pointer items-center italic text-sm text-gray-500 hover:underline font-bold">
                                             {{ $comment->replies_count }} @if ($comment->replies_count > 1)
                                                 replies
