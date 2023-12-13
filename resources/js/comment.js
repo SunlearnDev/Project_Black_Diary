@@ -79,11 +79,9 @@ function showReplies(event, parentId) {
     axios.get(url)
         .then(function (response) {
             let replies = response.data.replies;
-            // console.dir(replies);
             replies.forEach(reply => {
                 let user = reply.user;
                 let postUrl = window.location.href;
-                // let getUrl = window.location.origin;
                 let showReplies = ``;
                 if (reply.replies_count > 1) {
                     showReplies = `<button @click.once.prevent="showReplies(event, ${reply.id})" @click="replyOpen = !replyOpen"
@@ -259,6 +257,7 @@ document.addEventListener('alpine:init', () => {
                     formReply.parentElement.insertAdjacentHTML('afterend', html);
                     formReply.reset();
                     this.form = null;
+                    loadLibraryFromCDN();
                 })
                 .catch(error => {
                     console.log(error);
@@ -268,5 +267,4 @@ document.addEventListener('alpine:init', () => {
 })
 
 window.sendMessage = sendMessage;
-// window.sendReply = sendReply;
 window.showReplies = showReplies;
