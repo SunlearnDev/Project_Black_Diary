@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "jquery": "^3.7.1",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "tinymce": "^6.8.1"
     }
 }

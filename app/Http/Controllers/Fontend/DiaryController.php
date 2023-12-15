@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
+use App\Support\HTMLPurifier;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,7 +57,10 @@ class DiaryController extends Controller
     {
         return view('Fontend.postdiary.diaryCreate');
     }
-
+    public function viewsdiaryAll($id){
+        $post = Diary::with('user', 'hashtags')->findOrFail($id); 
+        return view('Fontend.postdiary.diaryPost', compact('post'));
+    }
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -64,7 +68,7 @@ class DiaryController extends Controller
             // Tạo 1 bài viết mới
             $dataPost = new Diary;
             $dataPost->title = $request->title;
-            $dataPost->content = $request->content;
+            $dataPost->content = HTMLPurifier::clean($request->content);
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
 
@@ -73,6 +77,7 @@ class DiaryController extends Controller
                 $imagePath = $request->file('image')->store('postDiary', 'public');
                 $dataPost->image = Storage::url($imagePath);
             }
+            
             // Lưu bài viết
             $dataPost->save();
 

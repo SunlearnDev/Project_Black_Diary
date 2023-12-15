@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="flex  mx-20 gap-2 pt-[70px]">
+<div class="flex gap-2 justify-start sm:mx-2 lg:mx-20 pt-[70px]">
     
     {{-- left --}}
      @include('Fontend.layouts.left-show-diary')
