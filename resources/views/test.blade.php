@@ -1,5 +1,16 @@
 @extends('welcome')
 
+<style>
+    @keyframes comment {
+        from {
+            background-color: rgb(203, 213, 225);
+        }
+        to {
+            background-color: white;
+        }
+    }
+</style>
+
 @vite(['resources/js/app.js'])
 
 @section('content')
@@ -24,7 +35,8 @@
                         <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Discussion</h2>
                     </div>
                     {{-- Comment Form --}}
-                    <form id="comment-form" class="mb-6" x-data="{ data: { url: '{{ url()->current() }}', message: '' } }" @submit.prevent="sendMessage(data, event)">
+                    <form id="comment-form" class="mb-6" x-data="{ data: { url: '{{ url()->current() }}', message: '' } }"
+                        @submit.prevent="sendMessage(data, event)">
                         @csrf
                         <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
                             <label for="comment" class="sr-only">Your comment</label>
@@ -44,8 +56,7 @@
                     {{-- Comments list --}}
                     <div id="comment-list">
                         @foreach ($post->comments->reverse() as $comment)
-                            <article x-data="reply('{{ url()->current() }}', {{ $comment->id }})"
-                                class="p-6 text-base bg-white border-b border-gray-200">
+                            <article x-data="reply('{{ url()->current() }}', {{ $comment->id }})" class="p-6 rounded-lg text-base bg-white border-b border-gray-200">
                                 <footer class="flex justify-between items-center mb-2">
                                     <div class="flex items-center">
                                         <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold"><img
@@ -96,7 +107,8 @@
                                         Reply
                                     </button>
                                     @if ($comment->replies_count)
-                                        <button @click.once.prevent="showReplies(event, {{$comment->id}});"  @click="replyOpen = !replyOpen"
+                                        <button @click.once.prevent="showReplies(event, {{ $comment->id }});"
+                                            @click="replyOpen = !replyOpen"
                                             class="flex cursor-pointer items-center italic text-sm text-gray-500 hover:underline font-bold">
                                             {{ $comment->replies_count }} @if ($comment->replies_count > 1)
                                                 replies

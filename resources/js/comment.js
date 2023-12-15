@@ -8,7 +8,7 @@ function sendMessage(data, event) {
             let comment = response.data;
             let url = response.request.responseURL;
             let user = comment.user;
-            let html = `<article x-data="reply('${url}', ${comment.id})" class="p-6 text-base bg-white rounded-lg border-b border-gray-200">
+            let html = `<article x-data="reply('${url}', ${comment.id})" class="p-6 rounded-lg text-base bg-white border-b border-gray-200" style="animation: comment 2s">
                             <footer class="flex justify-between items-center mb-2">
                                 <div class="flex items-center">
                                     <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold"><img
@@ -97,7 +97,7 @@ function showReplies(event, parentId) {
                 }
                 let html = `<div x-show="replyOpen">
                                 <article x-data="reply('${postUrl}', ${reply.id})"
-                                    class="p-6 pb-0 pr-0 text-base bg-white">
+                                    class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg">
                                     <footer class="flex justify-between items-center mb-2">
                                         <div class="flex items-center">
                                             <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
@@ -170,7 +170,7 @@ document.addEventListener('alpine:init', () => {
         replyOpen: false,
         form: null,
         html: `<form class= "mt-6" @submit.prevent = "sendReply(data, event)" >
-                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+                    <div class="py-2 px-4 mb-4 bg-white rounded-lg border border-gray-200">
                         <label for="comment" class="sr-only">Your comment</label>
                         <textarea id="comment" rows="6" x-model="data.message"
                             class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none" placeholder="Write a comment..."
@@ -201,7 +201,7 @@ document.addEventListener('alpine:init', () => {
                     let url = response.request.responseURL;
                     let user = comment.user;
                     let html = `<article x-data="reply('${url}', ${comment.id})"
-                                    class="p-6 pb-0 pr-0 text-base bg-white">
+                                    class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg" style="animation: comment 2s">
                                     <footer class="flex justify-between items-center mb-2">
                                         <div class="flex items-center">
                                             <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
@@ -257,7 +257,6 @@ document.addEventListener('alpine:init', () => {
                     formReply.parentElement.insertAdjacentHTML('afterend', html);
                     formReply.reset();
                     this.form = null;
-                    loadLibraryFromCDN();
                 })
                 .catch(error => {
                     console.log(error);
