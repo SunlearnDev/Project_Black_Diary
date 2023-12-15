@@ -2,7 +2,7 @@
     <!-- Article Image -->
     <div class="hover:opacity-75  w-full flex justify-center ">
         <a href="{{ route('show.diaryAll', ['id' => $post->id, Str::slug($post->title)]) }}">
-            <img src="{{ '/storage/' . $post->image }}"
+            <img src="{{ $post->image }}"
                 class="rounded-t-lg @if ($post->image == null) hidden @endif">
         </a>
     </div>
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <!-- time -->
-                        <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow(true) }}</time>
+                        <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow() }}</time>
                     </div>
                 </div>
             </article>
@@ -69,7 +69,7 @@
             <div class=" gird grid-cols-5 mb-2 ">
                 @foreach ($post->hashtags as $hashtag)
                     <kbd
-                        class="px-2 py-1.5 text-xs font-semibold randomcolor   border border-gray-100 rounded-lg hover:bg-gray-200 mr-2">
+                        class="px-2 py-1.5 text-xs font-semibold randomcolor border border-gray-100 rounded-lg hover:bg-gray-200 mr-2">
                         <a href="" class="">
                             #{{ $hashtag->content }}
                         </a>
@@ -123,6 +123,6 @@
             </div>
         </div>
         <!-- cmt -->
-        <x-comment></x-comment>
+        @include('components.comment')
     </div>
 </section>

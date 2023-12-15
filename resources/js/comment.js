@@ -1,14 +1,15 @@
 import moment from 'moment';
 
 function sendMessage(data, event) {
-    axios.post(data.url, {
+    let url = `${window.location.origin}/diary/${data.id}/comment`;
+    axios.post(url, {
         message: data.message
     })
         .then(function (response) {
             let comment = response.data;
-            let url = response.request.responseURL;
+            // let url = response.request.responseURL;
             let user = comment.user;
-            let html = `<article x-data="reply('${url}', ${comment.id})" class="p-6 rounded-lg text-base bg-white border-b border-gray-200" style="animation: comment 2s">
+            let html = `<article x-data="reply(${comment.id})" class="p-6 rounded-lg text-base bg-white border-b border-gray-200" style="animation: comment 2s">
                             <footer class="flex justify-between items-center mb-2">
                                 <div class="flex items-center">
                                     <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold"><img
@@ -75,13 +76,12 @@ function sendMessage(data, event) {
 }
 
 function showReplies(event, parentId) {
-    let url = `${window.location.origin}/comment-test/comment/${parentId}`;
+    let url = `${window.location.origin}/diary/comment/${parentId}`;
     axios.get(url)
         .then(function (response) {
             let replies = response.data.replies;
             replies.forEach(reply => {
                 let user = reply.user;
-                let postUrl = window.location.href;
                 let showReplies = ``;
                 if (reply.replies_count > 1) {
                     showReplies = `<button @click.once.prevent="showReplies(event, ${reply.id})" @click="replyOpen = !replyOpen"
@@ -96,7 +96,7 @@ function showReplies(event, parentId) {
                                     </button>`;
                 }
                 let html = `<div x-show="replyOpen">
-                                <article x-data="reply('${postUrl}', ${reply.id})"
+                                <article x-data="reply(${reply.id})"
                                     class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg">
                                     <footer class="flex justify-between items-center mb-2">
                                         <div class="flex items-center">
@@ -161,24 +161,24 @@ function showReplies(event, parentId) {
 }
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('reply', (url, parentId) => ({
+    Alpine.data('reply', (diaryId, parentId) => ({
         data: {
-            url: url,
+            diaryId: diaryId,
             parentId: parentId,
             message: '',
         },
         replyOpen: false,
         form: null,
         html: `<form class= "mt-6" @submit.prevent = "sendReply(data, event)" >
-                    <div class="py-2 px-4 mb-4 bg-white rounded-lg border border-gray-200">
+                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-50 shadow-md min-h-[40px]">
                         <label for="comment" class="sr-only">Your comment</label>
                         <textarea id="comment" rows="6" x-model="data.message"
-                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none" placeholder="Write a comment..."
-                            required></textarea>
+                            class="p-4 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none h-14 "
+                            placeholder="Write a comment..." required></textarea>
                     </div>
                     <button type="submit"
-                        class="h-12 w-[150px] bg-blue-400 text-sm text-white rounded-lg transition-all hover:bg-blue-600">
-                        Send
+                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-gray-900  border border-primary-900 hover:bg-blue-600 hover:text-white rounded-lg shadow-md">
+                        Post comment
                     </button>
                     <button type="reset"
                         class="inline-flex items-center h-12 px-4 text-xs rounded-lg font-medium text-center">
@@ -192,15 +192,15 @@ document.addEventListener('alpine:init', () => {
                 this.form = null;
         },
         sendReply(data, event) {
-            axios.post(data.url, {
+            let url = `${window.location.origin}/diary/${data.diaryId}/comment`;
+            axios.post(url, {
                 message: data.message,
                 parentId: data.parentId
             })
                 .then(response => {
                     let comment = response.data;
-                    let url = response.request.responseURL;
                     let user = comment.user;
-                    let html = `<article x-data="reply('${url}', ${comment.id})"
+                    let html = `<article x-data="reply(${comment.diary_id},${comment.id})"
                                     class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg" style="animation: comment 2s">
                                     <footer class="flex justify-between items-center mb-2">
                                         <div class="flex items-center">

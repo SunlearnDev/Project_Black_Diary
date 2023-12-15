@@ -57,10 +57,24 @@ class DiaryController extends Controller
     {
         return view('Fontend.postdiary.diaryCreate');
     }
-    public function viewsdiaryAll($id){
-        $post = Diary::with('user', 'hashtags')->findOrFail($id); 
+
+    public function viewsdiaryAll($id)
+    {
+        $post = Diary::where('id', $id)
+            ->where('status', 1)
+            ->with([
+                'user',
+                'comments' => function ($query) {
+                    $query->doesntHave('parentComment')
+                        ->with('user')
+                        ->withCount('replies');
+                },
+            ])
+            ->withCount('reactions', 'comments')
+            ->orderByDesc('id')->firstOrFail();
         return view('Fontend.postdiary.diaryPost', compact('post'));
     }
+    
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -77,7 +91,7 @@ class DiaryController extends Controller
                 $imagePath = $request->file('image')->store('postDiary', 'public');
                 $dataPost->image = Storage::url($imagePath);
             }
-            
+
             // Lưu bài viết
             $dataPost->save();
 
