@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function sendMessage(data, event) {
+function sendComment(data, event) {
     let url = `${window.location.origin}/diary/${data.id}/comment`;
     axios.post(url, {
         message: data.message
@@ -20,7 +20,7 @@ function sendMessage(data, event) {
                                 </div>
                                 <button data-dropdown-toggle="dropdownComment"
                                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                    type="button">
+                                    type="button" style="animation: comment 2s">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 16 3">
                                         <path
@@ -265,5 +265,5 @@ document.addEventListener('alpine:init', () => {
     }))
 })
 
-window.sendMessage = sendMessage;
+window.sendComment = sendComment;
 window.showReplies = showReplies;

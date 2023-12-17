@@ -121,20 +121,18 @@
     </div>
 </section> --}}
 
-<style>
-    @keyframes comment {
-        from {
-            background-color: rgb(203, 213, 225);
-        }
+@push('style')
+    <style>
+        @keyframes comment {
+            from {
+                background-color: rgb(203, 213, 225);
+            }
 
-        to {
-            background-color: white;
+            to {
+                background-color: white;
+            }
         }
-    }
-</style>
-
-@push('scripts')
-    @vite(['resources/js/app.js'])
+    </style>
 @endpush
 
 <section class="w-full flex flex-col items-center bg-white mt-8 lg:mt-16 antialiased">
@@ -145,7 +143,7 @@
         </div>
         {{-- Comment Form --}}
         @auth
-            <form id="comment-form" class="mb-6" x-data="{ data: { id: {{ $post->id }}, message: '' } }" @submit.prevent="sendMessage(data, event)">
+            <form id="comment-form" class="mb-6" x-data="{ data: { id: {{ $post->id }}, message: '' } }" @submit.prevent="sendComment(data, event)">
                 <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-50 shadow-md min-h-[40px]">
                     <label for="comment" class="sr-only">Your comment</label>
                     <textarea id="comment" rows="6" x-model="data.message"

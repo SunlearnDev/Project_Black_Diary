@@ -46,11 +46,13 @@ class PostProfile extends Controller
             ]);
         }
     }
+
     public function login()
     {
         Session::put('url.intended', URL::previous());
         return view('auth.login');
     }
+    
     // view edit profile
     public function edit()
     {
@@ -75,7 +77,7 @@ class PostProfile extends Controller
             if (Auth::user()->email_verified_at == null) {
                 return redirect('/email/verify');
             }
-            
+
             return redirect(Session::get('url.intended'))->with('msgSuccess', 'Đăng nhập thành công');
         }
         return back()->with('msgError', 'Email hoặc mật khẩu không đúng');

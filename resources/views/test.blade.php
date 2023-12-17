@@ -1,130 +1,174 @@
 @extends('welcome')
 
-<style>
-    @keyframes comment {
-        from {
-            background-color: rgb(203, 213, 225);
+@push('style')
+    <style>
+        .rotate-45 {
+            --transform-rotate: 45deg;
+            transform: rotate(45deg);
         }
-        to {
-            background-color: white;
-        }
-    }
-</style>
 
-@vite(['resources/js/app.js'])
+        .group:hover .group-hover\:flex {
+            display: flex;
+        }
+    </style>
+@endpush
 
 @section('content')
-    {{-- main --}}
-    <section class="w-full flex flex-col items-center">
-        <article class="flex flex-col shadow my-4 rounded-lg lg:w-[650px] md:w-[530px]">
-            <!-- Article Image -->
-            <!-- link bai viet -->
-            <a href=""></a>
-            <!-- hình ảnh -->
-            <div class="hover:opacity-75 w-full flex justify-center ">
-                <img src="{{ $post->image }}"
-                    class="rounded-t-lg w-full object-cover @if ($post->image == null) hidden @endif">
-            </div>
-            <!-- story -->
-            @include('Fontend.layouts.viewStory')
-
-            <!------------- Comments ---------------->
-            <section class="bg-white pt-8 lg:pt-16 antialiased">
-                <div class="max-w-2xl mx-auto px-4">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Discussion</h2>
-                    </div>
-                    {{-- Comment Form --}}
-                    <form id="comment-form" class="mb-6" x-data="{ data: { url: '{{ url()->current() }}', message: '' } }"
-                        @submit.prevent="sendMessage(data, event)">
-                        @csrf
-                        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
-                            <label for="comment" class="sr-only">Your comment</label>
-                            <textarea id="comment" rows="6" x-model="data.message"
-                                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none" placeholder="Write a comment..."
-                                required></textarea>
+    {{-- <div class="mt-8 flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+        <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+            <ul class="flex flex-col flex-grow h-0 p-4 overflow-auto">
+                <li class="flex w-full mt-2 space-x-3 max-w-xs">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                    <div>
+                        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                        <button type="submit"
-                            class="h-12 w-[150px] bg-blue-400 text-sm text-white rounded-lg transition-all hover:bg-blue-600">
-                            Send
-                        </button>
-                        <button type="reset"
-                            class="inline-flex items-center h-12 px-4 text-xs rounded-lg font-medium text-center">
-                            Cancel
-                        </button>
-                    </form>
-                    {{-- Comments list --}}
-                    <div id="comment-list">
-                        @foreach ($post->comments->reverse() as $comment)
-                            <article x-data="reply('{{ url()->current() }}', {{ $comment->id }})" class="p-6 rounded-lg text-base bg-white border-b border-gray-200">
-                                <footer class="flex justify-between items-center mb-2">
-                                    <div class="flex items-center">
-                                        <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold"><img
-                                                class="mr-2 w-6 h-6 rounded-full"
-                                                src="{{ $comment->user->avatar }}">{{ $comment->user->other_name }}
-                                        </p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
-                                                datetime="{{ $comment->created_at }}">{{ $comment->created_at->fromNow() }}</time>
-                                        </p>
-                                    </div>
-                                    <button data-dropdown-toggle="dropdownComment"
-                                        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                        type="button">
-                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor" viewBox="0 0 16 3">
-                                            <path
-                                                d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                        </svg>
-                                        <span class="sr-only">Comment settings</span>
-                                    </button>
-                                    <!-- Dropdown menu -->
-                                    <div id="dropdownComment"
-                                        class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-                                        <ul class="py-1 text-sm text-gray-700"
-                                            aria-labelledby="dropdownMenuIconHorizontalButton">
-                                            <li>
-                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </footer>
-                                <p class="text-gray-500">{{ $comment->content }}</p>
-                                <div class="flex items-center mt-4 space-x-4">
-                                    <button type="button" @click="toggle"
-                                        class="flex items-center text-sm text-gray-500 hover:underline font-medium">
-                                        <svg class="mr-1.5 w-3.5 h-3.5" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
-                                        </svg>
-                                        Reply
-                                    </button>
-                                    @if ($comment->replies_count)
-                                        <button @click.once.prevent="showReplies(event, {{ $comment->id }});"
-                                            @click="replyOpen = !replyOpen"
-                                            class="flex cursor-pointer items-center italic text-sm text-gray-500 hover:underline font-bold">
-                                            {{ $comment->replies_count }} @if ($comment->replies_count > 1)
-                                                replies
-                                            @else
-                                                reply
-                                            @endif
-                                        </button>
-                                    @endif
-                                </div>
-                                {{-- Reply Form --}}
-                                <div x-html="form"></div>
-                            </article>
-                        @endforeach
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
                     </div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+                            </p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet.</p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                    <div>
+                        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. </p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. </p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt.</p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet.</p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                    <div>
+                        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. </p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                </li>
+                <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                    <div>
+                        <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                            <p class="text-sm">Lorem ipsum dolor sit.</p>
+                        </div>
+                        <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    </div>
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
+                </li>
+            </ul>
+
+            <div class="bg-gray-300 p-4">
+                <input class="flex items-center h-10 w-full rounded px-3 text-sm" type="text"
+                    placeholder="Type your message">
+            </div>
+        </div>
+    </div> --}}
+
+    <!-- component -->
+    <div x-data="chat(1)">
+        {{-- Minimize button --}}
+        <div class="fixed bottom-0 right-0 mb-4 mr-4">
+            <button id="open-chat"
+                class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                    </path>
+                </svg>
+                Chat with Admin Bot
+            </button>
+        </div>
+        {{-- Chat field --}}
+        <div id="chat-container" class="fixed bottom-16 right-4 w-96">
+            <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
+                <div class="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
+                    <p class="text-lg font-semibold">Username</p>
+                    <button id="close-chat"
+                        class="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
                 </div>
-            </section>
-        </article>
-    </section>
+                {{-- Here is chatbox --}}
+                <ul id="chatbox" class="flex flex-col flex-grow h-80 p-4 overflow-auto">
+                    <li class="flex w-full mt-2 space-x-3 max-w-[80%]">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-300"></div>
+                        <div>
+                            <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                                <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                        </div>
+                    </li>
+                    <li class="flex w-full mt-2 space-x-3 max-w-[80%] ml-auto justify-end">
+                        <div>
+                            <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                                <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+                                </p>
+                            </div>
+                            <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                        </div>
+                    </li>
+                </ul>
+                {{-- Input message --}}
+                <form class="p-4 border-t flex" @submit.prevent="sendMessage(event)">
+                    <input id="user-input" name="message" type="text" placeholder="Type a message" x-model="data.message"
+                        class="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="send-button" type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

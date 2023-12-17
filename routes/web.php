@@ -21,7 +21,7 @@ use App\Http\Controllers\Fontend\SearchController;
 use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
 use App\Http\Controllers\Fontend\FollowController;
-
+use App\Http\Controllers\Fontend\MessageController;
 
 Route::get('/', [DiaryController::class, 'viewPosts']);
 Route::get('/diary/{id}-{title}', [DiaryController::class, 'viewsdiaryAll'])->name('show.diaryAll');
@@ -91,19 +91,23 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     Route::post('/{id}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
 });
 
+// Comment and reply
+Route::post('diary/{id}/comment', [CommentController::class, 'post']);
+Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
 
 // Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
-//     //Post diary
-//     Route::post('/create', [DiaryController::class, 'store']);
-//     Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
-//     Route::get('/edit/diary/{id}', [DiaryController::class, 'showEdit'])->name('showEdit.diary');
-//     Route::patch('/edit/diary/{id}', [DiaryController::class, 'edit'])->name('edit.diary');
+    //     //Post diary
+    //     Route::post('/create', [DiaryController::class, 'store']);
+    //     Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
+    //     Route::get('/edit/diary/{id}', [DiaryController::class, 'showEdit'])->name('showEdit.diary');
+    //     Route::patch('/edit/diary/{id}', [DiaryController::class, 'edit'])->name('edit.diary');
 //     Route::delete('/delete/diary/{id}', [DiaryController::class, 'delete'])->name('delete.diary');
 // });
 
 // Đăng xuất
-Route::get('/logout', [PostProfile::class, 'logout'])->name('logout');
+Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
 require __DIR__ . '/auth.php';
 
-Route::post('diary/{id}/comment', [CommentController::class, 'post']);
-Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
+Route::get('chat', [MessageController::class, 'index']);
+Route::post('chat', [MessageController::class, 'post']);
+Route::get('chat/user', [MessageController::class, 'user']);

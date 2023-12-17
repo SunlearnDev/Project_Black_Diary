@@ -5,7 +5,7 @@
             <!-- logo -->
             <div class="flex justify-center items-center">
                 <div class="flex items-center md:w-[180px] mr-2">
-                    <a href="{{route('index')}}" class="flex ml-2 md:mr-24">
+                    <a href="" class="flex ml-2 md:mr-24">
                         <img src="{{ asset('img/logo/2.png') }}" class="w-8 scale-250 mr-3" alt="Black Diary logo" />
                         <div class="">
                             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">

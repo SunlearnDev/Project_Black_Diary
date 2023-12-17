@@ -8,7 +8,7 @@
 
     <title>Black Diary</title>
 
-    @stack('scripts')
+    @vite(['resources/js/app.js'])
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -18,9 +18,9 @@
     {{-- jQuery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     {{-- Axios --}}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
     <!-- Styles -->
-    @include('Fontend.layouts.style')
+    @stack('style')
 </head>
 
 <body class="bg-gray-50">

@@ -100,6 +100,27 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Reaction::class, 'user_id');
     }
+
+    // Message
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function receivers()
+    {
+        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id');
+    }
+
+    public function senders()
+    {
+        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id');
+    }
 }
 
 

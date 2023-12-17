@@ -1,5 +1,6 @@
 import './bootstrap';
 import './comment';
+import './chat';
 
 window.axios = axios;
 
