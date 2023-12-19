@@ -103,13 +103,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // ─── Message ─────────────────────────────────────────────────────────
 
-    public function messagesWith($receiverId)
+    public function messagesWith($userId)
     {
-        return Message::where(function ($query) use ($receiverId) {
+        return Message::where(function ($query) use ($userId) {
             $query->where('sender_id', $this->id)
-                ->where('receiver_id', $receiverId);
-        })->orWhere(function ($query) use ($receiverId) {
-            $query->where('sender_id', $receiverId)
+                ->where('receiver_id', $userId);
+        })->orWhere(function ($query) use ($userId) {
+            $query->where('sender_id', $userId)
                 ->where('receiver_id', $this->id);
         })->get();
     }
@@ -124,7 +124,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')
             ->withPivot('id', 'content', 'read_at')
-            ->with(['unreadMessages' => function ($query) {
+            ->withCount(['unreadMessages' => function ($query) {
                 $query->where('receiver_id', $this->id);
             }]);
     }
@@ -139,19 +139,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Message::class, 'sender_id')->whereNull('read_at');
     }
-
-    // public function sentMessages()
-    // {
-    //     return $this->hasOne(Message::class, 'sender_id')->latestOfMany();
-    // }
-
-    // public function receivedMessages()
-    // {
-    //     return $this->hasOne(Message::class, 'receiver_id')->latestOfMany();
-    // }
-
-    // public function latestMessage()
-    // {
-    //     return $this->sentMessages->merge($this->receivedMessages)->last();
-    // }
 }

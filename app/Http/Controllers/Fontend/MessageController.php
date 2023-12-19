@@ -16,8 +16,7 @@ class MessageController extends Controller
 
     public function getContacts() {
         $contacts = User::find(auth()->id())->contacts();
-        // $contacts = User::withCount('unreadMessages')->get();
-        dd($contacts->toArray());
+        return response()->json($contacts);
     }
 
     public function getMessages($receiverId)
