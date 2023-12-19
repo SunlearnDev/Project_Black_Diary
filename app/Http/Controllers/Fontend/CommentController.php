@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function post(Request $request, $id)
+    public function sendComment(Request $request, $id)
     {
         if (Auth::check()) {
             $comment = Comment::create([

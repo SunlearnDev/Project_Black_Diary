@@ -91,9 +91,10 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     Route::post('/{id}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
 });
 
-// Comment and reply
-Route::post('diary/{id}/comment', [CommentController::class, 'post']);
+// ─── Comment And Reply ───────────────────────────────────────────────────────
+
 Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
+Route::post('diary/{id}/comment', [CommentController::class, 'sendComment']);
 
 // Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     //     //Post diary
@@ -108,6 +109,9 @@ Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
 Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');
 require __DIR__ . '/auth.php';
 
-Route::get('chat', [MessageController::class, 'index']);
-Route::post('chat', [MessageController::class, 'post']);
-Route::get('chat/user', [MessageController::class, 'user']);
+// ─── Chat ────────────────────────────────────────────────────────────────────
+
+Route::get('contacts', [MessageController::class, 'getContacts']);
+Route::get('chat', [MessageController::class, 'user']);
+Route::get('chat/{receiverId}', [MessageController::class, 'getMessages']);
+Route::post('chat', [MessageController::class, 'sendMessage']);

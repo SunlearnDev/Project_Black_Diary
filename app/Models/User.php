@@ -101,27 +101,51 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Reaction::class, 'user_id');
     }
 
-    // Message
-    public function sentMessages()
-    {
-        return $this->hasMany(Message::class, 'sender_id');
-    }
+    // ─── Message ─────────────────────────────────────────────────────────
 
-    public function receivedMessages()
+    public function messagesWith($receiverId)
     {
-        return $this->hasMany(Message::class, 'receiver_id');
+        return Message::where(function ($query) use ($receiverId) {
+            $query->where('sender_id', $this->id)
+                ->where('receiver_id', $receiverId);
+        })->orWhere(function ($query) use ($receiverId) {
+            $query->where('sender_id', $receiverId)
+                ->where('receiver_id', $this->id);
+        })->get();
     }
 
     public function receivers()
     {
-        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id');
+        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')->withPivot('id', 'content');
     }
 
     public function senders()
     {
-        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id');
+        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')->withPivot('id', 'content');
+    }
+
+    public function contacts()
+    {
+        return $this->senders->merge($this->receivers)->unique();
+    }
+
+    public function messagesSent()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function messagesReceived()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function allMessages()
+    {
+        return $this->messagesSent->merge($this->messagesReceived);
+    }
+
+    public function latestMessage()
+    {
+        return $this->allMessages()->sortByDesc('created_at')->first();
     }
 }
-
-
-// latest()
