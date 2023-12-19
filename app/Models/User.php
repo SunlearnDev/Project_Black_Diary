@@ -116,12 +116,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function receivers()
     {
-        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')->withPivot('id', 'content');
+        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')->withPivot('id', 'content', 'read_at')->withCount('unreadMessages');
     }
 
     public function senders()
     {
-        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')->withPivot('id', 'content');
+        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')->withPivot('id', 'content', 'read_at')->withCount('unreadMessages');
     }
 
     public function contacts()
@@ -129,23 +129,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->senders->merge($this->receivers)->unique();
     }
 
-    public function messagesSent()
+    public function unreadMessages()
     {
-        return $this->hasMany(Message::class, 'sender_id');
-    }
-
-    public function messagesReceived()
-    {
-        return $this->hasMany(Message::class, 'receiver_id');
-    }
-
-    public function allMessages()
-    {
-        return $this->messagesSent->merge($this->messagesReceived);
-    }
-
-    public function latestMessage()
-    {
-        return $this->allMessages()->sortByDesc('created_at')->first();
+        return $this->hasMany(Message::class, 'sender_id')->whereNull('read_at');
     }
 }

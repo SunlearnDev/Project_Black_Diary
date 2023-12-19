@@ -16,7 +16,7 @@ class MessageController extends Controller
 
     public function getContacts() {
         $contacts = User::find(auth()->id())->contacts()->reverse();
-        // $contacts = User::find(auth()->id())->latestMessage();
+        // $contacts = User::withCount('unreadMessages')->get();
         dd($contacts->toArray());
     }
 
@@ -26,7 +26,6 @@ class MessageController extends Controller
         $messages = $receiver->messagesWith(auth()->id());
         $messages->update(['read_at' => now()]);
         return response()->json([$receiver, $messages]);
-        // dd([$receiver->toArray(), $messages->toArray()]);
     }
 
     public function sendMessage()
