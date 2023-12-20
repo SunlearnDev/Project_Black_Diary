@@ -36,11 +36,13 @@ class Diary extends Model
     {
         return $this->hasMany(Comment::class, 'diary_id');
     }
+    public function likes(){
+        return $this->belongsToMany(Diary::class, 'reactions')->withTimestamps();
+    }
+    public function isLikedBy(User $user)
+    {
+    return $this->likes->contains('user_id', $user->id);
+    }
 
-    // protected function createdAt(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($value) => Carbon::parse($value),
-    //     );
-    // }
+
 }

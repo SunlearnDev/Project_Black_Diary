@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Fontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
+use App\Models\Likes;
 use App\Support\HTMLPurifier;
 use Illuminate\Support\Facades\Log;
 
@@ -67,6 +69,7 @@ class DiaryController extends Controller
             
             // Lưu bài viết
             $dataPost->save();
+            
                // Xử lý HashTag
                $hashTag = explode('#', $request->hashtag);
                array_shift($hashTag);
@@ -83,8 +86,7 @@ class DiaryController extends Controller
                }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
-            Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
-            return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
+            return redirect('/diary/' . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
@@ -94,4 +96,27 @@ class DiaryController extends Controller
             // dd('Fail');
         }
     }
+    public function likes(Request $request, Diary $id){
+        $reaction = New Likes([
+            'user_id' => Auth::id(),
+            'diary_id' => $id->id,
+            'status' => $request->status
+        ]);
+        $reaction->save();
+        return redirect()->back();
+    }
+    public function unlikes($id){
+        $user = auth()->user();
+
+    // Tìm và xóa like nếu tồn tại
+    Likes::where(['user_id' => $user->id, 'diary_id' => $id,'status'=>'1'])->delete();
+
+    return redirect()->back();
+    }
+    public function delete($id){
+        $diary = Diary::find($id);
+        $diary->delete();
+            return response()->json(['success' => false, 'post'=>'post_'.$id]);
+    }
+
 }
