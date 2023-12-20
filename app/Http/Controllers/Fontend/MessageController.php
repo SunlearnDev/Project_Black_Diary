@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fontend;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -14,17 +15,21 @@ class MessageController extends Controller
         return response()->json(auth()->id() ?? 0);
     }
 
-    public function getContacts() {
-        $contacts = User::find(auth()->id())->contacts();
+    public function getContacts()
+    {
+        $contacts = User::findOrFail(auth()->id())->contacts();
         return response()->json($contacts);
     }
 
-    public function getMessages($receiverId)
+    public function getMessages($fromUser)
     {
-        $receiver = User::find($receiverId);
-        $messages = $receiver->messagesWith(auth()->id());
-        $messages->update(['read_at' => now()]);
-        return response()->json([$receiver, $messages]);
+        $receiver = User::select('id', 'name', 'avatar', 'other_name', 'avatar')->findOrFail($fromUser);
+        $receiver->messagesWith(auth()->id())
+            ->whereNull('read_at')
+            ->where('receiver_id', auth()->id())
+            ->update(['read_at' => now()]);
+        $messages = $receiver->messagesWith(auth()->id())->get();
+        return response()->json(['receiver' => $receiver, 'messages' => $messages]);
     }
 
     public function sendMessage()

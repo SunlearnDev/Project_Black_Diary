@@ -107,22 +107,23 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Message::where(function ($query) use ($userId) {
             $query->where('sender_id', $this->id)
-                ->where('receiver_id', $userId);
-        })->orWhere(function ($query) use ($userId) {
-            $query->where('sender_id', $userId)
+                ->where('receiver_id', $userId)
+                ->orWhere('sender_id', $userId)
                 ->where('receiver_id', $this->id);
-        })->get();
+        });
     }
 
     public function receivers()
     {
         return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')
+            ->select('users.id', 'name', 'avatar', 'other_name')
             ->withPivot('id', 'content', 'read_at');
     }
 
     public function senders()
     {
         return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')
+            ->select('users.id', 'name', 'avatar', 'other_name')
             ->withPivot('id', 'content', 'read_at')
             ->withCount(['unreadMessages' => function ($query) {
                 $query->where('receiver_id', $this->id);
