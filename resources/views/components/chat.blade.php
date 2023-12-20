@@ -12,13 +12,14 @@
 @endpush
 
 <div x-html="$store.chat.chatBox">
-    <div>
-        <div id="chat-container" class="fixed bottom-2 right-2 w-96">
+    {{-- <div>
+        <div id="chat-container" class="fixed bottom-2 right-2 w-96" x-show="!$store.chat.collapse">
             <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
                 <div class="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
                     <p class="text-lg font-semibold">Username</p>
                     <div class="flex gap-1 justify-center">
-                        <button id="minimize-chat" class="hover:animate-pulse focus:outline-none">
+                        <button id="minimize-chat" @click="$store.chat.minimize()" 
+                        class="hover:animate-pulse focus:outline-none">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 transform="rotate(270)">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -79,8 +80,8 @@
             </div>
         </div>
 
-        {{-- <div class="fixed bottom-0 right-0 mb-4 mr-4">
-            <button id="open-chat"
+        <div class="fixed bottom-0 right-0 mb-4 mr-4" x-show="$store.chat.collapse">
+            <button id="open-chat" @click="$store.chat.minimize()"
                 class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition duration-300 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -89,6 +90,6 @@
                     </path>
                 </svg>
             </button>
-        </div> --}}
-    </div>
+        </div>
+    </div> --}}
 </div>
