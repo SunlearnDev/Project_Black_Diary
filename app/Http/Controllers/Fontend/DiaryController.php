@@ -57,10 +57,10 @@ class DiaryController extends Controller
             // Tạo 1 bài viết mới
             $dataPost = new Diary;
             $dataPost->title = $request->title;
-            $dataPost->content = HTMLPurifier::clean($request->content);
+            $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-          
+            
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');

@@ -1,4 +1,4 @@
-<div class="bg-white grid grid-row px-6 py-4  rounded-lg">
+<div class="bg-white grid grid-row px-6 py-4  rounded-lg post">
     <div class="flex items-center justify-between">
         <!-- link den ca nhan -->
         <article class="flex items-center">
@@ -23,7 +23,7 @@
         {{-- select --}}
         <article class="p-1 text-base bg-white rounded-lg ">
             <footer class="flex justify-between items-center mb-2">
-                <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment{{ $post->id }}"
                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500  rounded-lg hover:bg-gray-50 outline-none rotate-90 hover:rotate-0 ease-in-out delay-150"
                     type="button">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -34,14 +34,19 @@
                     <span class="sr-only">Comment settings</span>
                 </button>
                 <!-- Dropdown menu -->
-                <div id="dropdownComment1" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ">
+                <div id="dropdownComment{{ $post->id }}"
+                    class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 "
                         aria-labelledby="dropdownMenuIconHorizontalButton">
                         <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Edit</a>
+                            <div class="w-full hover:bg-gray-100 ">
+                                <button type="button" onclick="deleteDiary({{ $post->id }})"
+                                    class=" py-2 px-4 block  text-gray-700">Delete</button>
+                            </div>
                         </li>
                         <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Remove</a>
+                            <button name="remove"
+                                class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Remove</button>
                         </li>
                         <li>
                             <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Report</a>
@@ -54,7 +59,8 @@
     <!-- div content -->
     <div class="row-span-3 pl-14 ">
         <!-- <title> -->
-        <h3 class="mb-2"><a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}" class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>
+        <h3 class="mb-2"><a href="{{ route('show.diaryAll', ['id' => $post->id, Str::slug($post->title)]) }}"
+                class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>
                     {{ $post->title }} </span></a></h3>
         <!-- hagtag -->
         <div class=" gird grid-cols-5 mb-2 ">
@@ -110,10 +116,12 @@
         </div>
         <!-- cmt -->
         @if ($post->comments_count > 1)
-            <a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}" class="text-gray-500 hover:text-gray-600">See all {{ $post->comments_count }}
+            <a href="{{ route('show.diaryAll', ['id' => $post->id, Str::slug($post->title)]) }}"
+                class="text-gray-500 hover:text-gray-600">See all {{ $post->comments_count }}
                 comments </a>
         @else
-            <a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}" class="flex items-center justify-start text-gray-400 hover:text-gray-500 pt-4 pb-2">
+            <a href="{{ route('show.diaryAll', ['id' => $post->id, Str::slug($post->title)]) }}"
+                class="flex items-center justify-start text-gray-400 hover:text-gray-500 pt-4 pb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5 mr-1">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -123,3 +131,35 @@
         @endif
     </div>
 </div>
+<script>
+    var isDeleting = false;
+
+    function deleteDiary(postId) {
+        if (confirm('Are you sure you want to delete')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        }
+        // Kiểm tra xem có đang trong quá trình xóa không
+        if (isDeleting) {
+            console.log("Đang trong quá trình xóa. Hãy đợi...");
+            return;
+        }
+
+        // Đánh dấu đang trong quá trình xóa
+        isDeleting = true;
+
+        $.ajax({
+            url: "user/delete/diary/" + postId,
+            type: "DELETE",
+            success: function(result) {
+                $("#" + result['post']).slideUp("slow");
+            },
+            error: function(error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>

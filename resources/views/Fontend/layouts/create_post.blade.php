@@ -1,5 +1,5 @@
 <main class="w-full  max-w-[850px]  flex flex-col items-center  pb-2">
-    <form method="POST" action="/user/create" enctype="multipart/form-data" class=" w-full " >
+    <form method="POST" action="/user/create" enctype="multipart/form-data" class=" w-full " id="tagForm text-fore">
         @csrf
         {{-- Logo, Edit, Preview --}}
         <div class="  h-[72px] w-full p-2  ">
@@ -31,23 +31,24 @@
                                     accept="image/*" id="avatarUpload" onchange="loadFile(this)" />
                             </label>
                             <button type="button" id="removeImage"
-                                class="text-red-700 bg-white border border-red-300 hover:text-white hover:bg-red-700  font-medium rounded-lg text-sm px-5 py-2.5 hidden" onclick="removePreview()">Remove</button>
+                                class="text-red-700 bg-white border border-red-300 hover:text-white hover:bg-red-700  font-medium rounded-lg text-sm px-5 py-2.5 hidden"
+                                onclick="removePreview()">Remove</button>
                         </div>
                         <img src="" alt="Avatar" id="image" name="image"
                             class="w-[350px] h-[230px] object-cover hidden" \>
                     </div>
                     <!-- title, hastag -->
-                    <div class="px-4 py-2">
-                        <input type="text" required placeholder="New post title here..." name="title"
-                            class="w-full outline-none h-18 text-gray-900 text-5xl font-bold my-1">
-                        <input type="text" placeholder="Add another..." name="hashtag" multiple="multiple"
+                    <div class="px-4 py-2 mb-6">
+                        <textarea required placeholder="New post title here..." name="title"
+                            class="outline-none w-full  h-auto text-gray-900 text-5xl font-bold my-1 resize-none overflow-hidden"></textarea>
+                         <input type="text" placeholder="Add another..." name="hashtag" multiple="multiple"
                             class="w-full outline-none my-6 h-8 text-gray-400">
                     </div>
                 </div>
             </div>
             <!-- content -->
             <div class="w-full mb-4 border0 rounded-lg bg-white dark:border-gray-600 px-2">
-                
+
                 {{-- Write content --}}
                 <div class=" py-2 bg-white rounded-b-lg ">
                     <label for="editor" class="sr-only">Publish post</label>
@@ -59,7 +60,7 @@
             </div>
             <div class="px-4 flex items-center">
                 {{-- Submit --}}
-                <button type="submit" 
+                <button type="submit"
                     class="text-blue-700 w-32 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Post</button>
                 {{-- Public or Private --}}
                 <section class="mb-2">

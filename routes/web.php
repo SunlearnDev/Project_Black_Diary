@@ -20,8 +20,13 @@ use App\Http\Controllers\Fontend\SearchController;
 use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
 use App\Http\Controllers\Fontend\FollowController;
-
+use App\Http\Controllers\HandleImg\ImdUpload;
     
+    Route::get('/test',function(){
+        return view('livewire.multi-hashtag');
+    });
+    Route::post('/upload',[ImdUpload::class, 'upload'])->name('cheditor.upload');
+
     Route::get('/',[DiaryController::class,'viewPosts']);
     Route::get('/diary/{id}-{title}',[DiaryController::class,'viewsdiaryAll'])->name('show.diaryAll');
     // Route list Quận huyện
@@ -74,14 +79,18 @@ use App\Http\Controllers\Fontend\FollowController;
         Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
         Route::get('/create', [DiaryController::class,'viewCreate'])->name('create');
       
+        // Following routes
         Route::post('/{id}/follow',[FollowController::class,'follow'])->name('user.follow');
         Route::post('/{id}/unfollow',[FollowController::class,'unfollow'])->name('user.unfollow');
 
-
+        // Like routes
+        Route::post('/{id}/likes',[DiaryController::class,'likes'])->name('user.likes');
+        Route::post('/{id}/unlikes',[DiaryController::class,'unlikes'])->name('user.unlikes');
 
         //Post diary
         Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
-        Route::post('/create', [DiaryController::class, 'store']);
+        Route::post('/create', [DiaryController::class, 'store'])->name('diary.create');
+        
         Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
         Route::get('/edit/diary/{id}',[DiaryController::class, 'showEdit'])->name('showEdit.diary');
         Route::patch('/edit/diary/{id}',[DiaryController::class,'edit'])->name('edit.diary');

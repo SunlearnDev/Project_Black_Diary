@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+
 class ImdUpload extends Controller
 {
     public function autoAvatar($user)
@@ -75,5 +76,37 @@ class ImdUpload extends Controller
       }
     }
     return $dataPath;
+  }
+  public function upload(Request $request){
+     // Kiểm tra xem người dùng có gửi file ảnh hay không
+  if ($request->hasFile('upload')) {
+
+    // Lấy tên file gốc
+    $originName = $request->file('upload')->getClientOriginalName();
+
+    // Lấy tên file mới
+    $fileName = pathinfo($originName, PATHINFO_FILENAME);
+
+    // Lấy phần mở rộng của file
+    $extension = $request->file('upload')->getClientOriginalExtension();
+
+    // Tạo tên file mới
+    $fileName = $fileName . time() . '.' . $extension;
+
+    // Di chuyển file lên máy chủ
+    $request->file('upload')->move(public_path('media'), $fileName);
+
+    // Trả về thông tin file đã upload
+    return response()->json([
+      'fileName' => $fileName,
+      'uploaded' => 1,
+      'url' => asset('media/' . $fileName),
+    ]);
+  }
+
+  // Trả về lỗi
+  return response()->json([
+    'message' => 'Không có file ảnh nào được gửi',
+  ], 422);
   }
 }

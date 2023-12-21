@@ -1,7 +1,7 @@
 
 <!-- left    -->
  <aside id="logo-sidebar"
-     class=" top-0 left-0 z-40 md:w-56 lg:w-64 h-screen  transition-transform  -translate-x-full  sm:translate-x-0 "
+     class=" top-0 left-0 z-40 w-44 md:w-56 lg:w-64 h-screen  transition-transform  -translate-x-full  sm:translate-x-0 "
      aria-label="Sidebar">
      <div class="px-3 pb-4 overflow-y-auto border-r  " >
          <!-- Sidebar navigation menu -->
