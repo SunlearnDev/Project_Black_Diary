@@ -91,7 +91,7 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     Route::post('/{id}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
 });
 
-Route::middleware('handleLoginCustomer')->group(function () {
+Route::middleware('fetch')->group(function () {
     // ─── Comment And Reply ───────────────────────────────────────────────────────
 
     Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);

@@ -12,7 +12,7 @@ class MessageController extends Controller
 {
     public function user()
     {
-        return response()->json(auth()->id() ?? 0);
+        return response()->json(auth()->id());
     }
 
     public function getContacts()
