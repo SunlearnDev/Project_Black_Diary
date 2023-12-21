@@ -1,5 +1,11 @@
 import moment from 'moment';
 
+moment.updateLocale('en', {
+    relativeTime: {
+        s: '%d seconds',
+    }
+});
+
 function sendComment(data, event) {
     let url = `${window.location.origin}/diary/${data.id}/comment`;
     axios.post(url, {

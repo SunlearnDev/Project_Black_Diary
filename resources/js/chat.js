@@ -3,7 +3,7 @@ import moment from 'moment';
 document.addEventListener('alpine:init', () => {
     Alpine.store('chat', {
         data: {
-            receiverId: null,
+            receiver: null,
             message: '',
         },
         echo: null,
@@ -11,13 +11,13 @@ document.addEventListener('alpine:init', () => {
         chatBox: null,
 
         start(receiverId) {
-            if (this.chatBox == null) {
+            if (this.chatBox == null || receiverId != this.data.receiver.id) {
                 axios.get(`${window.location.origin}/chat/${receiverId}`)
                     .then(response => {
                         let receiver = response.data.receiver;
                         let messages = response.data.messages;
-                        this.data.receiverId = receiverId;
-                        let html = `<div>
+                        this.data.receiver = receiver;
+                        let html = `<div x-init="$store.chat.scroll()">
                                         <div id="chat-container" class="fixed bottom-2 right-2 w-96" x-show="!$store.chat.collapse">
                                             <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
                                                 <div class="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
@@ -52,25 +52,26 @@ document.addEventListener('alpine:init', () => {
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <ul id="chatbox" class="flex flex-col flex-grow h-80 p-4 overflow-y-auto">`;
+                                                <ul id="messagebox" class="flex flex-col flex-grow h-80 p-4 overflow-y-auto">`;
                         messages.forEach(message => {
                             if (message.sender_id == receiver.id)
-                                html += `<li class="flex w-full mt-2 space-x-3 max-w-[80%]">
-                                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-300"></div>
+                                html += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${formatTime(message.created_at)}</time>
+                                        <li class="flex w-full space-x-3 max-w-[80%]">
+                                            <div class="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-gray-300">
+                                                <img class="h-full w-full object-cover"
+                                                    src="${receiver.avatar}" alt="avatar">
+                                            </div>
                                             <div>
                                                 <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg inline-block">
                                                     <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
-                                                <span class="text-xs text-gray-500 leading-none block">2 min ago</span>
                                             </div>
                                         </li>`;
                             else
-                                html += `<li class="flex w-full mt-2 space-x-3 max-w-[80%] ml-auto justify-end">
-                                            <div>
-                                                <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg inline-block">
-                                                    <p class="text-sm" style="word-break: break-word;">${message.content}</p>
-                                                </div>
-                                                <span class="text-xs text-gray-500 leading-none block">2 min ago</span>
+                                html += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${formatTime(message.created_at)}</time>
+                                        <li class="flex w-full space-x-3 justify-end">
+                                            <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg inline-block">
+                                                <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                             </div>
                                         </li>`;
 
@@ -103,30 +104,35 @@ document.addEventListener('alpine:init', () => {
                         console.log(error);
                     })
             }
+            else this.minimize();
         },
         close() {
             this.chatBox = null;
         },
         minimize() {
             this.collapse = !this.collapse;
+            this.scroll();
+        },
+        scroll() {
+            let messagebox = document.querySelector('ul#messagebox');
+            messagebox.scrollTop = messagebox.scrollHeight;
         },
         sendMessage(event) {
             axios.post(`${window.location.origin}/chat`, {
                 message: this.data.message,
-                receiverId: this.data.receiverId
+                receiverId: this.data.receiver.id,
             })
                 .then(response => {
                     let message = response.data;
                     let formReply = event.target;
-                    let chatbox = formReply.parentElement.querySelector('ul#chatbox');
-                    chatbox.innerHTML += `<li class="flex w-full mt-2 space-x-3 max-w-[80%] ml-auto justify-end">
-                                                <div>
-                                                    <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
-                                                        <p class="text-sm">${message.content}</p>
-                                                    </div>
-                                                    <span class="text-xs text-gray-500 leading-none">2 min ago</span>
+                    let messagebox = formReply.parentElement.querySelector('ul#messagebox');
+                    messagebox.innerHTML += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${moment(message.created_at).format('LT')}</time>
+                                            <li class="flex w-full space-x-3 justify-end">
+                                                <div class="max-w-[80%] bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg inline-block">
+                                                    <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
                                             </li>`;
+                    messagebox.scrollTop = messagebox.scrollHeight;
                     formReply.reset();
                 })
                 .catch(error => {
@@ -134,21 +140,21 @@ document.addEventListener('alpine:init', () => {
                 })
         },
         response() {
-            // console.dir(echo);
-            let chatbox = document.getElementById('chatbox');
-            if (chatbox != null)
-                chatbox.innerHTML += `<li class="flex w-full mt-2 space-x-3 max-w-[80%]">
-                                        <div class="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-gray-300">
-                                            <img class="h-full w-full object-cover"
-                                                src="" alt="avatar">
-                                        </div>
-                                        <div>
-                                            <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg inline-block">
-                                                <p class="text-sm" style="word-break: break-word;">${this.echo.message.content}</p>
+            let messagebox = document.querySelector('ul#messagebox');
+            if (messagebox != null && this.data.receiver.id == this.echo.message.sender_id) {
+                messagebox.innerHTML += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${moment(message.created_at).format('LT')}</time>
+                                        <li class="flex w-full space-x-3 max-w-[80%]">
+                                            <div class="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-gray-300">
+                                                <img class="h-full w-full object-cover"
+                                                    src="${this.data.receiver.avatar}" alt="avatar">
                                             </div>
-                                            <span class="text-xs text-gray-500 leading-none block">${moment(this.echo.message.created_at).fromNow()}</span>
-                                        </div>
-                                    </li>`;
+                                            <div>
+                                                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg inline-block">
+                                                    <p class="text-sm" style="word-break: break-word;">${this.echo.message.content}</p>
+                                                </div>
+                                            </div>
+                                        </li>`;
+            }
         }
     })
 })
@@ -162,75 +168,24 @@ axios.get(`${window.location.origin}/chat`)
                 .listen('.MessageCreated', (data) => {
                     Alpine.store('chat').echo = data;
                     Alpine.store('chat').response();
+                    Alpine.store('chat').scroll();
                 });
     })
     .catch(error => {
         console.log(error);
     })
 
-// const chatbox = document.getElementById("chatbox");
-// const chatContainer = document.getElementById("chat-container");
-// const userInput = document.getElementById("user-input");
-// const sendButton = document.getElementById("send-button");
-// const openChatButton = document.getElementById("open-chat");
-// const closeChatButton = document.getElementById("close-chat");
+// ─── Time Formater ───────────────────────────────────────────────────────────
 
-// let isChatboxOpen = true; // Set the initial state to open
+function formatTime(inputTime) {
+    const now = moment();
+    const inputMoment = moment(inputTime);
 
-// // Function to toggle the chatbox visibility
-// function toggleChatbox() {
-//     chatContainer.classList.toggle("hidden");
-//     isChatboxOpen = !isChatboxOpen; // Toggle the state
-// }
+    if (now.isSame(inputMoment, 'day'))
+        return inputMoment.format('h:mm A');
+    else if (now.diff(inputMoment, 'days') == 1 && now.isSame(inputMoment, 'week'))
+        return `${inputMoment.format('ddd').toUpperCase()} AT ${inputMoment.format('h:mm A')}`;
+    else
+        return inputMoment.format('MM DD [AT] h:mm A');
 
-// // Add an event listener to the open chat button
-// openChatButton.addEventListener("click", toggleChatbox);
-
-// // Add an event listener to the close chat button
-// closeChatButton.addEventListener("click", toggleChatbox);
-
-// // Add an event listener to the send button
-// sendButton.addEventListener("click", function () {
-//     const userMessage = userInput.value;
-//     if (userMessage.trim() !== "") {
-//         addUserMessage(userMessage);
-//         respondToUser(userMessage);
-//         userInput.value = "";
-//     }
-// });
-
-// userInput.addEventListener("keyup", function (event) {
-//     if (event.key === "Enter") {
-//         const userMessage = userInput.value;
-//         addUserMessage(userMessage);
-//         respondToUser(userMessage);
-//         userInput.value = "";
-//     }
-// });
-
-// function addUserMessage(message) {
-//     const messageElement = document.createElement("div");
-//     messageElement.classList.add("mb-2", "text-right");
-//     messageElement.innerHTML = `<p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">${message}</p>`;
-//     chatbox.appendChild(messageElement);
-//     chatbox.scrollTop = chatbox.scrollHeight;
-// }
-
-// function addBotMessage(message) {
-//     const messageElement = document.createElement("div");
-//     messageElement.classList.add("mb-2");
-//     messageElement.innerHTML =
-//         `<p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">${message}</p>`;
-//     chatbox.appendChild(messageElement);
-//     chatbox.scrollTop = chatbox.scrollHeight;
-// }
-
-// function respondToUser(userMessage) {
-//     // Replace this with your chatbot logic
-//     setTimeout(() => {
-//         addBotMessage("This is a response from the chatbot.");
-//     }, 500);
-// }
-
-// // Automatically open the chatbox on page load
-// toggleChatbox();
+}
