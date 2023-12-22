@@ -1,16 +1,16 @@
- <!--  Diary -->
-     <section class="w-full  max-w-[750px]  flex flex-col items-center px-3 ">
-         <article class="flex flex-col shadow my-4 rounded-lg">
-             <!-- Article Image -->
-             <!-- link bai viet -->
-             <a href=""></a>
-             <!-- hình ảnh -->
-             <div class="hover:opacity-75  ">
-                 <img src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" class="rounded-t-lg">
-             </div>
-             <!-- story -->
-             @include('Fontend.layouts.viewStory')
-             <!-- cmt -->
-             @include('Fontend.layouts.viewCmt')            
-         </article>
-     </section>
+<!--  Diary -->
+<section class="w-full  max-w-[650px]   flex flex-col items-center rounded-b-lg">
+    @foreach ($posts as $post)
+        <article id="post_{{$post -> id}}" data-post-id="{{$post -> id}}"  class="flex flex-col  my-2 shadow-md rounded-lg lg:w-[650px] md:w-[530px] post ">
+                <!-- Article Image -->
+                <div class="hover:opacity-75  w-full flex justify-center rounded-t-lg">
+                    <a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}">
+                        <img src="{{ $post->image }}"
+                        class="rounded-t-lg h-[420px] w-[1000px]  @if ($post->image == null) hidden @endif">
+                    </a>  
+                </div>
+                <!-- story -->
+                @include('Fontend.layouts.viewStory')
+        </article>
+    @endforeach
+</section>

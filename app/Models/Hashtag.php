@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Hashtag extends Model
 {
     use HasFactory;
-    protected $table = 'hashtag';
+    protected $table = 'hashtags';
 
     protected $fillable = [
         'content',
     ];
 
-    public function diary()
+    public function diaries()
     {
-        return $this->belongsToMany(DiaryModel::class);
+        return $this->belongsToMany(Diary::class);
     }
 }

@@ -10,9 +10,12 @@ class Citys extends Model
     use HasFactory;
     protected $table = 'citys';
 
-    protected $primaryKey = 'city_id';
-
-    protected $fillable = [
-        'city_id', 'city_name', 
+    protected $guarded = [
+        'id'
     ];
+
+    public function districts()
+    {
+        return $this->hasMany(DistrictModel::class, 'city_id');
+    }
 }

@@ -5,55 +5,92 @@ namespace App\Http\Controllers\Fontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\User\Post\RequestsPost;
-// use App\Http\Requests\User\Post\RequestsUpdatePost;
-// use App\Http\Controllers\HandleImg\ImdUpload;
-use App\Models\DiaryModel;
+use App\Models\Diary;
 use App\Models\Hashtag;
-// use App\Models\DiaryHashtag;
+use App\Models\Likes;
+use App\Support\HTMLPurifier;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class DiaryController extends Controller
 {
 
-    public function viewPosts()
+    public function viewPosts($userId = null)
     {
-        $posts = DiaryModel::where('user_id', auth()->id())
-            ->with('hashtags', 'comments.user:id,name')
-            ->withCount('comments')
-            ->orderByDesc('id')->get();
-        return view('postdiary.posts', compact('posts'));
-        
-        // $test = DiaryModel::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
+        if (Auth::check() && $userId == auth()->id()) {
+            $posts = Diary::where('user_id', $userId)
+                ->with('user', 'hashtags')
+                ->withCount('comments', 'reactions')
+                ->orderByDesc('id')->get();
+            return $posts;
+        } elseif ($userId == null) {
+            $posts = Diary::where('status', 1)
+                ->with('user', 'hashtags')
+                ->withCount('comments', 'reactions')
+                ->orderByDesc('id')->get();
+            return view('Fontend.postDiary.diaryPublic', compact('posts'));
+        } else {
+            $posts = Diary::where('user_id', $userId)
+                ->where('status', 1)
+                ->with('user', 'hashtags')
+                ->withCount('comments', 'reactions')
+                ->orderByDesc('id')->get();
+            return $posts;
+        }
+
+        // dd($posts->toRawSql(), $posts->get());
+        // $test = Diary::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
         //     $query->where('content', 'password');
         // });
-        // $test = DiaryModel::where('user_id', auth()->id())
+        // $test = Diary::where('user_id', auth()->id())
         //     ->with('hashtags', 'comments.user:id,name')
         //     ->withCount('comments')
         //     ->orderByDesc('id');
         // dd($test->toRawSql(), $test->get());
     }
 
-    public function viewCreate()
+    public function hashtagFilter(string $hashTag)
     {
-        return view('postdiary.create_post');
     }
 
+    public function viewCreate()
+    {
+        return view('Fontend.postdiary.diaryCreate');
+    }
+
+    public function viewsdiaryAll($id)
+    {
+        $post = Diary::where('id', $id)
+            ->where('status', 1)
+            ->with([
+                'user',
+                'comments' => function ($query) {
+                    $query->doesntHave('parentComment')
+                        ->with('user')
+                        ->withCount('replies');
+                },
+            ])
+            ->withCount('reactions', 'comments')
+            ->orderByDesc('id')->firstOrFail();
+        return view('Fontend.postdiary.diaryPost', compact('post'));
+    }
+    
     public function store(Request $request)
     {
         DB::beginTransaction();
         try {
             // Tạo 1 bài viết mới
-            $dataPost = new DiaryModel;
+            $dataPost = new Diary;
             $dataPost->title = $request->title;
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
-                $dataPost->image = $imagePath;
+                $dataPost->image = Storage::url($imagePath);
             }
 
             // Lưu bài viết
@@ -64,24 +101,43 @@ class DiaryController extends Controller
             array_shift($hashTag);
             foreach ($hashTag as $tag) {
                 $tag = trim(strtolower($tag));
-                $hashtag_id = Hashtag::where('content', $tag)->value('id');
-                if (!$hashtag_id) {
-                    // Hashtag chưa tồn tại, thêm mới
-                    $newHashTag = Hashtag::create(['content' => $tag]);
-                    $hashtag_id = $newHashTag->id;
-                }
-                // Liên kết Hashtag với Post trong bảng trung gian
-                $dataPost->hashtags()->attach($hashtag_id);
+                $hashtagId = Hashtag::firstOrCreate(['content' => $tag])->value('id');
+                $dataPost->hashtags()->attach($hashtagId);
             }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
-            // return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
-            dd('Success');
+            return redirect('/diary/' . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
+            // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
-            // return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
-            dd('Fail');
+            Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
+            return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
+            // dd('Fail');
         }
     }
+
+    public function likes(Request $request, Diary $id){
+        $reaction = New Likes([
+            'user_id' => Auth::id(),
+            'diary_id' => $id->id,
+            'status' => $request->status
+        ]);
+        $reaction->save();
+        return redirect()->back();
+    }
+    public function unlikes($id){
+        $user = auth()->user();
+
+    // Tìm và xóa like nếu tồn tại
+    Likes::where(['user_id' => $user->id, 'diary_id' => $id,'status'=>'1'])->delete();
+
+    return redirect()->back();
+    }
+    public function delete($id){
+        $diary = Diary::find($id);
+        $diary->delete();
+            return response()->json(['success' => false, 'post'=>'post_'.$id]);
+    }
+
 }

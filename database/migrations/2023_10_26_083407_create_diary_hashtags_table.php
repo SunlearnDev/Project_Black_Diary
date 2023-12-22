@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('diary_hashtags', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('diary_id')->constrained('diary')->onDelete('cascade');
-            $table->foreignId('hashtag_id')->constrained('hashtag')->onDelete('cascade');
+            $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();
+            $table->foreignId('hashtag_id')->constrained('hashtags')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +25,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('diary_hashtags');
-        // Schema::rollback();
     }
 };

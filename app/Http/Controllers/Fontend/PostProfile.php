@@ -8,13 +8,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\HandleImg\ImdUpload;
+use App\Models\User;
 use App\Models\Citys;
 use Carbon\Carbon;
+
 
 class PostProfile extends Controller
 {
@@ -26,25 +28,36 @@ class PostProfile extends Controller
     }
 
     //  Lấy dữ liệu từ DB
-    public function index()
+    /**
+     * int 
+     */
+    public function index($id = null)
     {
-        if (Auth::check()) {
-            $data = Auth::user();
-            $dataCity = Citys::all();
-            return view('Fontend.profile.partials.showProfile', [
-                'data' => $data, 'dataCity' => $dataCity,
+        $data = User::find($id);
+        $dataCity = Citys::all();
+        $posts = app('App\Http\Controllers\Fontend\DiaryController')->viewPosts($id);
+        if (Auth::check() && Auth::user()->id == $id) {
+            return view('Fontend.profile.profileAccount', [
+                'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
             ]);
         } else {
-            return view('auth.login');
+            return view('Fontend.profile.profileAccount', [
+                'data' => $data, 'dataCity' => $dataCity, 'posts' => $posts
+            ]);
         }
     }
 
+    public function login()
+    {
+        Session::put('url.intended', URL::previous());
+        return view('auth.login');
+    }
+    
     // view edit profile
     public function edit()
     {
         $data = Auth::user();
         $dataCity = Citys::all();
-
         return view('Fontend.profile.edit', [
             'data' => $data, 'dataCity' => $dataCity,
         ]);
@@ -53,19 +66,30 @@ class PostProfile extends Controller
     // xử lý login
     public function postLogin(LoginRequest $request)
     {
+        // Kiểm tra nếu người dùng đã đăng nhập
+        if (Auth::check()) {
+            // Nếu người dùng đã đăng nhập, chuyển hướng họ đến trang /diary
+            return redirect('/diary');
+        }
+    
         $request->authenticate();
         $request->session()->regenerate();
-
-        $email = $request->email;
-        $password = $request->password;
-
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            return redirect('/index');
-        } else {
-            return view('auth.login')->with('msgError', 'Email hoặc mật khẩu không đúng');
+    
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+    
+        if (Auth::attempt($credentials, $remember)) {
+            if (Auth::user()->email_verified_at == null) {
+                return redirect('/email/verify');
+            }
+    
+            // Chuyển hướng đến URL định kỳ hoặc /diary nếu không có URL định kỳ
+            return redirect(Session::get('url.intended', '/diary'))->with('msgSuccess', 'Đăng nhập thành công');
         }
+    
+        return back()->with('msgError', 'Email hoặc mật khẩu không đúng');
     }
-
+    
 
     // View đăng ký
     public function showRegister()
@@ -115,7 +139,7 @@ class PostProfile extends Controller
         $user->save();
         event(new Registered($user));
         Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/diary');
     }
 
     //chức năng đăng xuất
@@ -129,32 +153,47 @@ class PostProfile extends Controller
     // Xử lý cập nhật User profile
     public function updateProfile(Request $request)
     {
-       
+        $request->validate(
+            [
+                'name' => 'string|max:255',
+                'other_name' => 'nullable|string|max:255',
+                'about' => 'nullable|string|max:500',
+                'phone' => 'nullable|string|min:10|max:10',
+                'address' => 'nullable|string|max:255',
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'birthdate' => 'nullable|Before:' . Carbon::now()->subYears(16)->format('Ymd'),
+            ],
+        );
         $data = User::find(Auth::id());
 
         $imgUpload = new ImdUpload();
         $dataPathImage = $imgUpload->upLoadImg($request, 'avatar',  'profile');
-            if ($dataPathImage != null){
-                $imgPath = public_path().'/'.$data->avatar;
-                if(file_exists($imgPath)){
-                   
-                    unlink($imgPath);
-                }
-                $data->avatar = $dataPathImage;
+        if ($dataPathImage != null) {
+            $imgPath = public_path() . '/' . $data->avatar;
+            if (file_exists($imgPath)) {
+
+                unlink($imgPath);
             }
-            
+            $data->avatar = $dataPathImage;
+        }
+        // Sau khi validation
+        $phone = $request->phone;
+        if (!is_numeric($phone)) {
+        }
+        $data->phone = $request->phone;
+
+
         $data->name = $request->name;
         $data->about = $request->about;
         $data->other_name = $request->other_name;
-        $data->phone = $request->phone;
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->city_id = $request->city_id;
-        $data->district_id= $request->district_id;
-        $data->birthdate= $request->birthdate;
-        if($data->save()){
-            return redirect()->back()->with('msgSuccess', 'Cập Nhật thông tin thành công');
-        }else{  
+        $data->district_id = $request->district_id;
+        $data->birthdate = $request->birthdate;
+        if ($data->save()) {
+            return redirect('/user/profile/' . $data->id)->with('msgSuccess', 'Cập Nhật thông tin thành công');
+        } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
     }
@@ -190,8 +229,14 @@ class PostProfile extends Controller
         } else {
             return view('Fontend.partials.edit')->with('msgError', 'Cập Nhật thông tin thất bại');
         }
-   }
-   public function getDataSearch(Request $request){
-    
-   }
+    }
+    public function showProfilesId($id, $name)
+    {
+        $user = User::find($id);
+        $dataCity = Citys::all();
+        return  view(
+            'Fontend.profile.profileUser',
+            ['data' => $user, 'dataCity' => $dataCity,]
+        );
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-// use App\Models\DiaryModel;
+// use App\Models\Diary;
 // use App\Policies\DiaryPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // DiaryModel::class => DiaryPolicy::class
+        // Diary::class => DiaryPolicy::class
     ];
 
     /**

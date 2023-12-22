@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Citys;
-use App\Models\DistrictModel;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,22 +19,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
     protected $table = 'users';
-    protected $fillable = [
-        'name',
-        'other_name',
-        'email',
-        'password',
-        'avatar',
-        'about',
-        'phone',
-        'address',
-        'gender',
-        'birthday',
-        'city_id',
-        'district_id',
-        'role',
+    protected $guarded = [
+        'id'
     ];
-
+    public $incrementing = true; // Bật auto-increment
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -72,26 +58,89 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id')->withTimestamps();
+    }
+
+    public function followersCount()
+    {
+        return $this->followers()->count();
     }
 
     public function following()
     {
-        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id')->withTimestamps();
     }
 
-    public function isFollowing(User $user)
+    public function followingCount()
     {
-        return $this->following()->where('following_id', $user->id)->exists();
+        return $this->following()->count();
     }
 
-    public function diary()
+    public function diaries()
     {
-        return $this->hasMany(DiaryModel::class);
+        return $this->hasMany(Diary::class, 'user_id');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public function diariesCount()
+    {
+        return $this->diaries()->count();
+    }
+
+    public function follows(User $user)
+    {
+        return  $this->following()->where('user_id', $user->id)->exists();
+    }
+   
+    public function likes(){
+        return $this->belongsToMany(User::class, 'reactions')->withTimestamps();
+    }
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'user_id');
+    }
+
+    // ─── Message ─────────────────────────────────────────────────────────
+
+    public function messagesWith($userId)
+    {
+        return Message::where(function ($query) use ($userId) {
+            $query->where('sender_id', $this->id)
+                ->where('receiver_id', $userId)
+                ->orWhere('sender_id', $userId)
+                ->where('receiver_id', $this->id);
+        });
+    }
+
+    public function receivers()
+    {
+        return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')
+            ->select('users.id', 'name', 'avatar', 'other_name')
+            ->withPivot('id', 'content', 'read_at');
+    }
+
+    public function senders()
+    {
+        return $this->belongsToMany(self::class, 'messages', 'receiver_id', 'sender_id')
+            ->select('users.id', 'name', 'avatar', 'other_name')
+            ->withPivot('id', 'content', 'read_at')
+            ->withCount(['unreadMessages' => function ($query) {
+                $query->where('receiver_id', $this->id);
+            }]);
+    }
+
+    public function contacts()
+    {
+        return $this->senders->concat($this->receivers)
+            ->sortBy('pivot.id')->unique()->sortByDesc('pivot.id');
+    }
+
+    public function unreadMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id')->whereNull('read_at');
     }
 }

@@ -1,13 +1,14 @@
- <!-- left    -->
+
+<!-- left    -->
  <aside id="logo-sidebar"
-     class=" top-0 left-0 z-40 w-64 h-screen  transition-transform  -translate-x-full  sm:translate-x-0"
+     class=" top-0 left-0 z-40 w-44 md:w-56 lg:w-64 h-screen  transition-transform  -translate-x-full  sm:translate-x-0 "
      aria-label="Sidebar">
      <div class="px-3 pb-4 overflow-y-auto border-r  " >
          <!-- Sidebar navigation menu -->
          <ul class="space-y-2 font-medium mt-2">
              <!-- Menu item 1 - home -->
              <li>
-                 <a href="#" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">
+                 <a href="{{route('index')}}" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor"
                          class="w-6 h-6  text-gray-500 transition duration-75 group-hover:text-gray-900">
@@ -19,7 +20,7 @@
              </li>
              <!-- Menu item 2 - Public -->
              <li>
-                 <a href="#" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">
+                 <a href="{{route('index')}}" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6  text-gray-500 transition duration-75 group-hover:text-gray-900">
                          <path
                              d="M15.75 8.25a.75.75 0 01.75.75c0 1.12-.492 2.126-1.27 2.812a.75.75 0 11-.992-1.124A2.243 2.243 0 0015 9a.75.75 0 01.75-.75z" />
@@ -248,28 +249,11 @@
              <nav class="mb-6" aria-label="Secondary sidebar nav">
                  <header class="pt-2 pl-3 pb-0 pr-0 flex items-center justify-between">
                      <h2 class="text-black font-bold mx-4 ml-4">My Tags</h2>
-                     {{-- <a id="tag-priority-link" href="s"
-                         class="c-link c-link--block c-link--icon-alone" aria-label="Customize tag priority"
-                         title="Customize tag priority">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                             role="img" class="crayons-icon">
-                             <path
-                                 d="M12 1l9.5 5.5v11L12 23l-9.5-5.5v-11L12 1zm0 2.311L4.5 7.653v8.694l7.5 4.342 7.5-4.342V7.653L12 3.311zM12 16a4 4 0 110-8 4 4 0 010 8zm0-2a2 2 0 100-4 2 2 0 000 4z">
-                             </path>
-                         </svg>
-                     </a> --}}
+                     
                  </header>
                  <div id="sidebar-nav-followed-tags" class="overflow-y-auto -m-1  mb-2 p-2"
                      style="max-height: 42vh;">
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group ">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group ">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group ">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group ">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group ">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">#ffffff </a>
-                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group">#ffffff </a>
-
+                    <a href="" class="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 group"> </a>
                 </div>
              </nav>
          </nav>

@@ -16,11 +16,26 @@ class Comment extends Model
 
     public function diary()
     {
-        return $this->belongsTo(DiaryModel::class);
+        return $this->belongsTo(Diary::class);
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+    public function allReplies()
+    {
+        return $this->replies()->with('allReplies');
+    }
+
+    public function parentComment()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
     }
 }
