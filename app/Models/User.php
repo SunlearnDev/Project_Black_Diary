@@ -117,7 +117,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(self::class, 'messages', 'sender_id', 'receiver_id')
             ->select('users.id', 'name', 'avatar', 'other_name')
-            ->withPivot('id', 'content', 'read_at');
+            ->withPivot('id', 'content', 'read_at')
+            ->withCount(['unreadMessages' => function ($query) {
+                $query->where('sender_id', $this->id);
+            }]);
     }
 
     public function senders()

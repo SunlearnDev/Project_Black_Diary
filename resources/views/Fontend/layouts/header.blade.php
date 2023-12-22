@@ -110,9 +110,9 @@
                     {{-- messages --}}
                     <div id="mega-menu-icons"
                         class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
-                        <div>
-                            <button id="mega-menu-icons-dropdown-button" data-dropdown-toggle="mega-menu-icons-dropdown"
-                                class="flex relative items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-200 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+                        <div class="relative" @click.outside="$refs.contacts.classList.add('hidden')">
+                            <button @click="$refs.contacts.classList.toggle('hidden')"
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-200 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-8 h-8">
                                     <path fill-rule="evenodd"
@@ -120,32 +120,42 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{-- thông báo có có tin nhắn chờ đó mới --}}
-                                <span
-                                    class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
-                                <span
-                                    class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                                <div class="@unless ($contacts->sum('unread_messages_count')) hidden @endunless">
+                                    <span
+                                        class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                                    <span
+                                        class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                                </div>
                             </button>
-                            <div id="mega-menu-icons-dropdown"
-                                class="absolute z-10 grid hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
-                                <div class="p-4 pb-0 text-gray-700 md:pb-4 ">
-                                    <ul class="space-y-4" aria-labelledby="mega-menu-icons-dropdown-button">
-                                        <li>
+                            <div x-ref="contacts"
+                                class="absolute z-10 hidden w-[300px] text-sm bg-white border border-gray-100 rounded-lg shadow-md top-10 -right-32">
+                                <ul class="p-2 overflow-y-auto max-h-72">
+                                    @foreach ($contacts as $user)
+                                        <li class="hover:bg-slate-100 p-2 rounded-lg">
                                             <button
-                                                class="grid items-center w-full justify-between grid-cols-4 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 group px-2">
-                                                <div class="relative">
-                                                    <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300 mr-2"
-                                                        src="{{ Auth::user()->avatar }}"alt="user photo" />
+                                                @click="$store.chat.start({{ $user->id }}); $refs.contacts.classList.toggle('hidden');"
+                                                class="flex items-center w-full justify-between text-gray-500">
+                                                <div class="relative flex items-center gap-4">
+                                                    <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300"
+                                                        src="{{ $user->avatar }}" alt="user photo" />
                                                     <span
-                                                        class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
+                                                        class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
+                                                    <p class="text-black">
+                                                        @empty($user->other_name)
+                                                            {{ $user->name }}
+                                                        @else
+                                                            {{ $user->other_name }}
+                                                        @endempty
+                                                    </p>
                                                 </div>
-                                                <span
-                                                    class="text-black col-span-2 flex justify-start mr-5">{{ Auth::user()->name }}</span>
-                                                <span
-                                                    class="font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center ">5</span>
+                                                @if ($user->unread_messages_count)
+                                                    <span
+                                                        class="justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">{{ $user->unread_messages_count }}</span>
+                                                @endif
                                             </button>
                                         </li>
-                                    </ul>
-                                </div>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -153,7 +163,8 @@
                     <div id="mega-menu-icons"
                         class="items-center justify-between hidden w-full md:flex md:w-auto md:order-2">
                         <div>
-                            <button id="mega-menu-icons-dropdown-button" data-dropdown-toggle="mega-menu-icons-dropdown"
+                            <button id="mega-menu-icons-dropdown-button"
+                                data-dropdown-toggle="mega-menu-icons-dropdown-2"
                                 class="flex relative items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-200 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-8 h-8 ">
@@ -167,7 +178,7 @@
                                 <span
                                     class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
                             </button>
-                            <div id="mega-menu-icons-dropdown"
+                            <div id="mega-menu-icons-dropdown-2"
                                 class="absolute z-10 grid hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
                                 <div class="p-4 pb-0 text-gray-900 md:pb-4 ">
                                     <ul class="space-y-4" aria-labelledby="mega-menu-icons-dropdown-button">

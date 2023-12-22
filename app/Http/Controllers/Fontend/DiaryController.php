@@ -82,7 +82,7 @@ class DiaryController extends Controller
             // Tạo 1 bài viết mới
             $dataPost = new Diary;
             $dataPost->title = $request->title;
-            $dataPost->content = HTMLPurifier::clean($request->content);
+            $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
 
@@ -100,15 +100,15 @@ class DiaryController extends Controller
             array_shift($hashTag);
             foreach ($hashTag as $tag) {
                 $tag = trim(strtolower($tag));
-                $hashtagId = Hashtag::firstOrCreate(['content' => $tag])->value('id');
-                $dataPost->hashtags()->attach($hashtagId);
+                $hashtagId = Hashtag::firstOrCreate(['content' => $tag]);
+                $dataPost->hashtags()->attach($hashtagId->id);
             }
 
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
             Log::info('Đăng bài viết thành công', ['user_id' => Auth::id(), 'post_id' => $dataPost->id]);
             return redirect('/user/create')->with('msgSuccess', 'Đăng bài viết thành công');
-            // dd('Success');
+            // dd($test);
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();

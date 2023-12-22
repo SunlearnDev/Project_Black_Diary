@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Fontend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Message;
 use App\Models\User;
-use DateTime;
-use Illuminate\Http\Request;
+use App\Models\Message;
+use Illuminate\View\View;
+use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
     public function user()
     {
         return response()->json(auth()->id());
+    }
+
+    public function compose(View $view): void
+    {
+        if (auth()->check()) {
+            $contacts = User::findOrFail(auth()->id())->contacts();
+            $view->with('contacts', $contacts);
+        }
     }
 
     public function getContacts()

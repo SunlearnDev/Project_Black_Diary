@@ -17,6 +17,7 @@ document.addEventListener('alpine:init', () => {
                         let receiver = response.data.receiver;
                         let messages = response.data.messages;
                         this.data.receiver = receiver;
+                        let previousTime = null;
                         let html = `<div x-init="$nextTick(() => {$store.chat.scroll();})">
                                         <div id="chat-container" class="fixed bottom-2 right-2 w-96 shadow-md" x-show="!$store.chat.collapse">
                                             <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
@@ -58,25 +59,30 @@ document.addEventListener('alpine:init', () => {
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <ul id="messagebox" class="flex flex-col flex-grow h-80 p-4 overflow-y-auto">`;
+                                                <ul id="messagebox" class="gap-2 flex flex-col flex-grow h-80 p-4 overflow-y-auto">`;
                         messages.forEach(message => {
+                            if (previousTime == null)
+                                html += `<time class="text-xs self-center text-gray-500 mb-0.5 mt-2">${formatTime(message.created_at)}</time>`;
+                            else if (!moment(message.created_at).isSame(previousTime, 'day'))
+                                html += `<time class="text-xs self-center text-gray-500 mb-0.5 mt-2">${formatTime(message.created_at)}</time>`;
+                            previousTime = moment(message.created_at);
                             if (message.sender_id == receiver.id)
-                                html += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${formatTime(message.created_at)}</time>
-                                        <li class="flex w-full space-x-3 max-w-[80%]">
+                                html += `<li class="flex w-full space-x-3">
                                             <div class="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-gray-300">
                                                 <img class="h-full w-full object-cover"
                                                     src="${receiver.avatar}" alt="avatar">
                                             </div>
-                                            <div>
-                                                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg inline-block">
+                                            <div class="flex items-center space-x-2">
+                                                <div class="max-w-[80%] bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
+                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
                                             </div>
                                         </li>`;
                             else
-                                html += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${formatTime(message.created_at)}</time>
-                                        <li class="flex w-full space-x-3 justify-end">
-                                            <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg inline-block">
+                                html += `<li class="flex w-full justify-end items-center space-x-2">
+                                            <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
+                                            <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                                                 <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                             </div>
                                         </li>`;
@@ -95,7 +101,7 @@ document.addEventListener('alpine:init', () => {
                         <div class="fixed bottom-0 right-0 mb-4 mr-4" x-show="$store.chat.collapse">
                             <button id="open-chat" @click="$store.chat.minimize()"
                                 class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition duration-300 flex items-center">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 18" fill="currentColor">
+                                <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 18" fill="currentColor">
                                     <path d="M18 4H16V9C16 10.0609 15.5786 11.0783 14.8284 11.8284C14.0783 12.5786 13.0609 13 12 13H9L6.846 14.615C7.17993 14.8628 7.58418 14.9977 8 15H11.667L15.4 17.8C15.5731 17.9298 15.7836 18 16 18C16.2652 18 16.5196 17.8946 16.7071 17.7071C16.8946 17.5196 17 17.2652 17 17V15H18C18.5304 15 19.0391 14.7893 19.4142 14.4142C19.7893 14.0391 20 13.5304 20 13V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4Z" fill="currentColor"/>
                                     <path d="M12 0H2C1.46957 0 0.960859 0.210714 0.585786 0.585786C0.210714 0.960859 0 1.46957 0 2V9C0 9.53043 0.210714 10.0391 0.585786 10.4142C0.960859 10.7893 1.46957 11 2 11H3V13C3 13.1857 3.05171 13.3678 3.14935 13.5257C3.24698 13.6837 3.38668 13.8114 3.55279 13.8944C3.71889 13.9775 3.90484 14.0126 4.08981 13.996C4.27477 13.9793 4.45143 13.9114 4.6 13.8L8.333 11H12C12.5304 11 13.0391 10.7893 13.4142 10.4142C13.7893 10.0391 14 9.53043 14 9V2C14 1.46957 13.7893 0.960859 13.4142 0.585786C13.0391 0.210714 12.5304 0 12 0Z" fill="currentColor"/>
                                 </svg>
@@ -103,6 +109,7 @@ document.addEventListener('alpine:init', () => {
                         </div>
                     </div>`;
                         this.chatBox = html;
+                        this.collapse = false;
                     })
                     .catch(error => {
                         console.log(error);
@@ -115,7 +122,7 @@ document.addEventListener('alpine:init', () => {
         },
         minimize() {
             this.collapse = !this.collapse;
-            Alpine.nextTick(() => {this.scroll();})
+            Alpine.nextTick(() => { this.scroll(); })
         },
         scroll() {
             let messagebox = document.querySelector('ul#messagebox');
@@ -130,9 +137,9 @@ document.addEventListener('alpine:init', () => {
                     let message = response.data;
                     let formReply = event.target;
                     let messagebox = formReply.parentElement.querySelector('ul#messagebox');
-                    messagebox.innerHTML += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${moment(message.created_at).format('LT')}</time>
-                                            <li class="flex w-full space-x-3 justify-end">
-                                                <div class="max-w-[80%] bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg inline-block">
+                    messagebox.innerHTML += `<li class="flex w-full justify-end items-center space-x-2">
+                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
+                                                <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
                                             </li>`;
@@ -146,16 +153,16 @@ document.addEventListener('alpine:init', () => {
         response() {
             let messagebox = document.querySelector('ul#messagebox');
             if (messagebox != null && this.data.receiver.id == this.echo.message.sender_id) {
-                messagebox.innerHTML += `<time class="text-xs text-gray-500 self-center mb-0.5 mt-2">${moment(this.echo.message.created_at).format('LT')}</time>
-                                        <li class="flex w-full space-x-3 max-w-[80%]">
+                messagebox.innerHTML += `<li class="flex w-full space-x-3">
                                             <div class="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-gray-300">
                                                 <img class="h-full w-full object-cover"
                                                     src="${this.data.receiver.avatar}" alt="avatar">
                                             </div>
-                                            <div>
-                                                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg inline-block">
+                                            <div class="flex items-center space-x-2">
+                                                <div class="max-w-[80%] bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${this.echo.message.content}</p>
                                                 </div>
+                                                <time class="text-xs text-gray-500">${moment(this.echo.message.created_at).format('LT')}</time>
                                             </div>
                                         </li>`;
             }
@@ -186,10 +193,11 @@ function formatTime(inputTime) {
     const inputMoment = moment(inputTime);
 
     if (now.isSame(inputMoment, 'day'))
-        return inputMoment.format('h:mm A');
+        return `Today`;
     else if (now.diff(inputMoment, 'days') == 1 && now.isSame(inputMoment, 'week'))
-        return `${inputMoment.format('ddd').toUpperCase()} AT ${inputMoment.format('h:mm A')}`;
+        return inputMoment.format('dddd');
+    else if (now.isSame(inputMoment, 'year'))
+        return inputMoment.format('MMMM Do');
     else
-        return inputMoment.format('MM DD [AT] h:mm A');
-
+        return inputMoment.format('MMMM Do YYYY');
 }
