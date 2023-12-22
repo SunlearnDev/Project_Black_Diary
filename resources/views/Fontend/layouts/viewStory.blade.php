@@ -62,7 +62,7 @@
         <h3 class="mb-2"><a href="{{ route('show.diaryAll', ['id' => $post->id, Str::slug($post->title)]) }}"
                 class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span>
                     {{ $post->title }} </span></a></h3>
-        <!-- hagtag -->
+        <!-- hashtag -->
         <div class=" gird grid-cols-5 mb-2 ">
             @foreach ($post->hashtags as $hashtag)
                 <kbd
@@ -131,35 +131,54 @@
         @endif
     </div>
 </div>
-<script>
-    var isDeleting = false;
+<!-- Confirmation form -->
+{{-- <div id="confirmationForm{{ $post->id }}"
+    class="hidden top-0 right-0 left-0 bottom-0 fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 ">
+    <div class="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Are you sure you want to delete?
+                </p>
+            </div>
+        </div>
+        <div class=" px-4 py-3 sm:px-6 sm:flex flex justify-end item-center">
+            <button id="delete-cancel{{ $post->id }}" type="button"
+                onclick="hideConfirmationForm({{ $post->id }})"
+                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                Cancel
+            </button>
+            <button id="delete-confirm{{ $post->id }}" type="button" onclick="deleteDiary({{ $post->id }})"
+                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>  --}}
+    <script>
+        // function showConfirmationForm(postId) {
+        //     document.getElementById(`confirmationForm${postId}`).style.display = 'block';
+        // }
 
-    function deleteDiary(postId) {
-        if (confirm('Are you sure you want to delete')) {
+        // function hideConfirmationForm(postId) {
+        //     document.getElementById(`confirmationForm${postId}`).style.display = 'none';
+        // }
+
+        function deleteDiary(postId) {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            $.ajax({
+                url: "user/delete/diary/" + postId,
+                type: "DELETE",
+                success: function(result) {
+                    $("#" + result['post']).slideUp("slow");
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
         }
-        // Kiểm tra xem có đang trong quá trình xóa không
-        if (isDeleting) {
-            console.log("Đang trong quá trình xóa. Hãy đợi...");
-            return;
-        }
-
-        // Đánh dấu đang trong quá trình xóa
-        isDeleting = true;
-
-        $.ajax({
-            url: "user/delete/diary/" + postId,
-            type: "DELETE",
-            success: function(result) {
-                $("#" + result['post']).slideUp("slow");
-            },
-            error: function(error) {
-                console.error("Error:", error);
-            }
-        });
-    }
-</script>
+    </script>

@@ -8,8 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Black Diary</title>
-    {{-- <script src="https://cdn.tiny.cloud/1/ofeyoc4487gbcz1xc0em6nhiz4qcn90k9s2hv1xihfxljjzn/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script> --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/logo/1.png') }}">
+
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,21 +20,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- jQuery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     {{-- Axios --}}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @include('Fontend.layouts.style')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50" x-data>
     {{-- header --}}
     @include('Fontend.layouts.header')
     {{-- main --}}
     @yield('content')
-
-    @include('sweetalert::alert')
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    {{-- Chat --}}
+    @include('components.chat')
+    
+    {{-- @include('sweetalert::alert') --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="{{ asset('js/districts.js') }}"></script>
     <script src="{{ asset('js/showimage.js') }}"></script>

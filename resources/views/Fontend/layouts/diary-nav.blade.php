@@ -5,7 +5,7 @@
                 <!-- Article Image -->
                 <div class="hover:opacity-75  w-full flex justify-center rounded-t-lg">
                     <a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}">
-                        <img src="{{ '/storage/' . $post->image }}"
+                        <img src="{{ $post->image }}"
                         class="rounded-t-lg h-[420px] w-[1000px]  @if ($post->image == null) hidden @endif">
                     </a>  
                 </div>

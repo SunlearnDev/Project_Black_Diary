@@ -45,4 +45,15 @@ class Diary extends Model
     }
 
 
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'diary_id');
+    }
+    
+    // protected function createdAt(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) => Carbon::parse($value),
+    //     );
+    // }
 }

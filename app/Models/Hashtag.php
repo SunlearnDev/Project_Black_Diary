@@ -14,7 +14,7 @@ class Hashtag extends Model
         'content',
     ];
 
-    public function diary()
+    public function diaries()
     {
         return $this->belongsToMany(Diary::class);
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
+            $table->string('content', 500);
             $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('diary_id')->constrained('diary')->cascadeOnDelete();

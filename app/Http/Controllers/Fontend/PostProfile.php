@@ -46,11 +46,13 @@ class PostProfile extends Controller
             ]);
         }
     }
+
     public function login()
     {
         Session::put('url.intended', URL::previous());
         return view('auth.login');
     }
+    
     // view edit profile
     public function edit()
     {

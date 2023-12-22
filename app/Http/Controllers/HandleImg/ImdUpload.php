@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class ImdUpload extends Controller
 {
-    public function autoAvatar($user)
+  public function autoAvatar($user)
   {
 
     $avatarPath = public_path('/img/avatar_auto');
@@ -46,32 +46,34 @@ class ImdUpload extends Controller
     return null;
   }
   // Upload 1 file ảnh
-  public function upLoadImg($request, $fileName, $fodername){
+  public function upLoadImg($request, $fileName, $fodername)
+  {
     //Kiểm tra đã tồn tại hay chưa
-    if($request->hasFile($fileName)){
-     try{
-      $uploadedImage = $request->file($fileName);
-      $imageName = Str::random(10). '_' . $uploadedImage->getClientOriginalName();
-      $path = $request->file($fileName)->storeAs('public/profile', $imageName);
-      // kiểm tra thư mục tồn tại
-      if(!Storage::exists('public/'.$fodername)){
-        Storage::makeDirectory('public/'.$fodername);
+    if ($request->hasFile($fileName)) {
+      try {
+        $uploadedImage = $request->file($fileName);
+        $imageName = Str::random(10) . '_' . $uploadedImage->getClientOriginalName();
+        $path = $request->file($fileName)->storeAs('public/profile', $imageName);
+        // kiểm tra thư mục tồn tại
+        if (!Storage::exists('public/' . $fodername)) {
+          Storage::makeDirectory('public/' . $fodername);
+        }
+        $dataPath = Storage::url($path);
+        return $dataPath;
+      } catch (\Exception $e) {
+        return null;
       }
-      $dataPath = Storage::url($path);
-      return $dataPath;
-     }catch(\Exception $e){
-      return null;
-     }
     }
     return null;
   }
- // Upload nhiều file ảnh
-  public function upLoadImgs($request, $fileName, $fodername){
+  // Upload nhiều file ảnh
+  public function upLoadImgs($request, $fileName, $fodername)
+  {
     $dataPath = [];
-    if($request->hasFile($fileName)){
-      foreach($request->filesName as $item){
-        $imageName = Str::random(10). '_' . $item->getClienOriginalName();
-        $path = $item->storeAs('public/'.$fodername, $imageName);
+    if ($request->hasFile($fileName)) {
+      foreach ($request->filesName as $item) {
+        $imageName = Str::random(10) . '_' . $item->getClienOriginalName();
+        $path = $item->storeAs('public/' . $fodername, $imageName);
         $dataPath[$imageName] = Storage::url($path);
       }
     }

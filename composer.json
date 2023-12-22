@@ -11,12 +11,10 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/serializable-closure": "^1.0",
-        "laravel/socialite": "^5.11",
+        "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
         "league/flysystem": "^3.18",
-        "livewire/livewire": "^3.3",
-        "realrashid/sweet-alert": "^7.1",
-        "rtconner/laravel-likeable": "^3.2"
+        "realrashid/sweet-alert": "^7.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
