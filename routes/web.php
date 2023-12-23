@@ -99,7 +99,7 @@ Route::middleware('fetch')->group(function () {
 
     // ─── Chat ────────────────────────────────────────────────────────────────────
 
-    Route::get('contacts', [MessageController::class, 'getContacts']);
+    // Route::get('contacts', [MessageController::class, 'getContacts']);
     Route::get('chat', [MessageController::class, 'user']);
     Route::get('chat/{fromUser}', [MessageController::class, 'getMessages']);
     Route::post('chat', [MessageController::class, 'sendMessage']);

@@ -9,6 +9,7 @@ document.addEventListener('alpine:init', () => {
         echo: null,
         collapse: false,
         chatBox: null,
+        unreadTotal: 0,
 
         start(receiverId) {
             if (this.chatBox == null || receiverId != this.data.receiver.id) {
@@ -76,12 +77,12 @@ document.addEventListener('alpine:init', () => {
                                                 <div class="max-w-[80%] bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
-                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
+                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('H:mm')}</time>
                                             </div>
                                         </li>`;
                             else
                                 html += `<li class="flex w-full justify-end items-center space-x-2">
-                                            <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
+                                            <time class="text-xs text-gray-500">${moment(message.created_at).format('H:mm')}</time>
                                             <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                                                 <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                             </div>
@@ -116,6 +117,10 @@ document.addEventListener('alpine:init', () => {
                     })
             }
             else this.minimize();
+
+            let contact = document.getElementById(`contact-${receiverId}`);
+            let unread = contact.querySelector('.unread');
+            if (unread != null) unread.remove();
         },
         close() {
             this.chatBox = null;
@@ -138,7 +143,7 @@ document.addEventListener('alpine:init', () => {
                     let formReply = event.target;
                     let messagebox = formReply.parentElement.querySelector('ul#messagebox');
                     messagebox.innerHTML += `<li class="flex w-full justify-end items-center space-x-2">
-                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('LT')}</time>
+                                                <time class="text-xs text-gray-500">${moment(message.created_at).format('H:mm')}</time>
                                                 <div class="max-w-[80%] justify-end bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${message.content}</p>
                                                 </div>
@@ -162,10 +167,28 @@ document.addEventListener('alpine:init', () => {
                                                 <div class="max-w-[80%] bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                                                     <p class="text-sm" style="word-break: break-word;">${this.echo.message.content}</p>
                                                 </div>
-                                                <time class="text-xs text-gray-500">${moment(this.echo.message.created_at).format('LT')}</time>
+                                                <time class="text-xs text-gray-500">${moment(this.echo.message.created_at).format('H:mm')}</time>
                                             </div>
                                         </li>`;
+                this.scroll();
             }
+            else {
+                let contact = document.getElementById(`contact-${this.echo.message.sender_id}`);
+                let unread = contact.querySelector('.unread');
+                if (unread == null)
+                    contact.innerHTML += `<span class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">1</span>`;
+                else
+                    unread.innerHTML = parseInt(unread.innerHTML) + 1;
+                this.count();
+            }
+        },
+        count() {
+            this.unreadTotal = 0;
+            let list = document.getElementById('contact-list');
+            let unreads = list.querySelectorAll('.unread');
+            unreads.forEach(unread => {
+                this.unreadTotal += parseInt(unread.innerHTML);
+            })
         }
     })
 })
@@ -179,7 +202,6 @@ axios.get(`${window.location.origin}/chat`)
                 .listen('.MessageCreated', (data) => {
                     Alpine.store('chat').echo = data;
                     Alpine.store('chat').response();
-                    Alpine.store('chat').scroll();
                 });
     })
     .catch(error => {

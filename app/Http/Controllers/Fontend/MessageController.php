@@ -22,11 +22,11 @@ class MessageController extends Controller
         }
     }
 
-    public function getContacts()
-    {
-        $contacts = User::findOrFail(auth()->id())->contacts();
-        return response()->json($contacts);
-    }
+    // public function getContacts()
+    // {
+    //     $contacts = User::findOrFail(auth()->id())->contacts();
+    //     return response()->json($contacts);
+    // }
 
     public function getMessages($fromUser)
     {
