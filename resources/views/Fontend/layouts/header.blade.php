@@ -120,7 +120,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{-- thông báo có có tin nhắn chờ đó mới --}}
-                                <div x-effect="$store.chat.unreadTotal == 0 ? $el.classList.add('hidden') : $el.classList.remove('hidden')" class="hidden">
+                                <div x-effect="$store.chat.unreadTotal == 0 ? $el.classList.add('hidden') : $el.classList.remove('hidden')"
+                                    class="hidden">
                                     <span
                                         class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
                                     <span
@@ -129,10 +130,10 @@
                             </button>
                             <div x-ref="contacts"
                                 class="absolute z-10 hidden w-[300px] text-sm bg-white border border-gray-100 rounded-lg shadow-md top-10 -right-32">
-                                <ul class="p-2 overflow-y-auto max-h-72">
-                                    @foreach ($contacts as $user)
-                                        <li class="hover:bg-slate-100 p-2 rounded-lg">
-                                            <button id="contact-{{ $user->id }}"
+                                <ul id="contact-detail" class="p-2 overflow-y-auto max-h-72">
+                                    @forelse ($contacts as $user)
+                                        <li id="contact-{{ $user->id }}" class="hover:bg-slate-100 p-2 rounded-lg">
+                                            <button
                                                 @click="$store.chat.start({{ $user->id }}); $refs.contacts.classList.toggle('hidden'); $store.chat.count();"
                                                 class="flex items-center w-full justify-between text-gray-500">
                                                 <div class="relative flex items-center gap-4">
@@ -141,20 +142,22 @@
                                                     <span
                                                         class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
                                                     <p class="text-black">
-                                                        @empty($user->other_name)
-                                                            {{ $user->name }}
-                                                        @else
-                                                            {{ $user->other_name }}
-                                                        @endempty
+                                                    @empty($user->other_name)
+                                                        {{ $user->name }}
+                                                    @else
+                                                        {{ $user->other_name }}
+                                                    @endempty
                                                     </p>
                                                 </div>
-                                                @if ($user->unread_messages_count)
-                                                    <span
-                                                        class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">{{ $user->unread_messages_count }}</span>
-                                                @endif
+                                            @if ($user->unread_messages_count)
+                                                <span
+                                                    class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">{{ $user->unread_messages_count }}</span>
+                                            @endif
                                             </button>
                                         </li>
-                                    @endforeach
+                                    @empty
+                                        <li id="no-contact" class="w-full text-xl text-center font-thin text-gray-500">No contact</li>
+                                    @endforelse
                                 </ul>
                             </div>
                         </div>

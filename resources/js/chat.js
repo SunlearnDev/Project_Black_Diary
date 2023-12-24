@@ -119,8 +119,10 @@ document.addEventListener('alpine:init', () => {
             else this.minimize();
 
             let contact = document.getElementById(`contact-${receiverId}`);
-            let unread = contact.querySelector('.unread');
-            if (unread != null) unread.remove();
+            if (contact) {
+                let unread = contact.querySelector('.unread');
+                if (unread != null) unread.remove();
+            }
         },
         close() {
             this.chatBox = null;
@@ -150,6 +152,7 @@ document.addEventListener('alpine:init', () => {
                                             </li>`;
                     messagebox.scrollTop = messagebox.scrollHeight;
                     formReply.reset();
+                    this.addNewContact(this.data.receiver);
                 })
                 .catch(error => {
                     console.log(error);
@@ -174,12 +177,49 @@ document.addEventListener('alpine:init', () => {
             }
             else {
                 let contact = document.getElementById(`contact-${this.echo.message.sender_id}`);
-                let unread = contact.querySelector('.unread');
-                if (unread == null)
-                    contact.innerHTML += `<span class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">1</span>`;
+                if (contact) {
+                    let unread = contact.querySelector('.unread');
+                    if (unread == null)
+                        contact.firstElementChild.innerHTML += `<span class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">1</span>`;
+                    else
+                        unread.innerHTML = parseInt(unread.innerHTML) + 1;
+                    let list = document.querySelector('ul#contact-detail');
+                    list.insertBefore(contact, list.children[0]);
+                }
                 else
-                    unread.innerHTML = parseInt(unread.innerHTML) + 1;
+                    this.addNewContact(this.echo.message.sender);
                 this.count();
+            }
+        },
+        addNewContact(user) {
+            let contact = document.getElementById(`contact-${user.id}`);
+            if (contact == null) {
+                let html = `<li id="contact-${user.id}" class="hover:bg-slate-100 p-2 rounded-lg">
+                                <button
+                                    @click="$store.chat.start(${user.id}); $refs.contacts.classList.toggle('hidden'); $store.chat.count();"
+                                    class="flex items-center w-full justify-between text-gray-500">
+                                <div class="relative flex items-center gap-4">
+                                    <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300"
+                                        src="${user.avatar}" alt="avatar" />
+                                    <span class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>`;
+                if (user.other_name)
+                    html += `<p class="text-black">${user.other_name}</p>`;
+                else
+                    html += `<p class="text-black">${user.name}</p>`;
+
+                html += `</div>`
+                if (!this.data.receiver)
+                    html += `<span class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">1</span>`;
+                html += `</button></li>`;
+                let list = document.querySelector('ul#contact-detail');
+                let firstChild = list.firstElementChild;
+                if (firstChild) {
+                    firstChild.insertAdjacentHTML('beforebegin', html);
+                } else {
+                    list.innerHTML = html;
+                }
+                let noContact = list.querySelector('#no-contact');
+                if (noContact) noContact.remove();
             }
         },
         count() {
@@ -189,7 +229,7 @@ document.addEventListener('alpine:init', () => {
             unreads.forEach(unread => {
                 this.unreadTotal += parseInt(unread.innerHTML);
             })
-        }
+        },
     })
 })
 
