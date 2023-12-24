@@ -34,13 +34,9 @@ class Message extends Model
     public function broadcastWith(): array
     {
         return [
-            'message' => $this,
-            // 'sender_id' => $this->sender->id,
-            // 'avatar' => $this->sender->avatar,
-            // 'name' => $this->sender->name,
-            // 'other_name' => $this->sender->other_name,
-            // 'message' => $this->content,
-            // 'created_at' => $this->created_at,
+            'message' => $this->load(['sender' => function ($query) {
+                $query->select('id', 'name', 'other_name', 'avatar');
+            }]),
         ];
     }
 }
