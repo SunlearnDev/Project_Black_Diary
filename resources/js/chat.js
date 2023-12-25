@@ -9,7 +9,8 @@ document.addEventListener('alpine:init', () => {
         echo: null,
         collapse: false,
         chatBox: null,
-        unreadTotal: 0,
+        unread: false,
+        collapseUnread: false,
 
         start(receiverId) {
             if (this.chatBox == null || receiverId != this.data.receiver.id) {
@@ -107,6 +108,12 @@ document.addEventListener('alpine:init', () => {
                                     <path d="M12 0H2C1.46957 0 0.960859 0.210714 0.585786 0.585786C0.210714 0.960859 0 1.46957 0 2V9C0 9.53043 0.210714 10.0391 0.585786 10.4142C0.960859 10.7893 1.46957 11 2 11H3V13C3 13.1857 3.05171 13.3678 3.14935 13.5257C3.24698 13.6837 3.38668 13.8114 3.55279 13.8944C3.71889 13.9775 3.90484 14.0126 4.08981 13.996C4.27477 13.9793 4.45143 13.9114 4.6 13.8L8.333 11H12C12.5304 11 13.0391 10.7893 13.4142 10.4142C13.7893 10.0391 14 9.53043 14 9V2C14 1.46957 13.7893 0.960859 13.4142 0.585786C13.0391 0.210714 12.5304 0 12 0Z" fill="currentColor"/>
                                 </svg>
                             </button>
+                            <div x-effect="$store.chat.collapseUnread ? $el.classList.remove('hidden') : $el.classList.add('hidden')" class="hidden">
+                                <span
+                                    class="top-0 animate-ping absolute w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                                <span
+                                    class="top-0 absolute w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                            </div>
                         </div>
                     </div>`;
                         this.chatBox = html;
@@ -129,6 +136,7 @@ document.addEventListener('alpine:init', () => {
         },
         minimize() {
             this.collapse = !this.collapse;
+            this.collapseUnread = false;
             Alpine.nextTick(() => { this.scroll(); })
         },
         scroll() {
@@ -173,7 +181,8 @@ document.addEventListener('alpine:init', () => {
                                                 <time class="text-xs text-gray-500">${moment(this.echo.message.created_at).format('H:mm')}</time>
                                             </div>
                                         </li>`;
-                this.scroll();
+                if (this.collapse) this.collapseUnread = true;
+                else this.scroll();
             }
             else {
                 let contact = document.getElementById(`contact-${this.echo.message.sender_id}`);
@@ -188,7 +197,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 else
                     this.addNewContact(this.echo.message.sender);
-                this.count();
+                this.unreadCheck();
             }
         },
         addNewContact(user) {
@@ -196,7 +205,7 @@ document.addEventListener('alpine:init', () => {
             if (contact == null) {
                 let html = `<li id="contact-${user.id}" class="hover:bg-slate-100 p-2 rounded-lg">
                                 <button
-                                    @click="$store.chat.start(${user.id}); $refs.contacts.classList.toggle('hidden'); $store.chat.count();"
+                                    @click="$store.chat.start(${user.id}); $refs.contacts.classList.toggle('hidden'); $store.chat.unreadCheck();"
                                     class="flex items-center w-full justify-between text-gray-500">
                                 <div class="relative flex items-center gap-4">
                                     <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300"
@@ -222,13 +231,10 @@ document.addEventListener('alpine:init', () => {
                 if (noContact) noContact.remove();
             }
         },
-        count() {
-            this.unreadTotal = 0;
+        unreadCheck() {
             let list = document.getElementById('contact-list');
-            let unreads = list.querySelectorAll('.unread');
-            unreads.forEach(unread => {
-                this.unreadTotal += parseInt(unread.innerHTML);
-            })
+            let unreads = Array.from(list.querySelectorAll('.unread'));
+            this.unread = unreads.some(unread => parseInt(unread.innerHTML) > 0);
         },
     })
 })

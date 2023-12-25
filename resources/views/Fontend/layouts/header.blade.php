@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     {{-- messages --}}
-                    <div id="mega-menu-icons" x-init="$store.chat.count()"
+                    <div id="mega-menu-icons" x-init="$store.chat.unreadCheck()"
                         class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
                         <div id="contact-list" class="relative" @click.outside="$refs.contacts.classList.add('hidden')">
                             <button @click="$refs.contacts.classList.toggle('hidden')"
@@ -120,7 +120,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 {{-- thông báo có có tin nhắn chờ đó mới --}}
-                                <div x-effect="$store.chat.unreadTotal == 0 ? $el.classList.add('hidden') : $el.classList.remove('hidden')"
+                                <div x-effect="$store.chat.unread ? $el.classList.remove('hidden') : $el.classList.add('hidden')"
                                     class="hidden">
                                     <span
                                         class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
@@ -134,7 +134,7 @@
                                     @forelse ($contacts as $user)
                                         <li id="contact-{{ $user->id }}" class="hover:bg-slate-100 p-2 rounded-lg">
                                             <button
-                                                @click="$store.chat.start({{ $user->id }}); $refs.contacts.classList.toggle('hidden'); $store.chat.count();"
+                                                @click="$store.chat.start({{ $user->id }}); $refs.contacts.classList.toggle('hidden'); $store.chat.unreadCheck();"
                                                 class="flex items-center w-full justify-between text-gray-500">
                                                 <div class="relative flex items-center gap-4">
                                                     <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300"
