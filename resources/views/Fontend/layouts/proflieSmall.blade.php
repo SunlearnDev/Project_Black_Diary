@@ -1,5 +1,5 @@
 @if ($post->user_id)
-    <button data-popover-target="popover-user-profile" type="button"
+    <button data-popover-target="popover-user-profile-{{ $post->user->id }}" type="button"
         class="text-black px-1 backdrop-blur-md bg-opacity-30 font-bold hover:bg-gray-200  hover:text-blue-700  flex rounded-lg  w-auto  items-center">
         <a href="{{ route('profile.search', [$post->user->id]) }}">
         @empty($post->user->other_name)
@@ -10,7 +10,7 @@
         </a>
     </button>
     <!-- Dropdown profiel -->
-    <div data-popover id="popover-user-profile" role="tooltip"
+    <div data-popover id="popover-user-profile-{{ $post->user->id }}" role="tooltip"
         class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity  duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 backdrop-blur-xl bg-opacity-70">
         <div class="p-3">
             <div class="flex items-center justify-between mb-2">
