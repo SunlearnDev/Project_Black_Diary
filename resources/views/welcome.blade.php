@@ -20,15 +20,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- jQuery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{-- Axios --}}
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @include('Fontend.layouts.style')
 </head>
 
-<body class="bg-gray-50" x-data>
+<body class="bg-gray-50"  x-data>
     {{-- header --}}
+    
     @include('Fontend.layouts.header')
     {{-- main --}}
     @yield('content')
@@ -46,17 +47,52 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        ClassicEditor
-            .create(document.querySelector('#content'), {
-                ckfinder: {
-                    uploadUrl: "{{ route('cheditor.upload', ['_token' => csrf_token()]) }}",
+        /* *******************  CKE5 trình soạn thảo ****************** */
+        const contentElement = document.querySelector('#content');
+        if (contentElement) {
+            ClassicEditor
+                .create(document.querySelector('#content'), {
+                    ckfinder: {
+                        uploadUrl: "{{ route('cheditor.upload', ['_token' => csrf_token()]) }}",
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        const delConfirms = document.querySelectorAll('.js-comfirm-delete');
+        const openConfirm = document.querySelector('.comfirm');
+        const deleteOk = document.querySelector('.delete-confirm');
+        const isFollowingBtn = document.querySelector('.follow-btn');
+        const reactionsContainer = document.querySelector('.reactions-icon');
+        const token = document.head.querySelector('meta[name="csrf-token"]')?.content;
+
+        // Function read time
+        function readingTime() {
+            const texts = document.querySelectorAll('.contents');
+
+            texts.forEach((text) => {
+                const postId = text.getAttribute('data-post-id');
+                const wpm = 200; // Words per minute
+                const words = text.textContent.trim().split(/\s+/).length;
+                const time = Math.ceil(words / wpm);
+
+                // Find the reading time container for the specific post
+                const readingTimeElement = document.getElementById(`readingTime_${postId}`);
+
+                if (readingTimeElement) {
+                    // Update the content of the reading time container
+                    readingTimeElement.innerText = `${time} minute${time !== 1 ? 's' : ''} read`;
                 }
-            })
-            .catch(error => {
-                console.error(error);
             });
+        }
+        // Call the readingTime function when the web page is loaded
+        document.addEventListener('DOMContentLoaded', readingTime);
+
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('js/follow.js') }}"></script>
+    <script src="{{ asset('js/delete.js') }}"></script>
+    <script src="{{ asset('js/like.js') }}"></script>
 </body>
 
 </html>

@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
 use App\Models\Likes;
-use App\Support\HTMLPurifier;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class DiaryController extends Controller
 {
@@ -101,8 +101,8 @@ class DiaryController extends Controller
             array_shift($hashTag);
             foreach ($hashTag as $tag) {
                 $tag = trim(strtolower($tag));
-                $hashtagId = Hashtag::firstOrCreate(['content' => $tag])->value('id');
-                $dataPost->hashtags()->attach($hashtagId);
+                $hashtagId = Hashtag::firstOrCreate(['content' => $tag]);
+                $dataPost->hashtags()->attach($hashtagId->id);
             }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
@@ -117,6 +117,20 @@ class DiaryController extends Controller
         }
     }
 
+    public function showEdit($id){
+        $post = Diary::find($id);
+        return view('Fontend.postdiary.eidtPost',compact('post'));
+    }
+
+    public function edit($id){
+
+    }
+
+    public function delete($id){
+        $diary = Diary::find($id);
+        $diary->delete();
+            return response()->json(['success' => false, 'post'=>'post_'.$id]);
+    }
     public function likes(Request $request, Diary $id){
         $reaction = New Likes([
             'user_id' => Auth::id(),
@@ -130,14 +144,8 @@ class DiaryController extends Controller
         $user = auth()->user();
 
     // Tìm và xóa like nếu tồn tại
-    Likes::where(['user_id' => $user->id, 'diary_id' => $id,'status'=>'1'])->delete();
+    Likes::where(['user_id' => $user->id, 'diary_id' => $id])->delete();
 
     return redirect()->back();
     }
-    public function delete($id){
-        $diary = Diary::find($id);
-        $diary->delete();
-            return response()->json(['success' => false, 'post'=>'post_'.$id]);
-    }
-
 }

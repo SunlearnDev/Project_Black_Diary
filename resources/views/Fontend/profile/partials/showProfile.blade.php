@@ -28,7 +28,7 @@
                     <div class="w-full max-w-full px-3 mx-auto mt-4 sm:my-auto sm:mr-0 md:w-1/2 md:flex-none lg:w-4/12">
                         <div class="flex justify-center py-4 lg:pt-4 pt-8">
                             <div class="mr-4 p-3 text-center">
-                                <span
+                                <span id="countFollow" 
                                     class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->followingCount() }}</span><span
                                     class="text-sm text-blueGray-400">Follows</span>
                             </div>
@@ -38,7 +38,7 @@
                                     class="text-sm text-blueGray-400">Follower</span>
                             </div>
                             <div class="lg:mr-4 p-3 text-center">
-                                <span
+                                <span id="postCount" 
                                     class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->diariesCount() }}</span><span
                                     class="text-sm text-blueGray-400">Posts</span>
                             </div>

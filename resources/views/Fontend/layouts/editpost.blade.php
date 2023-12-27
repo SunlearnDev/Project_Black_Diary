@@ -1,5 +1,6 @@
 <main class="w-full  max-w-[850px]  flex flex-col items-center  pb-2">
-    <form method="POST" action="/user/create" enctype="multipart/form-data" class=" w-full " id=" text-fore">
+    <form method="POST" action="{{ route('edit.diary',['id'=> $post->id])}}" enctype="multipart/form-data" class=" w-full " id=" text-fore">
+        @method('PATCH')
         @csrf
         {{-- Logo, Edit, Preview --}}
         <div class="  h-[72px] w-full p-2  ">
@@ -24,15 +25,16 @@
                                 class="text-red-700 bg-white border border-red-300 hover:text-white hover:bg-red-700  font-medium rounded-lg text-sm px-5 py-2.5 hidden"
                                 onclick="removePreview()">Remove</button>
                         </div>
-                        <img src="" alt="Avatar" id="image" name="image"
-                            class="w-[350px] h-[230px] object-cover hidden" \>
+                        
+                        <img src="{{$post->image}}" alt="Avatar" id="image" name="image"
+                            class="w-[350px] h-[230px] object-cover @if($post->image == null) hidden @endif " \>
                     </div>
                     <!-- title, hastag -->
                     <div class="px-4 py-2 mb-6">
                         <textarea required placeholder="New post title here..." name="title"
-                            class="outline-none w-full  h-auto text-gray-900 text-5xl font-bold my-1 resize-none overflow-hidden"></textarea>
+                            class="outline-none w-full  h-auto text-gray-900 text-5xl font-bold my-1 resize-none overflow-hidden" value="{{$post->title}}"></textarea>
                          <input type="text" placeholder="Add another..." name="hashtag" multiple="multiple"
-                            class="w-full outline-none my-6 h-8 text-gray-400">
+                            class="w-full outline-none my-6 h-8 text-gray-400" value="{{$post->hashtag}}">
                     </div>
                 </div>
             </div>
@@ -44,7 +46,7 @@
                     <label for="editor" class="sr-only">Publish post</label>
                     <textarea id="content" name="content" rows="8"
                         class="block w-full min-h-[260px] px-0 text-sm text-black bg-white border-0 focus:ring-0 outline-none overflow-hidden dark:placeholder-gray-400"
-                        placeholder="Write an article..."></textarea>
+                        placeholder="Write an article..." value = "{{$post->content}}"></textarea>
                 </div>
 
             </div>

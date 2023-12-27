@@ -813,4 +813,18 @@
             padding: 2rem
         }
     }
+.ck-editor__editable_inline{
+min-height:250px;
+}
+.comfirm{
+    display: none ;
+}
+.comfirm.open{
+    display: block;
+}
+.rounded-f{
+    border-radius: 100% ;
+    transition: border-radius 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)0.5s;
+}
+
 </style>
