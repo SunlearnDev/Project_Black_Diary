@@ -28,7 +28,7 @@ class DiaryController extends Controller
                 ->with('user', 'hashtags')
                 ->withCount('comments', 'reactions')
                 ->orderByDesc('id')->get();
-            return view('Fontend.postDiary.diaryPublic', compact('posts'));
+            return view('Fontend.postdiary.diaryPublic', compact('posts'));
         } else {
             $posts = Diary::where('user_id', $userId)
                 ->where('status', 1)

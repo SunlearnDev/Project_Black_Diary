@@ -126,7 +126,7 @@
                 <select name="district_id" id="district_id">
                     <option value="select" disabled selected hidden>Quận/Huyện</option>
                     @if ($data->district_id != null)
-                        <option value="{{ $data->district_id }}" selected>{{ $data->District->name }}</option>
+                        <option value="{{ $data->district_id }}" selected></option>
                     @endif
                 </select>
             </div>
