@@ -3,7 +3,7 @@
         @method('PATCH')
         @csrf
         {{-- Logo, Edit, Preview --}}
-        <div class="  h-[72px] w-full p-2  ">
+        <div class="  h-[72px] w-full p-2 ">
             <div class="w-full  h-full flex justify-start items-center">
                 <div class="flex items-center h-4 font-bold text-2xl col-span-2">Create Post</div>
             </div>
@@ -32,9 +32,9 @@
                     <!-- title, hastag -->
                     <div class="px-4 py-2 mb-6">
                         <textarea required placeholder="New post title here..." name="title"
-                            class="outline-none w-full  h-auto text-gray-900 text-5xl font-bold my-1 resize-none overflow-hidden" value="{{$post->title}}"></textarea>
-                         <input type="text" placeholder="Add another..." name="hashtag" multiple="multiple"
-                            class="w-full outline-none my-6 h-8 text-gray-400" value="{{$post->hashtag}}">
+                            class="outline-none w-full min-h-28 leading-normal text-gray-900 text-4xl font-bold my-1 resize-none overflow-hidden" >{{ $post->title }}</textarea>
+                            <input type="text" placeholder="Add another..." name="hashtag"  multiple="multiple" class="w-full outline-none my-6 h-8 text-gray-400"
+                            value="@foreach ($hashtags as $hashtag) {{$hashtag }}@endforeach">
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <label for="editor" class="sr-only">Publish post</label>
                     <textarea id="content" name="content" rows="8"
                         class="block w-full min-h-[260px] px-0 text-sm text-black bg-white border-0 focus:ring-0 outline-none overflow-hidden dark:placeholder-gray-400"
-                        placeholder="Write an article..." value = "{{$post->content}}"></textarea>
+                        placeholder="Write an article...">{{$post->content}}</textarea>
                 </div>
 
             </div>

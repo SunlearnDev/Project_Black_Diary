@@ -28,14 +28,12 @@
                 class="text-3xl font-bold hover:text-sky-700 pb-4 max-w-[780px]"><span> {{$diary->title}} </span></a></h3>
         <!-- hagtag -->
         <div class=" gird grid-cols-5 mb-2 ">
-            @foreach ( $diary->hashtags as $hashtag )
-                
+            @foreach ( $diary->hashtags as $hashtag )               
                     <kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-50 border border-gray-100 rounded-lg hover:bg-gray-200"> 
                      <a href="" class="">
                         #{{ $hashtag->content }}
                      </a>
-                    </kbd>
-                     
+                    </kbd>                    
             @endforeach
         </div>
         <!-- interact -->

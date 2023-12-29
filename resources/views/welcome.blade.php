@@ -88,7 +88,7 @@
         }
         // Call the readingTime function when the web page is loaded
         document.addEventListener('DOMContentLoaded', readingTime);
-
+        
     </script>
     <script src="{{ asset('js/follow.js') }}"></script>
     <script src="{{ asset('js/delete.js') }}"></script>

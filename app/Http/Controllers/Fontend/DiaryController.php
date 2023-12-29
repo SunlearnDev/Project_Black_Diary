@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
 use App\Models\Hashtag;
 use App\Models\Likes;
+use App\Models\DiaryHashtag;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
+
+
 
 class DiaryController extends Controller
 {
@@ -86,7 +88,7 @@ class DiaryController extends Controller
             $dataPost->title = $request->title;
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
-            $dataPost->user_id = Auth::id();
+            
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
@@ -119,11 +121,55 @@ class DiaryController extends Controller
 
     public function showEdit($id){
         $post = Diary::find($id);
-        return view('Fontend.postdiary.eidtPost',compact('post'));
+        $hashtagsData = DiaryHashtag::where('diary_id', $id)->with('hashtag')->get();
+        $hashtags = $hashtagsData->pluck('hashtag.content')->toArray();
+        return view('Fontend.postdiary.eidtPost',compact('post','hashtags'));
     }
 
-    public function edit($id){
+    public function edit($id, Request $request){
+        DB::beginTransaction();
+        try {
+            // Tạo 1 bài viết mới
+            $dataPost = Diary::find($id);
+            $dataPost->title = $request->title;
+            $dataPost->content = $request->content;
+            $dataPost->status = $request->status;
+            $dataPost->user_id = Auth::id();
+            // XỬ lý ảnh
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('postDiary', 'public');
+                $dataPost->image = Storage::url($imagePath);
+            }
 
+            // Lưu bài viết
+            $dataPost->save();
+            // lấy hashtag cũ
+            $oldHashtags = $dataPost->hashtags()->pluck('content')->toArray();
+            // Xử lý HashTag mới          
+            foreach($oldHashtags as $oldTag){
+                $oldTag = trim(strtolower($oldTag));    
+                $hashtagId=Hashtag::where('content',$oldTag)->value('id');
+                
+                $dataPost->hashtags()->detach($hashtagId);
+            }
+            $hashTag = explode('#', $request->hashtag);
+            array_shift($hashTag);
+            foreach ($hashTag as $tag) {
+                $tag = trim(strtolower($tag));
+                $hashtagId = Hashtag::firstOrCreate(['content' => $tag]);
+                $dataPost->hashtags()->attach($hashtagId->id);
+            }
+            // Commit Tranction nếu mọi thứ thành công
+            DB::commit();
+            return redirect('/diary/' . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
+            // dd('Success');
+        } catch (\Exception) {
+            // RollBack transaction nếu có lỗi
+            DB::rollBack();
+            Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
+             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
+            // dd('Fail');
+        }
     }
 
     public function delete($id){
@@ -138,7 +184,6 @@ class DiaryController extends Controller
             'status' => $request->status
         ]);
         $reaction->save();
-        return redirect()->back();
     }
     public function unlikes($id){
         $user = auth()->user();

@@ -21,8 +21,8 @@
         </article>
         
         {{-- select --}}
-        @if(Auth::check())
-        <article class="p-1 text-base bg-white rounded-lg @if(Auth::user()->id == $post->user_id ) hidden @endif ">
+        @if(Auth::check() && Auth::user()->id == $post->user_id )
+        <article class="p-1 text-base bg-white rounded-lg  ">
             <footer class="flex justify-between items-center mb-2">
                 <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment{{ $post->id }}"
                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500  rounded-lg hover:bg-gray-50 outline-none rotate-90 hover:rotate-0 ease-in-out delay-150"

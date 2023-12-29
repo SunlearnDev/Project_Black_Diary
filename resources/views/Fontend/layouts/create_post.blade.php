@@ -30,7 +30,7 @@
                     <!-- title, hastag -->
                     <div class="px-4 py-2 mb-6">
                         <textarea required placeholder="New post title here..." name="title"
-                            class="outline-none w-full  h-auto text-gray-900 text-5xl font-bold my-1 resize-none overflow-hidden"></textarea>
+                            class="outline-none w-full min-h-28 leading-normal text-gray-900 text-4xl font-bold my-1 resize-none overflow-hidden"></textarea>
                          <input type="text" placeholder="Add another..." name="hashtag" multiple="multiple"
                             class="w-full outline-none my-6 h-8 text-gray-400">
                     </div>

@@ -28,8 +28,8 @@
             </article>
 
             {{-- select --}}
-           @if(Auth::check())
-                <article class="p-1 text-base bg-white rounded-lg  @if (Auth::user()->id == $post->user_id) hidden @endif ">
+           @if(Auth::check() && Auth::user()->id == $post->user_id )
+                <article class="p-1  text-base bg-white rounded-lg   ">
                     <footer class="flex justify-between items-center mb-2">
                         <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment{{ $post->id }}"
                             class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500  rounded-lg hover:bg-gray-50 outline-none rotate-90 hover:rotate-0 ease-in-out delay-150"
@@ -54,14 +54,14 @@
                                 </li>
                                 <li>
                                     <div class="w-full hover:bg-gray-100">
-                                        <a href="">
+                                        <a href="{{route('showEdit.diary',['id'=> $post->id])}}">
                                             <button name="edit"
-                                                class=" py-2 px-4 hover:bg-gray-100  text-gray-700">Edit</button>
+                                        class=" py-2 px-4 hover:bg-gray-100  text-gray-700">Edit</button>
                                         </a>
-                                    </div>
+                                    </div> 
                                 </li>
                                 <li>
-                                    <a href="" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Pin</a>
+                                    <a href=""  class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Pin</a>
                                 </li>
                             </ul>
                         </div>
@@ -96,12 +96,13 @@
                                 class="js-button-icon transition  ease-in-out delay-150 w-12 h-10 @if(  Auth::user()->reactions($post)) bg-red-100 likeBtn rounded-full @endif  border border-red-200 rounded-xl text-xl text-center p-1 shadow-sm  mr-2 hover:bg-red-100 hover:-translate-y-1 hover:scale-110 duration-300 focus-visible:ring-offset-2 active:scale-95">
                                 ❤️
                             </button>
-                            @else{
+                            @else
                                 <a href="{{route('login')}}"><button type="button" id="icon1" name='status' value="1" data-reaction-id="{{$post->id}}"
-                                    class="js-button-icon transition  ease-in-out delay-150 w-12 h-10  bg-red-100 likeBtn  text-xl text-center p-1 shadow-sm  mr-2 hover:bg-red-100 hover:-translate-y-1 hover:scale-110 duration-300 focus-visible:ring-offset-2 active:scale-95">
+                                    class="js-button-icon transition  ease-in-out delay-150 w-12 h-10  bg-red-100 likeBtn  text-xl text-center p-1 shadow-sm rounded-md  mr-2 hover:bg-red-100 hover:-translate-y-1 hover:scale-110 duration-300 focus-visible:ring-offset-2 active:scale-95">
                                     ❤️
                                 </button></a>
-                            }
+                            
+                            @endif
                         </div>
                         <div class="flex -space-x-3">
                             <label id="likeCount" class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-red-700 border-2 border-white rounded-full">

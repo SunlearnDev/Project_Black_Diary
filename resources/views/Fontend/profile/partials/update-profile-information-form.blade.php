@@ -121,16 +121,14 @@
                     @endforeach
                 </select>
             </div>
-
-            <div class="w-1/2 h-10">
+            {{-- <div class="w-1/2 h-10">
                 <select name="district_id" id="district_id">
                     <option value="select" disabled selected hidden>Quận/Huyện</option>
                     @if ($data->district_id != null)
                         <option value="{{ $data->district_id }}" selected>{{ $data->District->name }}</option>
                     @endif
                 </select>
-            </div>
-
+            </div> --}}
         </div>
         <div class="flex items-center gap-4">
             <button type="submit"

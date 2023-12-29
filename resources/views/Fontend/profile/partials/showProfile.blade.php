@@ -29,12 +29,12 @@
                         <div class="flex justify-center py-4 lg:pt-4 pt-8">
                             <div class="mr-4 p-3 text-center">
                                 <span id="countFollow" 
-                                    class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->followingCount() }}</span><span
+                                    class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->followersCount()}}</span><span
                                     class="text-sm text-blueGray-400">Follows</span>
                             </div>
                             <div class="mr-4 p-3 text-center">
                                 <span
-                                    class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->followersCount() }}</span><span
+                                    class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ $data->followingCount() }}</span><span
                                     class="text-sm text-blueGray-400">Follower</span>
                             </div>
                             <div class="lg:mr-4 p-3 text-center">

@@ -151,22 +151,22 @@
                     </button>
                     <div id="mega-menu-icons-dropdown" class="absolute z-10 grid hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
                         <div class="p-4 pb-0 text-gray-900 md:pb-4 ">
-                            <ul class="space-y-4" aria-labelledby="mega-menu-icons-dropdown-button">
-                                <li>
-                                    <button  class="grid items-center w-full justify-between grid-cols-4 text-gray-500 dark:text-black hover:text-blue-600 dark:hover:bg-blue-200 group px-2">
+                            <ul class="space-y-4"  aria-labelledby="mega-menu-icons-dropdown-button">
+                                <li id="notification-li">
+                                    <button class="grid items-center w-full justify-between grid-cols-4 text-gray-500 dark:text-black hover:text-blue-600 dark:hover:bg-blue-200 group px-2">
                                         <div class="relative">
-                                            <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300 mr-2" src="{{ Auth::user()->avatar }}"alt="user photo" />
+                                            <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300 mr-2" src="{{ Auth::user()->avatar }}" alt="user photo" />
                                             <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
                                         </div>
                                         <span class="text-black col-span-2 flex justify-start mr-5">{{ Auth::user()->name }}</span>
-                                        <span class="font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center ">5</span>
+                                        <span id="notification-count" class="font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">0</span>
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>      
-            </div>
+                </div>
         @endif
            </div>
         </div>
