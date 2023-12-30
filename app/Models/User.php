@@ -95,10 +95,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return  $this->following()->where('user_id', $user->id)->exists();
     }
-
-    public function reactions()
+   
+    public function likes(){
+        return $this->belongsToMany(Diary::class, 'reactions')->withTimestamps();
+    }
+    public function reactions(Diary $post) 
     {
-        return $this->hasMany(Reaction::class, 'user_id');
+        return $this->likes()->where('diary_id', $post->id)->exists();
     }
 
     // ─── Message ─────────────────────────────────────────────────────────

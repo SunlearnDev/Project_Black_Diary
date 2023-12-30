@@ -1,7 +1,7 @@
 <!--  Diary -->
 <section class="w-full  max-w-[650px]   flex flex-col items-center rounded-b-lg">
     @foreach ($posts as $post)
-        <article class="flex flex-col  my-2 shadow-md rounded-lg lg:w-[650px] md:w-[530px] ">
+        <article id="post_{{$post -> id}}" data-post-id="{{$post -> id}}"  class="flex flex-col  my-2 shadow-md rounded-lg lg:w-[650px] md:w-[530px] post ">
                 <!-- Article Image -->
                 <div class="hover:opacity-75  w-full flex justify-center rounded-t-lg">
                     <a href="{{route('show.diaryAll',['id'=> $post->id,Str::slug($post->title)])}}">

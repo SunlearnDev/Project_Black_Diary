@@ -1,4 +1,4 @@
-<div class="bg-white grid grid-row px-6 py-4  rounded-lg">
+<div class="bg-white grid grid-row px-6 py-4  rounded-lg post">
     <div class="flex items-center justify-between">
         <!-- link den ca nhan -->
         <article class="flex items-center">
@@ -14,16 +14,17 @@
                             @include('Fontend.layouts.proflieSmall')
                         </div>
                     </div>
-                    <!-- time -->
-                    <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow(true) }}</time>
                 </div>
+                 <!-- time -->
+                 <time title="" class="text-gray-400 pl-1">{{ $post->created_at->fromNow(true) }}</time>
             </div>
         </article>
-
+        
         {{-- select --}}
-        <article class="p-1 text-base bg-white rounded-lg ">
+        @if(Auth::check() && Auth::user()->id == $post->user_id )
+        <article class="p-1 text-base bg-white rounded-lg  ">
             <footer class="flex justify-between items-center mb-2">
-                <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment{{ $post->id }}"
                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500  rounded-lg hover:bg-gray-50 outline-none rotate-90 hover:rotate-0 ease-in-out delay-150"
                     type="button">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -34,22 +35,32 @@
                     <span class="sr-only">Comment settings</span>
                 </button>
                 <!-- Dropdown menu -->
-                <div id="dropdownComment1" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ">
+                <div id="dropdownComment{{ $post->id }}"
+                    class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 "
                         aria-labelledby="dropdownMenuIconHorizontalButton">
                         <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Edit</a>
+                            <div class="w-full hover:bg-gray-100 cursor-pointer">
+                                <button type="button" data-post-id="{{ $post->id }}"
+                                    class=" py-2 px-4 w-full  text-gray-700 js-comfirm-delete  text-left ">Delete</button>
+                            </div>
                         </li>
                         <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Remove</a>
+                            <div class="w-full hover:bg-gray-100">
+                                <a href="{{route('showEdit.diary',['id'=> $post->id])}}">
+                                    <button name="edit"
+                                class=" py-2 px-4 hover:bg-gray-100  text-gray-700">Edit</button>
+                                </a>
+                            </div> 
                         </li>
                         <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Report</a>
+                            <a href=""  class="block py-2 px-4 hover:bg-gray-100  text-gray-700">Pin</a>
                         </li>
                     </ul>
                 </div>
             </footer>
         </article>
+        @endif
     </div>
     <!-- div content -->
     <div class="row-span-3 pl-14 ">
@@ -72,21 +83,12 @@
         <div class="mb-2 flex justify-between items-center">
             <div class=" flex items-center justify-start">
                 <!-- like -->
-                <div
-                    class=" flex justify-start items-center hover:bg-gray-200 rounded-md h-10 cursor-pointer px-2 py-1">
-                    <div class="flex -space-x-3 mr-2">
-                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                            src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                            src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                            src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                            src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" alt="">
-                        <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
-                            href="#">+99</a>
+                <div class=" flex justify-start items-center hover:bg-gray-200 rounded-md h-10 cursor-pointer px-2 py-1">
+                    <div class="flex -space-x-3">
+                        <label id="likeCount" class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-red-700 border-2 border-white rounded-full">
+                        {{$post->likes()->count()}}</label>
                     </div>
-                    <span class=" text-md font-medium text-gray-500 px-2 py-1 ">5 Reactions</span>
+                    <span class=" text-md font-medium text-green-500 px-1 py-1 ">Reactions</span>
                 </div>
                 <!-- sl cmt -->
                 <div class="">
@@ -102,6 +104,7 @@
             </div>
             <!-- save -->
             <div class="flex justify-end right-0 items-center cursor-pointer mr-2 ">
+                <div id="readingTime_{{ $post->id }}" class="reading-time text-gray-300 text-sm mr-1"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6 p-1 rounded-md hover:bg-blue-200 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5
@@ -126,3 +129,27 @@
         @endif
     </div>
 </div>
+ <!-- Confirmation form --> 
+ <div id="confirmationForm"
+    class="comfirm hidden top-0 right-0 left-0 bottom-0 fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 ">
+    <div class="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <div class="mt-2 px-7 py-3">
+                <p class="text-2xl text-gray-900">
+                    Are you sure you want to delete?
+                </p>
+            </div>
+        </div>
+        <div class=" px-4 py-3 sm:px-6 sm:flex flex justify-end item-center">
+            <button id="delete-cancel" type="button"
+                onclick="closeConfirm()"
+                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                Cancel
+            </button>
+            <button id="delete-confirm" type="button" 
+                class=" delete-confirm w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                Delete
+            </button>
+        </div>
+    </div>
+</div> 

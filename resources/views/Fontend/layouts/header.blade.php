@@ -1,5 +1,6 @@
 {{-- header  --}}
-<nav class="fixed dark:backdrop-blur-2xl  dark:bg-opacity-30 top-0 z-50 w-full h-[56px] dark:bg-gray-200 bg-white">
+<nav class="fixed dark:backdrop-blur-2xl  dark:bg-opacity-30 top-0 z-50 w-full h-[56px] dark:bg-gray-200 bg-white"
+    id="app">
     <div class="px-4 sm:mx-2  lg:px-5 lg:pl-4 h-full lg:mx-20">
         <div class="flex items-center justify-between ">
             <!-- logo -->
@@ -147,66 +148,54 @@
                                                     @else
                                                         {{ $user->other_name }}
                                                     @endempty
-                                                    </p>
-                                                </div>
+                                                </p>
+                                            </div>
                                             @if ($user->unread_messages_count)
                                                 <span
                                                     class="unread justify-end font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center">{{ $user->unread_messages_count }}</span>
                                             @endif
-                                            </button>
-                                        </li>
-                                    @empty
-                                        <li id="no-contact" class="w-full text-xl text-center font-thin text-gray-500">No contact</li>
-                                    @endforelse
+                                        </button>
+                                    </li>
+                                @empty
+                                    <li id="no-contact" class="w-full text-xl text-center font-thin text-gray-500">
+                                        No contact</li>
+                                @endforelse
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {{-- Notify --}}
+                <div id="mega-menu-icons"
+                    class="items-center justify-between hidden w-full md:flex md:w-auto md:order-2">
+                    <div>
+                        <button id="mega-menu-icons-dropdown-button"
+                            data-dropdown-toggle="mega-menu-icons-dropdown1"
+                            class="flex relative items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-200 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-8 h-8 ">
+                                <path fill-rule="evenodd"
+                                    d="M6.912 3a3 3 0 00-2.868 2.118l-2.411 7.838a3 3 0 00-.133.882V18a3 3 0 003 3h15a3 3 0 003-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0017.088 3H6.912zm13.823 9.75l-2.213-7.191A1.5 1.5 0 0017.088 4.5H6.912a1.5 1.5 0 00-1.434 1.059L3.265 12.75H6.11a3 3 0 012.684 1.658l.256.513a1.5 1.5 0 001.342.829h3.218a1.5 1.5 0 001.342-.83l.256-.512a3 3 0 012.684-1.658h2.844z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            {{-- thông báo có gì đó mới --}}
+                            <span
+                                class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                            <span
+                                class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                        </button>
+                        <div id="mega-menu-icons-dropdown1"
+                            class="absolute z-10  hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
+                            <div class="p-4 pb-0 text-gray-900 md:pb-4 ">
+                                <ul class="space-y-4" id="notifications"
+                                    aria-labelledby="mega-menu-icons-dropdown-button">
+
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    {{-- Notify --}}
-                    <div id="mega-menu-icons"
-                        class="items-center justify-between hidden w-full md:flex md:w-auto md:order-2">
-                        <div>
-                            <button id="mega-menu-icons-dropdown-button"
-                                data-dropdown-toggle="mega-menu-icons-dropdown-2"
-                                class="flex relative items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-200 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-8 h-8 ">
-                                    <path fill-rule="evenodd"
-                                        d="M6.912 3a3 3 0 00-2.868 2.118l-2.411 7.838a3 3 0 00-.133.882V18a3 3 0 003 3h15a3 3 0 003-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0017.088 3H6.912zm13.823 9.75l-2.213-7.191A1.5 1.5 0 0017.088 4.5H6.912a1.5 1.5 0 00-1.434 1.059L3.265 12.75H6.11a3 3 0 012.684 1.658l.256.513a1.5 1.5 0 001.342.829h3.218a1.5 1.5 0 001.342-.83l.256-.512a3 3 0 012.684-1.658h2.844z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                {{-- thông báo có gì đó mới --}}
-                                <span
-                                    class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
-                                <span
-                                    class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
-                            </button>
-                            <div id="mega-menu-icons-dropdown-2"
-                                class="absolute z-10 grid hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
-                                <div class="p-4 pb-0 text-gray-900 md:pb-4 ">
-                                    <ul class="space-y-4" aria-labelledby="mega-menu-icons-dropdown-button">
-                                        <li>
-                                            <button
-                                                class="grid items-center w-full justify-between grid-cols-4 text-gray-500 dark:text-black hover:text-blue-600 dark:hover:bg-blue-200 group px-2">
-                                                <div class="relative">
-                                                    <img class="w-10 h-10 p-1 rounded-full ring-2 ring-green-300 mr-2"
-                                                        src="{{ Auth::user()->avatar }}"alt="user photo" />
-                                                    <span
-                                                        class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white  rounded-full"></span>
-                                                </div>
-                                                <span
-                                                    class="text-black col-span-2 flex justify-start mr-5">{{ Auth::user()->name }}</span>
-                                                <span
-                                                    class="font-medium text-red-500 rounded-full bg-red-100 w-6 h-6 right-0 text-center ">5</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
+</div>
 </nav>

@@ -16,8 +16,8 @@ use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\User;
 use App\Models\Citys;
 use Carbon\Carbon;
-
-
+use Illuminate\Notifications\DatabaseNotification;
+ 
 class PostProfile extends Controller
 {
 
@@ -66,22 +66,30 @@ class PostProfile extends Controller
     // xử lý login
     public function postLogin(LoginRequest $request)
     {
+        // Kiểm tra nếu người dùng đã đăng nhập
+        if (Auth::check()) {
+            // Nếu người dùng đã đăng nhập, chuyển hướng họ đến trang /diary
+            return redirect('/diary');
+        }
+    
         $request->authenticate();
         $request->session()->regenerate();
-        $urlPrevious = url()->previous();
-        $urlBase = url()->to('/');
+    
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
-
+    
         if (Auth::attempt($credentials, $remember)) {
             if (Auth::user()->email_verified_at == null) {
                 return redirect('/email/verify');
             }
-
-            return redirect(Session::get('url.intended'))->with('msgSuccess', 'Đăng nhập thành công');
+    
+            // Chuyển hướng đến URL định kỳ hoặc /diary nếu không có URL định kỳ
+            return redirect(Session::get('url.intended', '/diary'))->with('msgSuccess', 'Đăng nhập thành công');
         }
+    
         return back()->with('msgError', 'Email hoặc mật khẩu không đúng');
     }
+    
 
     // View đăng ký
     public function showRegister()
@@ -230,5 +238,10 @@ class PostProfile extends Controller
             'Fontend.profile.profileUser',
             ['data' => $user, 'dataCity' => $dataCity,]
         );
+    }
+    public function notifications()
+    {
+        // return 5 notifications unread
+        return Auth::user()->unreadNotifications->take(8)->toArray();
     }
 }

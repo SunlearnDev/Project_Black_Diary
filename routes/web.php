@@ -4,26 +4,24 @@ use App\Http\Controllers\Fontend\PostProfile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Fontend\DiaryController;
 use App\Http\Controllers\Fontend\AddressController;
-use App\Http\Controllers\Fontend\CommentController;
 use App\Http\Controllers\Fontend\SearchController;
-use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
 use App\Http\Controllers\Fontend\FollowController;
+use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Http\Controllers\Fontend\MessageController;
+use App\Http\Controllers\Fontend\CommentController;
+
+Route::get('/test', function () {
+    return view('livewire.multi-hashtag');
+});
+Route::post('/upload', [ImdUpload::class, 'upload'])->name('cheditor.upload');
 
 Route::get('/', [DiaryController::class, 'viewPosts']);
+
 Route::get('/diary/{id}-{title}', [DiaryController::class, 'viewsdiaryAll'])->name('show.diaryAll');
 
 // Route list Quận huyện
@@ -75,9 +73,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
+//  Trang chính sau khi xác thực email
 Route::get('/diary', [DiaryController::class, 'viewPosts'])->middleware(['auth', 'verified'])->name('index');
 
-//  Trang chính sau khi xác thực email
 Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     // Các tuyến đường liên quan đến quản lý profile
     Route::get('/profile/{id}', [PostProfile::class, 'index'])->name('profile');
@@ -85,10 +83,26 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     Route::patch('/setting/update', [PostProfile::class, 'updateProfile'])->name('profile.update');
     Route::patch('/setting/update_password', [PostProfile::class, 'updatePassword'])->name('profile.password');
     Route::delete('/setting/del', [PostProfile::class, 'destroy'])->name('profile.destroy');
-
     Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
+
+    // Following routes
     Route::post('/{id}/follow', [FollowController::class, 'follow'])->name('user.follow');
     Route::post('/{id}/unfollow', [FollowController::class, 'unfollow'])->name('user.unfollow');
+
+    // Like routes
+    Route::post('/{id}/likes', [DiaryController::class, 'likes'])->name('user.likes');
+    Route::post('/{id}/unlikes', [DiaryController::class, 'unlikes'])->name('user.unlikes');
+
+    //Post diary
+    Route::get('/create', [DiaryController::class, 'viewCreate'])->name('create');
+    Route::post('/create', [DiaryController::class, 'store'])->name('diary.create');
+
+    Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
+    Route::get('/edit/diary/{id}', [DiaryController::class, 'showEdit'])->name('showEdit.diary');
+    Route::patch('/edit/diary/{id}', [DiaryController::class, 'edit'])->name('edit.diary');
+    Route::delete('/delete/diary/{id}', [DiaryController::class, 'delete'])->name('delete.diary');
+
+    Route::get('/notifications', [PostProfile::class, 'notifications']);
 });
 
 Route::middleware('fetch')->group(function () {
@@ -99,19 +113,9 @@ Route::middleware('fetch')->group(function () {
 
     // ─── Chat ────────────────────────────────────────────────────────────────────
 
-    // Route::get('contacts', [MessageController::class, 'getContacts']);
-    Route::get('chat', [MessageController::class, 'user']);
-    Route::get('chat/{fromUser}', [MessageController::class, 'getMessages']);
-    Route::post('chat', [MessageController::class, 'sendMessage']);
-});
-
-Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
-    //Post diary
-    Route::post('/create', [DiaryController::class, 'store']);
-    Route::get('/show/{id}', [DiaryController::class, 'show'])->name('show.diary');
-    Route::get('/edit/diary/{id}', [DiaryController::class, 'showEdit'])->name('showEdit.diary');
-    Route::patch('/edit/diary/{id}', [DiaryController::class, 'edit'])->name('edit.diary');
-    Route::delete('/delete/diary/{id}', [DiaryController::class, 'delete'])->name('delete.diary');
+    Route::get('talk', [MessageController::class, 'user']);
+    Route::get('talk/{fromUser}', [MessageController::class, 'getMessages']);
+    Route::post('talk', [MessageController::class, 'sendMessage']);
 });
 
 // Đăng xuất
