@@ -9,7 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-
+use App\Models\Diary;
+use App\Models\User;
 class PostLiked
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -22,7 +23,7 @@ class PostLiked
      *
      * @return void
      */
-    public function __construct($post, $liker)
+    public function __construct(Diary $post,User $liker)
     {
         $this->post = $post;
         $this->liker = $liker;

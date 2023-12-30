@@ -49,7 +49,10 @@ class LikeNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            
+            'liker_name' => $this->liker->name,
+            'post_title' => $this->post->title,
+            'post_id' => $this->post->id,
+            // Thêm các trường dữ liệu khác nếu cần
         ];
     }
 }

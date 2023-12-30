@@ -16,8 +16,8 @@ use App\Http\Controllers\HandleImg\ImdUpload;
 use App\Models\User;
 use App\Models\Citys;
 use Carbon\Carbon;
-
-
+use Illuminate\Notifications\DatabaseNotification;
+ 
 class PostProfile extends Controller
 {
 
@@ -238,5 +238,10 @@ class PostProfile extends Controller
             'Fontend.profile.profileUser',
             ['data' => $user, 'dataCity' => $dataCity,]
         );
+    }
+    public function notifications()
+    {
+        // return 5 notifications unread
+        return Auth::user()->unreadNotifications->take(8)->toArray();
     }
 }
