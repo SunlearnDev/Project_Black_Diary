@@ -14,7 +14,7 @@ document.addEventListener('alpine:init', () => {
 
         start(receiverId) {
             if (this.chatBox == null || receiverId != this.data.receiver.id) {
-                axios.get(`${window.location.origin}/chat/${receiverId}`)
+                axios.get(`${window.location.origin}/talk/${receiverId}`)
                     .then(response => {
                         let receiver = response.data.receiver;
                         let messages = response.data.messages;
@@ -144,7 +144,7 @@ document.addEventListener('alpine:init', () => {
             messagebox.scrollTop = messagebox.scrollHeight;
         },
         sendMessage(event) {
-            axios.post(`${window.location.origin}/chat`, {
+            axios.post(`${window.location.origin}/talk`, {
                 message: this.data.message,
                 receiverId: this.data.receiver.id,
             })
@@ -241,7 +241,7 @@ document.addEventListener('alpine:init', () => {
 
 // ─── Listen Chat Messages ────────────────────────────────────────────────────
 
-axios.get(`${window.location.origin}/chat`)
+axios.get(`${window.location.origin}/talk`)
     .then(response => {
         if (!isNaN(response.data))
             Echo.private(`chat.${response.data}`)
