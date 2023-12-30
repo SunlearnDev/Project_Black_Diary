@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Fontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use App\Notifications\FollowNotification;
 class FollowController extends Controller
 {
 
@@ -16,13 +16,12 @@ class FollowController extends Controller
       */
      public function follow(int $id)
      {
-          $user = User::find($id);
-          if (!$user) {
-               return redirect()->back()->with("msgError", "Bạn chưa đăng nhập");
-          } else {
-               $user->followers()->attach(auth()->user()->id);
-               return redirect()->back()->with("msgSuccess", "Theo dõi thành công");
-          }
+          $follower = User::find($id);    
+          $user = auth()->user();  
+          $follower->followers()->attach($user->id);
+          $follower->notify(new FollowNotification($user));
+          return redirect()->route('your.route.name')->with("msgSuccess", "Followed successfully");
+          
      }
 
 

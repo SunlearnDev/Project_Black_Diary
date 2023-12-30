@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="h-full  flex flex-col items-center justify-center shadow-md">
-        <div class="bg-white shadow rounded lg:w-full  mx-auto md:w-1/2  p-10 ">
+        <div class="bg-white shadow rounded      mx-auto md:w-full  p-10 ">
             <p tabindex="0" class="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800">Login to your
                 account</p>
             <p tabindex="0" class="focus:outline-none text-sm mt-4 font-medium leading-none text-gray-500">Dont have

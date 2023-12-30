@@ -21,7 +21,6 @@ use App\Http\Middleware\HandleLoginCustomer;
 use App\Http\Controllers\Fontend\SocialController;
 use App\Http\Controllers\Fontend\FollowController;
 use App\Http\Controllers\HandleImg\ImdUpload;
-    
     Route::get('/test',function(){
         return view('livewire.multi-hashtag');
     });
@@ -95,6 +94,8 @@ use App\Http\Controllers\HandleImg\ImdUpload;
         Route::get('/edit/diary/{id}',[DiaryController::class, 'showEdit'])->name('showEdit.diary');
         Route::patch('/edit/diary/{id}',[DiaryController::class,'edit'])->name('edit.diary');
         Route::delete('/delete/diary/{id}',[DiaryController::class,'delete'])->name('delete.diary');
+
+        Route::get('/notifications',[PostProfile::class,'notifications']);
     });
     
      // Đăng xuất

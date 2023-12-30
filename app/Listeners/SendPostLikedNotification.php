@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\PostLiked;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-
+use App\Notifications\LikeNotification;
 class SendPostLikedNotification
 {
     use InteractsWithQueue;
@@ -21,6 +21,6 @@ class SendPostLikedNotification
         $liker = $event->liker;
         $post = $event->post;
 
-        $post->user->notify(new PostLiked($liker, $post));
+        $post->user->notify(new LikeNotification($liker, $post));
     }
 }

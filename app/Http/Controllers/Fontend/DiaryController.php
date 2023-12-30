@@ -13,6 +13,7 @@ use App\Models\Likes;
 use App\Models\DiaryHashtag;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\LikeNotification;
 
 
 
@@ -184,6 +185,7 @@ class DiaryController extends Controller
             'status' => $request->status
         ]);
         $reaction->save();
+        event(new LikeNotification($id, auth()->user()));
     }
     public function unlikes($id){
         $user = auth()->user();
