@@ -36,19 +36,18 @@ class Diary extends Model
     {
         return $this->hasMany(Comment::class, 'diary_id');
     }
-    public function likes(){
+    public function likes()
+    {
         return $this->belongsToMany(User::class, 'reactions')->withTimestamps();
     }
+
     public function isLikedBy(User $user)
     {
-    return $this->likes->contains('user_id', $user->id);
+        return $this->likes->contains('user_id', $user->id);
     }
-
 
     public function reactions()
     {
         return $this->hasMany(Reaction::class, 'diary_id');
     }
-    
-
 }

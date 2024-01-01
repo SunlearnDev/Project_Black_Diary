@@ -106,17 +106,22 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
 });
 
 Route::middleware('fetch')->group(function () {
-    // ─── Comment And Reply ───────────────────────────────────────────────────────
-
-    Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
+    // ─── Comment ───────────────────────────────────────────────────────
+    
     Route::post('diary/{id}/comment', [CommentController::class, 'sendComment']);
-
+    Route::delete('comment/{id}/delete', [CommentController::class, 'deleteComment']);
+    Route::patch('comment/{id}/update', [CommentController::class, 'updateComment']);
+    
     // ─── Chat ────────────────────────────────────────────────────────────────────
-
+    
     Route::get('talk', [MessageController::class, 'user']);
     Route::get('talk/{fromUser}', [MessageController::class, 'getMessages']);
     Route::post('talk', [MessageController::class, 'sendMessage']);
 });
+
+// ─── Get Reply ───────────────────────────────────────────────────────────────
+
+Route::get('diary/comment/{id}', [CommentController::class, 'getReplies']);
 
 // Đăng xuất
 Route::post('/logout', [PostProfile::class, 'logout'])->name('logout');

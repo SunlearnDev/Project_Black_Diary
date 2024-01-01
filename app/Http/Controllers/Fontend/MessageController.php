@@ -22,12 +22,6 @@ class MessageController extends Controller
         }
     }
 
-    // public function getContacts()
-    // {
-    //     $contacts = User::findOrFail(auth()->id())->contacts();
-    //     return response()->json($contacts);
-    // }
-
     public function getMessages($fromUser)
     {
         $receiver = User::select('id', 'name', 'avatar', 'other_name', 'avatar')->findOrFail($fromUser);

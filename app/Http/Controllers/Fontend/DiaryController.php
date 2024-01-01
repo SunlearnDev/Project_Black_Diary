@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\LikeNotification;
 
-
-
 class DiaryController extends Controller
 {
 
@@ -42,16 +40,6 @@ class DiaryController extends Controller
                 ->orderByDesc('id')->get();
             return $posts;
         }
-
-        // dd($posts->toRawSql(), $posts->get());
-        // $test = Diary::where('status', 1)->with('hashtags')->whereHas('hashtags', function ($query) {
-        //     $query->where('content', 'password');
-        // });
-        // $test = Diary::where('user_id', auth()->id())
-        //     ->with('hashtags', 'comments.user:id,name')
-        //     ->withCount('comments')
-        //     ->orderByDesc('id');
-        // dd($test->toRawSql(), $test->get());
     }
 
     public function hashtagFilter(string $hashTag)

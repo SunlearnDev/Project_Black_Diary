@@ -18,6 +18,6 @@ class fetchAuth
         if (auth()->check())
             return $next($request);
         else
-            return response()->json('Unauthorized');
+            return redirect()->route('login');
     }
 }

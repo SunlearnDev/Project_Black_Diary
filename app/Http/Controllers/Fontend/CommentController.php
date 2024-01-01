@@ -32,6 +32,23 @@ class CommentController extends Controller
             }])
             ->orderByDesc('id')->firstOrFail();
         return response()->json($replies);
-        // dd($replies->toArray());
+    }
+
+    public function deleteComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+        if ($comment->user_id == Auth::id()) {
+            $comment->delete();
+            return response()->json('success');
+        } else return response()->json('fail');
+    }
+
+    public function updateComment(Request $request, $id)
+    {
+        $comment = Comment::findOrFail($id);
+        if ($comment->user_id == Auth::id()) {
+            $comment->update(['content' => $request->message]);
+            return response()->json('success');
+        } else return response()->json('fail');
     }
 }
