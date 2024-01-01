@@ -20,50 +20,54 @@ function sendComment(data, event) {
                             <div class="flex items-center">
                                 <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold"><img
                                         class="mr-2 w-6 h-6 rounded-full"
-                                        src="${user.avatar}">${comment.user.other_name}</p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
-                                            datetime="${moment(comment.created_at).fromNow()}">${moment(comment.created_at).fromNow()}</time></p>
-                            </div>
-                            <button data-dropdown-toggle="dropdownComment${comment.id}"
-                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                type="button" style="animation: comment 2s">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor" viewBox="0 0 16 3">
-                                    <path
-                                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                </svg>
-                            </button>
-                            <div id="dropdownComment${comment.id}"
-                                class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-                                <ul class="py-1 text-sm text-gray-700"
-                                    aria-labelledby="dropdownMenuIconHorizontalButton">
-                                    <li @click.prevent="toggleEdit">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                    </li>
-                                    <li @click.prevent="deleteComment(event, ${comment.id})">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </header>
-                        <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
-                        <div class="flex items-center mt-4 space-x-4">
-                            <button type="button" @click="toggleReply"
-                                class="flex items-center text-sm text-gray-500 hover:underline font-medium">
-                                <svg class="mr-1.5 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 20 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
-                                </svg>
-                                Reply
-                            </button>
-                        </div>
-                        <div x-html="form"></div>
-                    </article>`;
+                                        src="${user.avatar}">`;
+      if (comment.user.other_name)
+        html += comment.user.other_name;
+      else html += comment.user.name;
+      html += `</p>
+                      <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
+                                  datetime="${moment(comment.created_at).fromNow()}">${moment(comment.created_at).fromNow()}</time></p>
+                  </div>
+                  <button data-dropdown-toggle="dropdownComment${comment.id}"
+                      class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
+                      type="button" style="animation: comment 2s">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor" viewBox="0 0 16 3">
+                          <path
+                              d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                      </svg>
+                  </button>
+                  <div id="dropdownComment${comment.id}"
+                      class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
+                      <ul class="py-1 text-sm text-gray-700"
+                          aria-labelledby="dropdownMenuIconHorizontalButton">
+                          <li @click.prevent="toggleEdit">
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
+                          </li>
+                          <li @click.prevent="deleteComment(event, ${comment.id})">
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
+                          </li>
+                          <li>
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
+                          </li>
+                      </ul>
+                  </div>
+              </header>
+              <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
+              <div class="flex items-center mt-4 space-x-4">
+                  <button type="button" @click="toggleReply"
+                      class="flex items-center text-sm text-gray-500 hover:underline font-medium">
+                      <svg class="mr-1.5 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                          fill="none" viewBox="0 0 20 18">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
+                      </svg>
+                      Reply
+                  </button>
+              </div>
+              <div x-html="form"></div>
+          </article>`;
 
       let cmtlist = document.getElementById("comment-list"),
         firstChild = cmtlist.firstElementChild;
@@ -84,7 +88,9 @@ function showReplies(event, parentId) {
   let url = `${window.location.origin}/diary/comment/${parentId}`;
   axios.get(url)
     .then(function (response) {
+      console.dir(response.data)
       let replies = response.data.replies;
+      let auth = response.data.auth;
       replies.forEach((reply) => {
         let user = reply.user;
         let showReplies = ``;
@@ -100,41 +106,46 @@ function showReplies(event, parentId) {
                           </button>`;
         }
         let html = `<div x-show="replyOpen">
-                      <article x-data="comment(${reply.id})"
+                      <article x-data="comment(${reply.diary_id}, ${reply.id})"
                           class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg">
                           <header class="flex justify-between items-center mb-2">
                               <div class="flex items-center">
                                   <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
                                       <img class="mr-2 w-6 h-6 rounded-full"
-                                          src="${user.avatar}">${user.other_name}</p>
-                                  <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
-                                          datetime="${moment(reply.created_at).fromNow()}">${moment(reply.created_at).fromNow()}</time></p>
-                              </div>
-                              <button data-dropdown-toggle="dropdownComment${reply.id}"
-                                  class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                  type="button">
-                                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                      fill="currentColor" viewBox="0 0 16 3">
-                                      <path
-                                          d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                  </svg>
-                              </button>
-                              <div id="dropdownComment${reply.id}"
-                                  class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-                                  <ul class="py-1 text-sm text-gray-700"
-                                    aria-labelledby="dropdownMenuIconHorizontalButton">
-                                    <li @click.prevent="toggleEdit">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                    </li>
-                                    <li @click.prevent="deleteComment(event, ${reply.id})">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                    </li>
-                                  </ul>
-                              </div>
-                          </header>
+                                          src="${user.avatar}">`;
+        if (user.other_name)
+          html += user.other_name;
+        else html += user.name;
+        html += `</p>
+                      <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
+                              datetime="${moment(reply.created_at).fromNow()}">${moment(reply.created_at).fromNow()}</time></p>
+                  </div>`;
+        if (auth == reply.user_id)
+          html += `<button data-dropdown-toggle="dropdownComment${reply.id}"
+                      class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
+                      type="button">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor" viewBox="0 0 16 3">
+                          <path
+                              d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                      </svg>
+                  </button>
+                  <div id="dropdownComment${reply.id}"
+                      class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
+                      <ul class="py-1 text-sm text-gray-700"
+                        aria-labelledby="dropdownMenuIconHorizontalButton">
+                        <li @click.prevent="toggleEdit">
+                            <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
+                        </li>
+                        <li @click.prevent="deleteComment(event, ${reply.id})">
+                            <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
+                        </li>
+                      </ul>
+                  </div>`;
+        html += `</header>
                           <p id="comment${reply.id}Content" class="text-gray-500">${reply.content}</p>
                           <div class="flex items-center mt-4 space-x-4">
                               <button type="button" @click="toggleReply"
@@ -235,51 +246,55 @@ document.addEventListener("alpine:init", () => {
                               <div class="flex items-center">
                                   <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
                                       <img class="mr-2 w-6 h-6 rounded-full"
-                                          src="${user.avatar}">${user.other_name}</p>
-                                  <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
-                                          datetime="${moment(comment.created_at).fromNow()}">${moment(comment.created_at).fromNow()}</time></p>
-                              </div>
-                              <button data-dropdown-toggle="dropdownComment${comment.id}"
-                                  class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                  type="button" style="animation: comment 2s">
-                                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                      fill="currentColor" viewBox="0 0 16 3">
-                                      <path
-                                          d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                  </svg>
-                                  <span class="sr-only">Comment settings</span>
-                              </button>
-                              <div id="dropdownComment${comment.id}"
-                                  class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-                                  <ul class="py-1 text-sm text-gray-700"
-                                    aria-labelledby="dropdownMenuIconHorizontalButton">
-                                    <li @click.prevent="toggleEdit">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                    </li>
-                                    <li @click.prevent="deleteComment(event, ${comment.id})">
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                    </li>
-                                  </ul>
-                              </div>
-                          </header>
-                          <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
-                          <div class="flex items-center mt-4 space-x-4">
-                              <button type="button" @click="toggleReply"
-                                  class="flex items-center text-sm text-gray-500 hover:underline font-medium">
-                                  <svg class="mr-1.5 w-3.5 h-3.5" aria-hidden="true"
-                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                                      <path stroke="currentColor" stroke-linecap="round"
-                                          stroke-linejoin="round" stroke-width="2"
-                                          d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
-                                  </svg>
-                                  Reply
-                              </button>
-                          </div>
-                          <div x-html="form"></div>
-                      </article>`;
+                                          src="${user.avatar}">`;
+          if (user.other_name)
+            html += user.other_name;
+          else html += user.name;
+          html += `</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
+                                datetime="${moment(comment.created_at).fromNow()}">${moment(comment.created_at).fromNow()}</time></p>
+                    </div>
+                    <button data-dropdown-toggle="dropdownComment${comment.id}"
+                        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
+                        type="button" style="animation: comment 2s">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 16 3">
+                            <path
+                                d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                        </svg>
+                        <span class="sr-only">Comment settings</span>
+                    </button>
+                    <div id="dropdownComment${comment.id}"
+                        class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
+                        <ul class="py-1 text-sm text-gray-700"
+                          aria-labelledby="dropdownMenuIconHorizontalButton">
+                          <li @click.prevent="toggleEdit">
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
+                          </li>
+                          <li @click.prevent="deleteComment(event, ${comment.id})">
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
+                          </li>
+                          <li>
+                              <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
+                          </li>
+                        </ul>
+                    </div>
+                </header>
+                <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
+                <div class="flex items-center mt-4 space-x-4">
+                    <button type="button" @click="toggleReply"
+                        class="flex items-center text-sm text-gray-500 hover:underline font-medium">
+                        <svg class="mr-1.5 w-3.5 h-3.5" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                            <path stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2"
+                                d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
+                        </svg>
+                        Reply
+                    </button>
+                </div>
+                <div x-html="form"></div>
+            </article>`;
 
           let formReply = event.target;
           formReply.parentElement.insertAdjacentHTML("afterend", html);
@@ -301,8 +316,8 @@ document.addEventListener("alpine:init", () => {
     updateComment(data, event) {
       let url = `${window.location.origin}/comment/${data.parentId}/update`;
       axios.patch(url, {
-          message: data.message,
-        })
+        message: data.message,
+      })
         .then(() => {
           document.getElementById(`comment${data.parentId}Content`).innerHTML = data.message;
           let formEdit = event.target;

@@ -25,13 +25,13 @@ class CommentController extends Controller
 
     public function getReplies($id)
     {
-        $replies = Comment::where('id', $id)
-            ->with(['replies' => function ($query) {
-                $query->with('user')
-                    ->withCount('replies');
-            }])
-            ->orderByDesc('id')->firstOrFail();
-        return response()->json($replies);
+        $replies = Comment::where(function ($query) use ($id) {
+            $query->where('parent_id', $id);
+        })
+            ->with('user:id,name,avatar,other_name')
+            ->withCount('replies')
+            ->get();
+        return response()->json(['replies' => $replies, 'auth' => Auth::id()]);
     }
 
     public function deleteComment($id)
