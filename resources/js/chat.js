@@ -12,6 +12,7 @@ document.addEventListener('alpine:init', () => {
         unread: false,
         collapseUnread: false,
 
+        // Thực hiện lấy tin nhắn và hiển thị vào chatbox
         start(receiverId) {
             if (this.chatBox == null || receiverId != this.data.receiver.id) {
                 axios.get(`${window.location.origin}/talk/${receiverId}`)
@@ -125,24 +126,29 @@ document.addEventListener('alpine:init', () => {
             }
             else this.minimize();
 
+            // Xóa trạng thái tin nhắn chưa đọc trên giao diện
             let contact = document.getElementById(`contact-${receiverId}`);
             if (contact) {
                 let unread = contact.querySelector('.unread');
                 if (unread != null) unread.remove();
             }
         },
+        // Đóng chatbox
         close() {
             this.chatBox = null;
         },
+        // Thu nhỏ và phóng to chatbox
         minimize() {
             this.collapse = !this.collapse;
             this.collapseUnread = false;
             Alpine.nextTick(() => { this.scroll(); })
         },
+        // Cuộn xuống tin nhắn cuối cùng
         scroll() {
             let messagebox = document.querySelector('ul#messagebox');
             messagebox.scrollTop = messagebox.scrollHeight;
         },
+        // Gửi tin nhắn
         sendMessage(event) {
             axios.post(`${window.location.origin}/talk`, {
                 message: this.data.message,
@@ -166,6 +172,7 @@ document.addEventListener('alpine:init', () => {
                     console.log(error);
                 })
         },
+        // In ra tin nhắn nhận được
         response() {
             let messagebox = document.querySelector('ul#messagebox');
             if (messagebox != null && this.data.receiver.id == this.echo.message.sender_id) {
@@ -200,6 +207,7 @@ document.addEventListener('alpine:init', () => {
                 this.unreadCheck();
             }
         },
+        // Thêm người dùng vào danh sách liên hệ
         addNewContact(user) {
             let contact = document.getElementById(`contact-${user.id}`);
             if (contact == null) {
@@ -231,6 +239,7 @@ document.addEventListener('alpine:init', () => {
                 if (noContact) noContact.remove();
             }
         },
+        // Kiểm tra tin nhắn chưa đọc
         unreadCheck() {
             let list = document.getElementById('contact-list');
             let unreads = Array.from(list.querySelectorAll('.unread'));
@@ -246,7 +255,9 @@ axios.get(`${window.location.origin}/talk`)
         if (!isNaN(response.data))
             Echo.private(`chat.${response.data}`)
                 .listen('.MessageCreated', (data) => {
+                    // Lưu tin nhắn nhận được vào data của Alpine
                     Alpine.store('chat').echo = data;
+                    // Gọi hàm in ra tin nhắn nhận được
                     Alpine.store('chat').response();
                 });
     })

@@ -6,6 +6,8 @@ moment.updateLocale("en", {
   },
 });
 
+// ─── Đăng Comment ──────────────────────────────────────────────────────────
+
 function sendComment(data, event) {
   let url = `${window.location.origin}/diary/${data.id}/comment`;
   axios.post(url, {
@@ -83,6 +85,8 @@ function sendComment(data, event) {
     });
   event.target.reset();
 }
+
+// ─── Hiển Thị Replies ────────────────────────────────────────────────────────
 
 function showReplies(event, parentId) {
   let url = `${window.location.origin}/diary/comment/${parentId}`;
@@ -174,6 +178,8 @@ function showReplies(event, parentId) {
     });
 }
 
+// ─── Xóa Comment ───────────────────────────────────────────────────────────
+
 function deleteComment(event, id) {
   let url = `${window.location.origin}/comment/${id}/delete`;
   axios.delete(url)
@@ -226,11 +232,13 @@ document.addEventListener("alpine:init", () => {
                         Cancel
                     </button>
                 </form > `,
+    // Hiển thị form reply
     toggleReply() {
       if (this.form == null)
         this.form = this.formReply;
       else this.form = null;
     },
+    // Gửi reply
     sendReply(data, event) {
       let url = `${window.location.origin}/diary/${data.diaryId}/comment`;
       axios.post(url, {
@@ -306,6 +314,7 @@ document.addEventListener("alpine:init", () => {
           console.log(error);
         });
     },
+    // Hiển thị form chỉnh sửa comment
     toggleEdit() {
       if (this.form == null) {
         this.form = this.formEdit;
@@ -313,6 +322,7 @@ document.addEventListener("alpine:init", () => {
       }
       else this.form = null;
     },
+    // Cập nhật comment
     updateComment(data, event) {
       let url = `${window.location.origin}/comment/${data.parentId}/update`;
       axios.patch(url, {
