@@ -1,6 +1,7 @@
 import './bootstrap';
 import './comment';
 import './chat';
+import { initFlowbite } from 'flowbite';
 
 window.axios = axios;
 

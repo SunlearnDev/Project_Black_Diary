@@ -72,7 +72,6 @@
                                     <path
                                         d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                                 </svg>
-                                <span class="sr-only">Comment settings</span>
                             </button>
                             {{-- Dropdown menu --}}
                             <div id="dropdownComment{{ $comment->id }}"

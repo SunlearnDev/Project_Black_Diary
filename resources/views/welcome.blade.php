@@ -38,7 +38,7 @@
     @include('components.chat')
 
     {{-- @include('sweetalert::alert') --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script> --}}
     <script src="{{ asset('js/districts.js') }}"></script>
     <script src="{{ asset('js/showimage.js') }}"></script>
     <script src="{{ asset('js/randomcolorhashtag.js') }}"></script>

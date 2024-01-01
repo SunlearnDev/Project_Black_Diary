@@ -14,7 +14,7 @@ function sendComment(data, event) {
     .then(function (response) {
       let comment = response.data;
       let user = comment.user;
-      let html = `<article x-data="reply(${comment.id})" 
+      let html = `<article x-data="comment(${data.id}, ${comment.id})" 
                     class="p-6 rounded-lg text-base bg-white border-b border-gray-200" style="animation: comment 2s">
                         <header class="flex justify-between items-center mb-2">
                             <div class="flex items-center">
@@ -32,16 +32,15 @@ function sendComment(data, event) {
                                     <path
                                         d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                                 </svg>
-                                <span class="sr-only">Comment settings</span>
                             </button>
                             <div id="dropdownComment${comment.id}"
                                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
                                 <ul class="py-1 text-sm text-gray-700"
                                     aria-labelledby="dropdownMenuIconHorizontalButton">
-                                    <li>
+                                    <li @click.prevent="toggleEdit">
                                         <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
                                     </li>
-                                    <li>
+                                    <li @click.prevent="deleteComment(event, ${comment.id})">
                                         <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
                                     </li>
                                     <li>
@@ -50,7 +49,7 @@ function sendComment(data, event) {
                                 </ul>
                             </div>
                         </header>
-                        <p class="text-gray-500">${comment.content}</p>
+                        <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
                         <div class="flex items-center mt-4 space-x-4">
                             <button type="button" @click="toggleReply"
                                 class="flex items-center text-sm text-gray-500 hover:underline font-medium">
@@ -73,6 +72,7 @@ function sendComment(data, event) {
       } else {
         cmtlist.innerHTML = html;
       }
+      initFlowbite();
     })
     .catch(function (error) {
       console.log(error);
@@ -100,7 +100,7 @@ function showReplies(event, parentId) {
                           </button>`;
         }
         let html = `<div x-show="replyOpen">
-                      <article x-data="reply(${reply.id})"
+                      <article x-data="comment(${reply.id})"
                           class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg">
                           <header class="flex justify-between items-center mb-2">
                               <div class="flex items-center">
@@ -110,7 +110,7 @@ function showReplies(event, parentId) {
                                   <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                           datetime="${moment(reply.created_at).fromNow()}">${moment(reply.created_at).fromNow()}</time></p>
                               </div>
-                              <button data-dropdown-toggle="dropdownComment"
+                              <button data-dropdown-toggle="dropdownComment${reply.id}"
                                   class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
                                   type="button">
                                   <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -118,26 +118,24 @@ function showReplies(event, parentId) {
                                       <path
                                           d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                                   </svg>
-                                  <span class="sr-only">Comment settings</span>
                               </button>
-                              <!-- Dropdown menu -->
-                              <div id="dropdownComment"
+                              <div id="dropdownComment${reply.id}"
                                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
                                   <ul class="py-1 text-sm text-gray-700"
-                                      aria-labelledby="dropdownMenuIconHorizontalButton">
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                      </li>
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                      </li>
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                      </li>
+                                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                                    <li @click.prevent="toggleEdit">
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
+                                    </li>
+                                    <li @click.prevent="deleteComment(event, ${reply.id})">
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
+                                    </li>
                                   </ul>
                               </div>
                           </header>
-                          <p class="text-gray-500">${reply.content}</p>
+                          <p id="comment${reply.id}Content" class="text-gray-500">${reply.content}</p>
                           <div class="flex items-center mt-4 space-x-4">
                               <button type="button" @click="toggleReply"
                                   class="flex items-center text-sm text-gray-500 hover:underline font-medium">
@@ -157,6 +155,7 @@ function showReplies(event, parentId) {
 
         let buttonReply = event.target;
         buttonReply.parentElement.insertAdjacentHTML("afterend", html);
+        initFlowbite();
       });
     })
     .catch(function (error) {
@@ -230,7 +229,7 @@ document.addEventListener("alpine:init", () => {
         .then((response) => {
           let comment = response.data;
           let user = comment.user;
-          let html = `<article x-data="reply(${comment.diary_id},${comment.id})"
+          let html = `<article x-data="comment(${comment.diary_id},${comment.id})"
                           class="p-4 mt-2 -mb-4 -mr-4 text-base bg-white rounded-lg" style="animation: comment 2s">
                           <header class="flex justify-between items-center mb-2">
                               <div class="flex items-center">
@@ -242,7 +241,7 @@ document.addEventListener("alpine:init", () => {
                               </div>
                               <button data-dropdown-toggle="dropdownComment${comment.id}"
                                   class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                                  type="button">
+                                  type="button" style="animation: comment 2s">
                                   <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                       fill="currentColor" viewBox="0 0 16 3">
                                       <path
@@ -253,20 +252,20 @@ document.addEventListener("alpine:init", () => {
                               <div id="dropdownComment${comment.id}"
                                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
                                   <ul class="py-1 text-sm text-gray-700"
-                                      aria-labelledby="dropdownMenuIconHorizontalButton">
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
-                                      </li>
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
-                                      </li>
-                                      <li>
-                                          <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
-                                      </li>
+                                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                                    <li @click.prevent="toggleEdit">
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Edit</a>
+                                    </li>
+                                    <li @click.prevent="deleteComment(event, ${comment.id})">
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Remove</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100">Report</a>
+                                    </li>
                                   </ul>
                               </div>
                           </header>
-                          <p class="text-gray-500">${comment.content}</p>
+                          <p id="comment${comment.id}Content" class="text-gray-500">${comment.content}</p>
                           <div class="flex items-center mt-4 space-x-4">
                               <button type="button" @click="toggleReply"
                                   class="flex items-center text-sm text-gray-500 hover:underline font-medium">
@@ -286,6 +285,7 @@ document.addEventListener("alpine:init", () => {
           formReply.parentElement.insertAdjacentHTML("afterend", html);
           formReply.reset();
           this.form = null;
+          initFlowbite();
         })
         .catch((error) => {
           console.log(error);
