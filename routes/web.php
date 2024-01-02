@@ -105,7 +105,7 @@ Route::prefix('/user')->middleware('handleLoginCustomer')->group(function () {
     Route::get('/notifications', [PostProfile::class, 'notifications']);
 });
 
-Route::middleware('fetch')->group(function () {
+Route::middleware('handleLoginCustomer')->group(function () {
     // ─── Comment ───────────────────────────────────────────────────────
     
     Route::post('diary/{id}/comment', [CommentController::class, 'sendComment']);

@@ -17,7 +17,7 @@ use App\Models\User;
 use App\Models\Citys;
 use Carbon\Carbon;
 use Illuminate\Notifications\DatabaseNotification;
- 
+
 class PostProfile extends Controller
 {
 
@@ -49,10 +49,14 @@ class PostProfile extends Controller
 
     public function login()
     {
-        Session::put('url.intended', URL::previous());
+        if (URL::previous() != route('login'))
+            Session::put('url.intended', URL::previous());
+        // Kiểm tra nếu người dùng đã đăng nhập
+        if (Auth::check())
+            return redirect(Session::get('url.intended'));
         return view('auth.login');
     }
-    
+
     // view edit profile
     public function edit()
     {
@@ -66,30 +70,13 @@ class PostProfile extends Controller
     // xử lý login
     public function postLogin(LoginRequest $request)
     {
-        // Kiểm tra nếu người dùng đã đăng nhập
-        if (Auth::check()) {
-            // Nếu người dùng đã đăng nhập, chuyển hướng họ đến trang /diary
-            return redirect('/diary');
-        }
-    
         $request->authenticate();
         $request->session()->regenerate();
-    
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
-    
-        if (Auth::attempt($credentials, $remember)) {
-            if (Auth::user()->email_verified_at == null) {
-                return redirect('/email/verify');
-            }
-    
-            // Chuyển hướng đến URL định kỳ hoặc /diary nếu không có URL định kỳ
-            return redirect(Session::get('url.intended', '/diary'))->with('msgSuccess', 'Đăng nhập thành công');
-        }
-    
-        return back()->with('msgError', 'Email hoặc mật khẩu không đúng');
+        if (Auth::user()->email_verified_at == null) {
+            return redirect('/email/verify');
+        } else return redirect(Session::get('url.intended'))->with('msgSuccess', 'Đăng nhập thành công');
     }
-    
+
 
     // View đăng ký
     public function showRegister()
