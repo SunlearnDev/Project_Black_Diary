@@ -17,11 +17,10 @@ class HandleLoginCustomer
      */
     public function handle(Request $request, Closure $next): Response
     {
-       if(Auth::Check()){
-        return $next($request);
-       }
-       else{
-        return redirect('/login')->with('msgError', 'Bạn cần phải đăng nhập trước');
-       }
+        if (Auth::Check()) {
+            return $next($request);
+        } else {
+            return redirect('/login')->with('msgError', 'Bạn cần phải đăng nhập trước');
+        }
     }
 }

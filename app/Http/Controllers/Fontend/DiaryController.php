@@ -98,14 +98,12 @@ class DiaryController extends Controller
             }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
-            return redirect(`/diary/` . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
-            // dd('Success');
+            return redirect('/diary/' . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
             DB::rollBack();
             Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
-            // dd('Fail');
         }
     }
 
@@ -151,7 +149,7 @@ class DiaryController extends Controller
             }
             // Commit Tranction nếu mọi thứ thành công
             DB::commit();
-            return redirect(`/diary/` . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
+            return redirect('/diary/' . $dataPost->id . '-' . Str::slug($dataPost->title))->with('msgSuccess', 'Đăng bài viết thành công');
             // dd('Success');
         } catch (\Exception) {
             // RollBack transaction nếu có lỗi
