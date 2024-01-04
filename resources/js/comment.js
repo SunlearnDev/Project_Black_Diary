@@ -9,7 +9,7 @@ moment.updateLocale("en", {
 // ─── Đăng Comment ──────────────────────────────────────────────────────────
 
 function sendComment(data, event) {
-  let url = `${window.location.origin}/diary/${data.id}/comment`;
+  let url = `/diary/${data.id}/comment`;
   axios.post(url, {
     message: data.message,
   })
@@ -89,7 +89,7 @@ function sendComment(data, event) {
 // ─── Hiển Thị Replies ────────────────────────────────────────────────────────
 
 function showReplies(event, parentId) {
-  let url = `${window.location.origin}/diary/comment/${parentId}`;
+  let url = `/diary/comment/${parentId}`;
   axios.get(url)
     .then(function (response) {
       console.dir(response.data)
@@ -181,7 +181,7 @@ function showReplies(event, parentId) {
 // ─── Xóa Comment ───────────────────────────────────────────────────────────
 
 function deleteComment(event, id) {
-  let url = `${window.location.origin}/comment/${id}/delete`;
+  let url = `/comment/${id}/delete`;
   axios.delete(url)
     .then(function () {
       event.target.closest("article").remove();
@@ -240,7 +240,7 @@ document.addEventListener("alpine:init", () => {
     },
     // Gửi reply
     sendReply(data, event) {
-      let url = `${window.location.origin}/diary/${data.diaryId}/comment`;
+      let url = `/diary/${data.diaryId}/comment`;
       axios.post(url, {
         message: data.message,
         parentId: data.parentId,
@@ -324,7 +324,7 @@ document.addEventListener("alpine:init", () => {
     },
     // Cập nhật comment
     updateComment(data, event) {
-      let url = `${window.location.origin}/comment/${data.parentId}/update`;
+      let url = `/comment/${data.parentId}/update`;
       axios.patch(url, {
         message: data.message,
       })

@@ -67,7 +67,7 @@ class DiaryController extends Controller
             ->orderByDesc('id')->firstOrFail();
         return view('Fontend.postdiary.diaryPost', compact('post'));
     }
-    
+
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -78,7 +78,7 @@ class DiaryController extends Controller
             $dataPost->content = $request->content;
             $dataPost->status = $request->status;
             $dataPost->user_id = Auth::id();
-            
+
             // XỬ lý ảnh
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('postDiary', 'public');
@@ -107,14 +107,16 @@ class DiaryController extends Controller
         }
     }
 
-    public function showEdit($id){
+    public function showEdit($id)
+    {
         $post = Diary::find($id);
         $hashtagsData = DiaryHashtag::where('diary_id', $id)->with('hashtag')->get();
         $hashtags = $hashtagsData->pluck('hashtag.content')->toArray();
-        return view('Fontend.postdiary.eidtPost',compact('post','hashtags'));
+        return view('Fontend.postdiary.eidtPost', compact('post', 'hashtags'));
     }
 
-    public function edit($id, Request $request){
+    public function edit($id, Request $request)
+    {
         DB::beginTransaction();
         try {
             // Tạo 1 bài viết mới
@@ -134,10 +136,10 @@ class DiaryController extends Controller
             // lấy hashtag cũ
             $oldHashtags = $dataPost->hashtags()->pluck('content')->toArray();
             // Xử lý HashTag mới          
-            foreach($oldHashtags as $oldTag){
-                $oldTag = trim(strtolower($oldTag));    
-                $hashtagId=Hashtag::where('content',$oldTag)->value('id');
-                
+            foreach ($oldHashtags as $oldTag) {
+                $oldTag = trim(strtolower($oldTag));
+                $hashtagId = Hashtag::where('content', $oldTag)->value('id');
+
                 $dataPost->hashtags()->detach($hashtagId);
             }
             $hashTag = explode('#', $request->hashtag);
@@ -155,18 +157,21 @@ class DiaryController extends Controller
             // RollBack transaction nếu có lỗi
             DB::rollBack();
             Log::error('Đăng bài viết thất bại', ['user_id' => Auth::id()]);
-             return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
+            return redirect('/user/create')->with('msgFail', 'Đăng bài viết thất bại');
             // dd('Fail');
         }
     }
 
-    public function delete($id){
-        $diary = Diary::find($id);
+    public function delete($id)
+    {
+        $diary = Diary::findOrFail($id);
         $diary->delete();
-            return response()->json(['success' => false, 'post'=>'post_'.$id]);
+        return response()->json(['success' => false, 'post' => 'post_' . $id]);
     }
-    public function likes(Request $request, Diary $id){
-        $reaction = New Likes([
+
+    public function likes(Request $request, Diary $id)
+    {
+        $reaction = new Likes([
             'user_id' => Auth::id(),
             'diary_id' => $id->id,
             'status' => $request->status
@@ -174,12 +179,14 @@ class DiaryController extends Controller
         $reaction->save();
         event(new LikeNotification($id, auth()->user()));
     }
-    public function unlikes($id){
+
+    public function unlikes($id)
+    {
         $user = auth()->user();
 
-    // Tìm và xóa like nếu tồn tại
-    Likes::where(['user_id' => $user->id, 'diary_id' => $id])->delete();
+        // Tìm và xóa like nếu tồn tại
+        Likes::where(['user_id' => $user->id, 'diary_id' => $id])->delete();
 
-    return redirect()->back();
+        return redirect()->back();
     }
 }

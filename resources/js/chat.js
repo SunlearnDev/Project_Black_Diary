@@ -15,7 +15,7 @@ document.addEventListener('alpine:init', () => {
         // Thực hiện lấy tin nhắn và hiển thị vào chatbox
         start(receiverId) {
             if (this.chatBox == null || receiverId != this.data.receiver.id) {
-                axios.get(`${window.location.origin}/talk/${receiverId}`)
+                axios.get(`/talk/${receiverId}`)
                     .then(response => {
                         let receiver = response.data.receiver;
                         let messages = response.data.messages;
@@ -150,7 +150,7 @@ document.addEventListener('alpine:init', () => {
         },
         // Gửi tin nhắn
         sendMessage(event) {
-            axios.post(`${window.location.origin}/talk`, {
+            axios.post(`/talk`, {
                 message: this.data.message,
                 receiverId: this.data.receiver.id,
             })
@@ -250,7 +250,7 @@ document.addEventListener('alpine:init', () => {
 
 // ─── Listen Chat Messages ────────────────────────────────────────────────────
 
-axios.get(`${window.location.origin}/talk`)
+axios.get(`/talk`)
     .then(response => {
         if (!isNaN(response.data))
             Echo.private(`chat.${response.data}`)
