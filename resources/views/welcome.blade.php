@@ -30,10 +30,11 @@
 
 <body class="bg-gray-50" x-data>
     {{-- header --}}
-
     @include('Fontend.layouts.header')
+
     {{-- main --}}
     @yield('content')
+
     {{-- Chat --}}
     @include('components.chat')
 

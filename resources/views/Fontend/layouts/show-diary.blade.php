@@ -46,12 +46,12 @@
                             class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200 "
                                 aria-labelledby="dropdownMenuIconHorizontalButton">
-                                <li>
+                                {{-- <li>
                                     <div class="w-full hover:bg-gray-100 cursor-pointer">
                                         <button type="button" data-post-id="{{ $post->id }}"
                                             class=" py-2 px-4 w-full  text-gray-700 js-comfirm-delete  text-left ">Delete</button>
                                     </div>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <div class="w-full hover:bg-gray-100">
                                         <a href="{{route('showEdit.diary',['id'=> $post->id])}}">
