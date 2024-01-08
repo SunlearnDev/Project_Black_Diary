@@ -25,11 +25,7 @@ class MessageController extends Controller
     public function getMessages($fromUser)
     {
         $receiver = User::select('id', 'name', 'avatar', 'other_name', 'avatar')->findOrFail($fromUser);
-        $receiver->messagesWith(auth()->id())
-            ->whereNull('read_at')
-            ->where('receiver_id', auth()->id())
-            ->update(['read_at' => now()]);
-        $messages = $receiver->messagesWith(auth()->id())->get();
+        $messages = $receiver->messagesWith(auth()->id())->orderBy('id')->get();
         return response()->json(['receiver' => $receiver, 'messages' => $messages]);
     }
 
@@ -42,5 +38,12 @@ class MessageController extends Controller
             'read_at' => null,
         ]);
         return response()->json($message);
+    }
+
+    public function read()
+    {
+        Message::whereNull('read_at')
+            ->where('receiver_id', auth()->id())
+            ->update(['read_at' => now()]);
     }
 }

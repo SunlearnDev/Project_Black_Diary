@@ -147,6 +147,11 @@ document.addEventListener('alpine:init', () => {
         scroll() {
             let messagebox = document.querySelector('ul#messagebox');
             messagebox.scrollTop = messagebox.scrollHeight;
+            axios.patch(`/read`)
+                .then()
+                .catch(error => {
+                    console.log(error);
+                });
         },
         // Gửi tin nhắn
         sendMessage(event) {

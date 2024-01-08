@@ -117,6 +117,7 @@ Route::middleware('handleLoginCustomer')->group(function () {
     Route::get('talk', [MessageController::class, 'user']);
     Route::get('talk/{fromUser}', [MessageController::class, 'getMessages']);
     Route::post('talk', [MessageController::class, 'sendMessage']);
+    Route::patch('read', [MessageController::class, 'read']);
 });
 
 // ─── Get Reply ───────────────────────────────────────────────────────────────
