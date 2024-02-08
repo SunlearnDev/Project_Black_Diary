@@ -1,5 +1,4 @@
  /* *******************  Script delete post ****************** */
-
         // Hiện from xác nhận
         function showConfirm() {
             openConfirm.classList.add('open');

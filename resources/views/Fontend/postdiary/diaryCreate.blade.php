@@ -7,7 +7,7 @@
      @include('Fontend.layouts.left-nav')
     {{-- main --}}
      @include('Fontend.layouts.create_post')
-    {{-- Right --}} 
-   
+    {{-- Right --}}
+
 </div>
 @endsection

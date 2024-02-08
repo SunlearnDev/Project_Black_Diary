@@ -32,7 +32,7 @@
 
                         <span class="font-medium">{{ $message }}</span>
                     </div>
-                @enderror
+            @enderror
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <!-- Email Address -->
@@ -44,7 +44,7 @@
                         class="bg-gray-200 border rounded  text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
                         required />
                 </div>
-                
+
                 <!-- Password -->
                 <div class="mt-4 w-full">
                     <label for="pass" class="text-sm font-medium leading-none text-gray-800">

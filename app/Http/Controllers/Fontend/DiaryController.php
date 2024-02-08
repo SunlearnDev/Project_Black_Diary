@@ -98,7 +98,7 @@ class DiaryController extends Controller
 
             // Lưu bài viết
             $dataPost->save();
-
+            dd($dataPost);
             // Xử lý HashTag
             $hashTag = explode('#', $request->hashtag);
             array_shift($hashTag);

@@ -146,8 +146,10 @@
                                 clip-rule="evenodd" />
                         </svg>
                         {{-- thông báo có gì đó mới --}}
+                        
                         <span class="bottom-0 animate-ping left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
                         <span class="bottom-0 left-6 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-200 rounded-full"></span>
+                        
                     </button>
                     <div id="mega-menu-icons-dropdown1" class="absolute z-10  hidden w-[300px]  text-sm bg-white border border-gray-100 rounded-lg shadow-md ">
                         <div class="p-4 pb-0 text-gray-900 md:pb-4 ">
